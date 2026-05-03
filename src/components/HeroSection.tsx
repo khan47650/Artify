@@ -1,100 +1,111 @@
 import { Link } from "react-router-dom";
 import heroArt from "@/assets/Group2.png";
+import topDots from "/top_dots.png";
+import { useState } from "react";
 
 const HeroSection = () => {
+  const heroImages = ["/art_1.jpg", "/art_2.png", "/art_3.jpg"];
+
+  const [activeImage, setActiveImage] = useState(heroImages[0]);
 
   return (
-    <section id="hero-section" className="relative min-h-[100svh] md:min-h-screen flex items-center pt-20 md:pt-20 pb-6 md:pb-0 overflow-hidden bg-[#efefef]">
-      {/* Decorative dot pattern background */}
-      <div className="absolute left-0 top-0 w-40 h-full hidden md:flex flex-col items-center justify-start pt-20 gap-3 opacity-20 pointer-events-none">
-        {[...Array(15)].map((_, i) => (
-          <div key={i} className="flex gap-3">
-            {[...Array(10)].map((_, j) => (
-              <div key={j} className="w-2 h-2 rounded-full bg-gray-400"></div>
-            ))}
-          </div>
-        ))}
-      </div>
+    <section id="hero-section" className="relative min-h-screen pt-[120px] pb-10 overflow-hidden bg-white flex items-center">
+      <img
+        src={topDots}
+        alt=""
+        className="absolute top-[120px] left-[44%] z-20 w-[165px] opacity-100 pointer-events-none" />
+      <img
+        src={topDots}
+        alt=""
+        className="absolute -bottom-[20px] right-[95%] z-0 w-[112px] opacity-100 pointer-events-none" />
 
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="grid md:grid-cols-12 gap-3 md:gap-6 items-start relative z-10">
-          {/* Main content */}
-          <div className="md:col-span-6 opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-            <h1 className="max-w-[680px] font-serif text-[2.25rem] sm:text-[4rem] md:text-[4.5rem] lg:text-[5.75rem] xl:text-[6.5rem] font-bold leading-[0.95] tracking-[-0.02em] text-foreground">
+      <div className="mx-auto w-full max-w-[1040px] px-6">
+        <div className="grid md:grid-cols-[0.9fr_1.1fr] gap-7 items-center relative z-10">         {/* Main content */}
+          <div className="opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <h1
+              className="font-ivy max-w-[400px] text-[48px] md:text-[54px] lg:text-[58px] font-normal leading-[0.98] tracking-[-0.035em] text-black"            >
               Collect Art That<br />
               Lives Beyond<br />
               Trends
             </h1>
 
-            <div className="mt-3 md:mt-6 max-w-[680px] text-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              <p className="text-[13px] md:text-[18px] leading-[1.35] text-foreground/90">
+            <div
+              className="font-encode mt-5 max-w-[470px] text-black opacity-0 animate-fade-in"
+              style={{ animationDelay: "0.3s" }}
+            >
+              <p className="text-[12px] leading-[1.25] text-black/85">
                 Discover and collect original artworks from emerging and established
                 artists thoughtfully curated.
               </p>
-              <p className="mt-1 text-[13px] md:text-[18px] font-semibold leading-[1.35] text-foreground">
+              <p className="mt-1 text-[14px] font-bold leading-[1.25] text-black">
                 AI-guided recommendations curated for your space.
               </p>
-              <p className="mt-2 md:mt-6 text-[13px] md:text-[18px] leading-[1.35] text-foreground/90">
+              <p className="mt-4 text-[14px] leading-[1.25] text-black/85">
                 Buy original art or share your work with collectors worldwide.
               </p>
             </div>
 
-            <div className="mt-4 md:mt-8 flex flex-wrap gap-2 md:gap-4 opacity-0 animate-fade-in" style={{ animationDelay: "0.5s" }}>
+            <div className="mt-8 flex flex-wrap gap-3 opacity-0 animate-fade-in" style={{ animationDelay: "0.5s" }}>
               <a
                 href="/explore"
-                className="inline-flex h-10 md:h-14 min-w-0 md:min-w-[176px] items-center justify-center rounded-full bg-black px-5 md:px-8 text-[13px] md:text-[18px] font-medium leading-none text-white transition-colors hover:bg-black/85"
-              >
+                className="inline-flex h-[38px] min-w-[125px] items-center justify-center rounded-full bg-black px-6 text-[13px] font-medium text-white transition-colors hover:bg-black/85" >
                 Explore Art
               </a>
               <a
                 href="/ai-curator"
-                className="inline-flex h-10 md:h-14 min-w-0 md:min-w-[250px] items-center justify-center rounded-full border border-black/70 bg-transparent px-5 md:px-8 text-[13px] md:text-[18px] font-medium leading-none text-foreground transition-colors hover:bg-black/5"
-              >
+                className="inline-flex h-[38px] min-w-[175px] items-center justify-center rounded-full border border-black/60 bg-transparent px-6 text-[13px] font-medium text-black transition-colors hover:bg-black/5">
                 Try AI Art Placement
               </a>
             </div>
           </div>
 
           {/* Hero image with decorative elements */}
-          <div className="md:col-span-6 relative opacity-0 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            {/* Decorative glow top right */}
-            <div className="absolute -top-12 -right-12 w-40 h-40 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full opacity-20 blur-3xl pointer-events-none"></div>
-            
-            {/* Decorative glow bottom left */}
-            <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-gradient-to-tr from-blue-400 to-cyan-400 rounded-full opacity-15 blur-3xl pointer-events-none"></div>
+          <div className="relative z-30 opacity-0 animate-fade-in" style={{ animationDelay: "0.4s" }}>            <div className="absolute -top-12 -right-12 w-40 h-40 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full opacity-20 blur-3xl pointer-events-none"></div>
 
+            {/* Decorative glow bottom left */}
+            <div className="absolute -bottom-14 left-0 w-48 h-48 bg-gradient-to-tr from-blue-200 to-cyan-200 rounded-full opacity-20 blur-3xl pointer-events-none"></div>
             {/* Main image container */}
-            <div className="relative w-full max-w-[180px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[460px] rounded-3xl overflow-hidden shadow-2xl mx-auto md:ml-auto">
-              <img
-                src={heroArt}
-                alt="Vibrant contemporary portrait painting"
-                className="block w-full h-auto mix-blend-multiply"
-              />
-              {/* Clickable hotspots aligned to the baked-in thumbnails + arrow */}
-              <Link
-                to="/explore"
-                aria-label="Explore artworks"
-                title="Explore artworks"
-                className="absolute left-[1%] top-[51%] w-[12%] h-[11%] rounded-xl ring-0 hover:ring-2 hover:ring-white/80 transition"
-              />
-              <Link
-                to="/artists"
-                aria-label="Browse artists"
-                title="Browse artists"
-                className="absolute left-[1%] top-[63%] w-[12%] h-[11%] rounded-xl ring-0 hover:ring-2 hover:ring-white/80 transition"
-              />
-              <Link
-                to="/ai-curator"
-                aria-label="AI Curator"
-                title="AI Curator"
-                className="absolute left-[1%] top-[75%] w-[12%] h-[11%] rounded-xl ring-0 hover:ring-2 hover:ring-white/80 transition"
-              />
-              <Link
-                to="/explore"
-                aria-label="Open gallery"
-                title="Open gallery"
-                className="absolute left-[1%] top-[88%] w-[12%] h-[10%] rounded-full ring-0 hover:ring-2 hover:ring-white/80 transition"
-              />
+            <div className="relative flex items-center gap-3 mx-auto md:ml-auto">
+
+              {/* Thumbnails (LEFT SIDE) */}
+              <div className="flex flex-col gap-3">
+                {heroImages.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveImage(image)}
+                    className={`w-[48px] h-[48px] rounded-[10px] overflow-hidden border transition ${activeImage === image ? "border-black" : "border-transparent hover:border-gray-300"
+                      }`}
+                  >
+                    <img
+                      src={image}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+
+                {/* Arrow button */}
+                <Link
+                  to="/explore"
+                  className="w-[48px] h-[48px] flex items-center justify-center bg-black rounded-[10px]"
+                >
+                  <img
+                    src="/arrow_up.png"
+                    alt="arrow"
+                    className="w-[18px] h-[18px]"
+                  />
+                </Link>
+              </div>
+
+              {/* Main Image */}
+              <div className="relative w-[320px] h-[420px] rounded-[22px] overflow-hidden">
+                <img
+                  src={activeImage}
+                  alt="art"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
             </div>
 
             {/* Wavy decoration bottom right */}

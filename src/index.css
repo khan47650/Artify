@@ -331,3 +331,11 @@
     transform: translateY(0);
   }
 }
+
+.font-ivy {
+  font-family: "Ivy Mode", Georgia, serif !important;
+}
+
+.font-encode {
+  font-family: "Encode Sans Condensed", Arial, sans-serif !important;
+}

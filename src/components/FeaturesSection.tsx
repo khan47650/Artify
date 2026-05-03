@@ -1,23 +1,24 @@
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import picCollectors from "@/assets/for-collectors.png";
-import picArtists from "@/assets/for-artists.png";
-import picWorld from "@/assets/for-me.png";
+import picCollectors from "@/assets/for_collocters.jpg";
+import picArtists from "@/assets/for_artists.jpg";
+import picWorld from "@/assets/for_work.jpg";
+import topDots from "/top_dots.png";
 
 const features = [
   {
     image: picCollectors,
     title: "For Collectors",
-    description: "Discover curated art from artists worldwide, with certificates of authenticity.",
+    description: "Buy original art directly from artists you believe in.",
   },
   {
     image: picArtists,
     title: "For Artists",
-    description: "Showcase and sell your work directly to collectors who value your craft.",
+    description: "Share your work globally without losing control or voice.",
   },
   {
     image: picWorld,
-    title: "For the World",
-    description: "Making art accessible and connecting creative communities globally.",
+    title: "For the Work",
+    description: "Art deserves context, care, and permanence not trends.",
   },
 ];
 
@@ -25,30 +26,54 @@ const FeaturesSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section className="section-space bg-secondary" ref={ref}>
-      <div className="container mx-auto px-4 md:px-8">
+    <section className="relative min-h-screen bg-white py-[120px] overflow-hidden" ref={ref}>
+      <img
+        src={topDots}
+        alt=""
+        className="absolute right-[110px] top-[250px] w-[130px] opacity-100 pointer-events-none"
+      />
+
+      <img
+        src={topDots}
+        alt=""
+        className="absolute left-[28px] bottom-[110px] w-[105px] opacity-100 pointer-events-none"
+      />
+
+      <div className="mx-auto w-full max-w-[860px] px-6 relative z-10">
         <h2
-          className={`text-xl md:text-5xl font-serif font-bold text-center mb-4 md:mb-16 text-foreground transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+          className={`font-ivy text-[38px] md:text-[46px] font-normal leading-[0.95] text-center mb-[58px] text-black transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
         >
-          A Thoughtful Way to Buy, Sell,<br className="hidden md:block" /> and Share Art
+          A Thoughtful Way to Buy, Sell,<br />
+          and Share Art
         </h2>
-        <div className="grid grid-cols-3 md:grid-cols-3 gap-3 md:gap-8">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-[14px] items-start justify-center">
           {features.map((f, i) => (
             <div
               key={f.title}
-              className={`flex flex-col items-center text-center rounded-2xl transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+              className={`relative flex flex-col items-center text-center transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                }`}
               style={{ transitionDelay: isVisible ? `${(i + 1) * 150}ms` : "0ms" }}
             >
-              <div className="w-full aspect-square max-w-[348px] md:w-[348px] md:h-[348px] overflow-hidden rounded-2xl md:rounded-[2rem] bg-white isolate">
+              <div className="group relative w-full max-w-[260px] h-[245px] rounded-[18px] overflow-hidden bg-white transition-all duration-300 ease-out hover:cursor-pointer hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
+
                 <img
                   src={f.image}
                   alt={f.title}
-                  className="block w-full h-full object-contain drop-shadow-[0_24px_40px_rgba(0,0,0,0.12)]"
+                  className="w-full h-full object-cover rounded-[18px] transition-transform duration-500 ease-out group-hover:scale-[1.05]"
                 />
+
               </div>
-              <div className="mt-1 md:mt-2 px-1 md:px-8 pt-2 md:pt-4 pb-2 md:pb-8">
-                <h3 className="font-serif text-[11px] md:text-xl font-semibold mb-1 md:mb-3 text-foreground leading-tight">{f.title}</h3>
-                <p className="hidden md:block text-muted-foreground text-sm leading-relaxed">{f.description}</p>
+
+              <div className="mt-3 max-w-[230px]">
+                <h3 className="font-ivy text-[18px] font-semibold leading-tight text-black">
+                  {f.title}
+                </h3>
+
+                <p className="font-encode mt-2 text-[12px] leading-[1.25] text-black/55">
+                  {f.description}
+                </p>
               </div>
             </div>
           ))}
