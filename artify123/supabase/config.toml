@@ -1,7 +1,0 @@
-project_id = "gofpxnywanswtrjfimdk"
-
-[functions.ai-curator]
-verify_jwt = false
-
-[functions.generate-artist-intro]
-verify_jwt = false
