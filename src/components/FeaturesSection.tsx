@@ -26,18 +26,10 @@ const FeaturesSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section className="relative min-h-screen bg-white py-[120px] overflow-hidden" ref={ref}>
-      <img
-        src={topDots}
-        alt=""
-        className="absolute right-[110px] top-[250px] w-[130px] opacity-100 pointer-events-none"
-      />
+    <section className="relative min-h-screen bg-[#F5F5F5] py-[120px] overflow-hidden" ref={ref}>
+      <img src={topDots} alt="" className="absolute right-[90px] top-[170px] w-[125px] pointer-events-none" />
 
-      <img
-        src={topDots}
-        alt=""
-        className="absolute left-[28px] bottom-[110px] w-[105px] opacity-100 pointer-events-none"
-      />
+      <img src={topDots} alt="" className="absolute left-0 top-[120px] w-[120px] pointer-events-none" />
 
       <div className="mx-auto w-full max-w-[860px] px-6 relative z-10">
         <h2
