@@ -1,8 +1,12 @@
-import { ArrowRight, Facebook, Instagram, Linkedin, Loader2 } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import facebookIcon from "@/assets/facebook.png";
+import linkedinIcon from "@/assets/linkedin.png";
+import instagramIcon from "@/assets/instagram.png";
+import tiktokIcon from "@/assets/tiktok.png";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -43,7 +47,7 @@ const Footer = () => {
     <footer className="mt-24 border-t border-white/10 bg-black text-white">
       <div className="border-b border-white/20">
         <div className="mx-auto w-full max-w-[1400px] px-4 py-8 md:px-8 md:py-10">
-          <h2 className="text-center font-serif text-[4rem] font-bold leading-none tracking-tight sm:text-[5.5rem] md:text-[7.5rem] lg:text-[9.25rem]">
+          <h2 className="text-center font-geller text-[120px] md:text-[170px] lg:text-[210px] font-semibold leading-[0.8]">
             ARTIFY
           </h2>
         </div>
@@ -52,8 +56,8 @@ const Footer = () => {
       <div className="border-b border-white/20">
         <div className="mx-auto grid w-full max-w-[1400px] border-white/20 px-4 md:grid-cols-[1.15fr_0.85fr] md:px-8">
           <section className="border-b border-white/20 py-8 md:border-b-0 md:border-r md:py-10 md:pr-10">
-            <h3 className="font-serif text-2xl">Join our Nourishment Circle</h3>
-            <p className="mt-3 max-w-xl text-sm text-white/65">
+            <h3 className="font-ivy text-[20px] font-normal">Join our Nourishment Circle</h3>
+            <p className="font-encode mt-3 max-w-xl text-[12px] text-white/65">
               New collections, artist stories, and curatorial insights delivered thoughtfully.
             </p>
 
@@ -80,14 +84,17 @@ const Footer = () => {
             </form>
 
             <div className="mt-7 flex items-center gap-4">
-              <a href="https://www.facebook.com/artify" target="_blank" rel="noreferrer" className="text-white/85 transition-colors hover:text-white" aria-label="Facebook">
-                <Facebook className="h-5 w-5" />
+              <a href="#" className="transition-opacity hover:opacity-75">
+                <img src={facebookIcon} alt="Facebook" className="h-4 w-4" />
               </a>
-              <a href="https://linkedin.com/company/artify" target="_blank" rel="noreferrer" className="text-white/85 transition-colors hover:text-white" aria-label="LinkedIn">
-                <Linkedin className="h-5 w-5" />
+              <a href="#" className="transition-opacity hover:opacity-75">
+                <img src={tiktokIcon} alt="TikTok" className="h-4 w-4" />
               </a>
-              <a href="https://instagram.com/artify" target="_blank" rel="noreferrer" className="text-white/85 transition-colors hover:text-white" aria-label="Instagram">
-                <Instagram className="h-5 w-5" />
+              <a href="#" className="transition-opacity hover:opacity-75">
+                <img src={linkedinIcon} alt="LinkedIn" className="h-4 w-4" />
+              </a>
+              <a href="#" className="transition-opacity hover:opacity-75">
+                <img src={instagramIcon} alt="Instagram" className="h-4 w-4" />
               </a>
             </div>
           </section>
@@ -96,7 +103,7 @@ const Footer = () => {
             <div className="grid grid-cols-2 gap-8 text-sm">
               <div>
                 <h3 className="font-serif text-2xl">Explore</h3>
-                <ul className="mt-4 space-y-3 text-white/70">
+                <ul className="font-encode mt-4 space-y-3 text-[12px] text-white/70">
                   <li><Link to="/" className="transition-colors hover:text-white">Home</Link></li>
                   <li><Link to="/explore" className="transition-colors hover:text-white">Gallery</Link></li>
                   <li><Link to="/artists" className="transition-colors hover:text-white">Meet the Artists</Link></li>
@@ -116,7 +123,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="bg-[#ececec] text-xs text-black/85">
+      <div className="bg-white font-encode text-[11px] text-black/85">
         <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:justify-between md:px-8">
           <div className="flex flex-wrap items-center gap-4 md:gap-6">
             <Link to="/returns" className="transition-colors hover:text-black">Refund Policy</Link>
@@ -127,7 +134,7 @@ const Footer = () => {
             <span className="hidden h-3.5 w-px bg-black/25 md:block" />
             <Link to="/delivery-terms" className="transition-colors hover:text-black">Delivery Terms</Link>
           </div>
-          <p>© 2026 ArtifyOfficial. All rights reserved.</p>
+          <p>2026 © ARTIFY</p>
         </div>
       </div>
     </footer>

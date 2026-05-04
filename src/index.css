@@ -58,6 +58,17 @@
   font-weight: 600;
   font-display: swap;
 }
+@font-face {
+  font-family: "Geller";
+  src: url("/fonts/geller/Geller-Semibold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-geller {
+  font-family: "Geller", serif;
+}
 
 @layer base {
   :root {

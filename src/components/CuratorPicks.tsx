@@ -47,30 +47,30 @@ const CuratorPicks = () => {
   // const [listedPicks, setListedPicks] = useState<PickedArtwork[]>([]);
 
   return (
-    <section className="relative min-h-screen bg-white pt-[140px] pb-[90px] overflow-hidden" ref={ref}>
+    <section className="relative min-h-screen bg-white pt-[110px] md:pt-[140px] pb-[60px] md:pb-[90px] overflow-hidden" ref={ref}>
       <img
         src={leftOrangeLines}
         alt=""
-        className="absolute left-0 top-[95px] w-[130px] pointer-events-none"
+        className="absolute left-0 top-[70px] md:top-[95px] w-[120px] md:w-[130px] pointer-events-none"
       />
 
-      <div className="mx-auto w-full max-w-[1280px] px-10 relative z-10">
+      <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 relative z-10">
         <h2
-          className={`font-ivy text-[42px] font-normal leading-none text-left text-black transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          className={`font-ivy text-[30px] md:text-[42px] font-normal leading-none text-left text-black transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
         >
           AI + Curator Picks...
         </h2>
 
         <p
-          className={`font-encode mt-3 mb-9 max-w-[650px] text-[14px] leading-[1.25] text-black/55 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          className={`font-encode mt-2 md:mt-3 mb-6 md:mb-9 max-w-[650px] text-[11px] md:text-[14px] leading-[1.25] text-black/55 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           style={{ transitionDelay: isVisible ? "100ms" : "0ms" }}
         >
           Each collection is shaped by theme, emotion, and material curated to help you discover with intention.
         </p>
 
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-6 md:gap-4">
           {pickedArtworks.map((art, i) => (
             <div
               key={art.id}
@@ -78,7 +78,7 @@ const CuratorPicks = () => {
                 }`}
               style={{ transitionDelay: isVisible ? `${(i + 1) * 120}ms` : "0ms" }}
             >
-              <div className="group h-[190px] overflow-hidden rounded-[18px] bg-white">
+              <div className="group h-[125px] sm:h-[160px] md:h-[190px] overflow-hidden rounded-[16px] md:rounded-[18px] bg-white">
                 <img
                   src={art.image}
                   alt={art.title}
@@ -86,7 +86,7 @@ const CuratorPicks = () => {
                 />
               </div>
 
-              <h3 className="font-ivy mt-3 text-center text-[18px] font-semibold leading-tight text-black">
+              <h3 className="font-ivy mt-2 md:mt-3 text-center text-[13px] md:text-[18px] font-semibold leading-tight text-black">
                 {art.title}
               </h3>
             </div>
