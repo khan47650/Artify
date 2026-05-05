@@ -46,7 +46,7 @@ const ArtistsSection = () => {
 
   return (
     <section className="relative min-h-screen bg-white py-[90px] overflow-hidden" ref={ref}>
-      <div className="mx-auto w-full max-w-[820px] px-6">
+      <div className="mx-auto w-full max-w-[1240px] px-10">
         <h2
           className={`font-ivy text-[34px] md:text-[40px] font-normal leading-none text-center text-black transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
@@ -62,7 +62,7 @@ const ArtistsSection = () => {
           Meet the voices shaping our collections. Each artist brings a distinct perspective, process, and way of seeing the world.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {artists.map((artist, i) => (
             <article
               key={artist.name}
@@ -70,7 +70,7 @@ const ArtistsSection = () => {
                 }`}
               style={{ transitionDelay: isVisible ? `${(i + 1) * 150}ms` : "0ms" }}
             >
-              <div className="h-[235px] overflow-hidden rounded-t-[10px]">
+              <div className="h-[270px] overflow-hidden rounded-t-[10px]">
                 <img
                   src={artist.image}
                   alt={artist.name}

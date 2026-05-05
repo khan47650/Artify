@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { LikedProvider } from "@/contexts/LikedContext";
@@ -33,6 +33,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
+import SplashScreen from "@/components/SplashScreen";
 
 const queryClient = new QueryClient();
 
@@ -99,25 +100,42 @@ const AnimatedRoutes = () => {
   );
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AdminProvider>
-        <InventoryProvider>
-          <CartProvider>
-            <LikedProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <ScrollToTop />
-                <AnimatedRoutes />
-              </BrowserRouter>
-            </LikedProvider>
-          </CartProvider>
-        </InventoryProvider>
-      </AdminProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 4500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <>
+
+      {showSplash && <SplashScreen />}
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <AdminProvider>
+            <InventoryProvider>
+              <CartProvider>
+                <LikedProvider>
+                  <Toaster />
+                  <Sonner />
+                  <BrowserRouter>
+                    <ScrollToTop />
+                    <AnimatedRoutes />
+                  </BrowserRouter>
+                </LikedProvider>
+              </CartProvider>
+            </InventoryProvider>
+          </AdminProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </>
+  );
+};
 
 export default App;

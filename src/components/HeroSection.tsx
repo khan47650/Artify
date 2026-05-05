@@ -13,14 +13,14 @@ const HeroSection = () => {
       <img
         src={topDots}
         alt=""
-        className="absolute top-[120px] left-[44%] z-20 w-[165px] opacity-100 pointer-events-none" />
+        className="absolute top-[110px] left-[61%] z-20 w-[165px] opacity-100 pointer-events-none" />
       <img
         src={topDots}
         alt=""
         className="absolute -bottom-[20px] right-[95%] z-0 w-[112px] opacity-100 pointer-events-none" />
 
-      <div className="mx-auto w-full max-w-[1040px] px-6">
-        <div className="grid md:grid-cols-[0.9fr_1.1fr] gap-7 items-center relative z-10">         {/* Main content */}
+      <div className="mx-auto w-full max-w-[1280px] px-6">
+        <div className="grid md:grid-cols-[1fr_1fr] gap-7 items-center relative z-10">         {/* Main content */}
           <div className="opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
             <h1
               className="font-ivy max-w-[400px] text-[48px] md:text-[54px] lg:text-[58px] font-normal leading-[0.98] tracking-[-0.035em] text-black"            >
@@ -65,7 +65,7 @@ const HeroSection = () => {
             {/* Decorative glow bottom left */}
             <div className="absolute -bottom-14 left-0 w-48 h-48 bg-gradient-to-tr from-blue-200 to-cyan-200 rounded-full opacity-20 blur-3xl pointer-events-none"></div>
             {/* Main image container */}
-            <div className="relative flex items-center gap-3 mx-auto md:ml-auto">
+            <div className="relative flex items-center gap-3 justify-end">
 
               {/* Thumbnails (LEFT SIDE) */}
               <div className="flex flex-col gap-3">

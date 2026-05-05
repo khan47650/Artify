@@ -70,6 +70,27 @@
   font-family: "Geller", serif;
 }
 
+@font-face {
+  font-family: "Extenda";
+  src: url("/fonts/Extenda/extenda-trial.40-hecto.ttf") format("truetype");
+  font-weight: 700;
+}
+
+.font-extenda {
+  font-family: "Extenda", sans-serif;
+}
+
+@font-face {
+  font-family: "DM Serif";
+  src: url("/fonts/DM Serif/DMSerifDisplay-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+.font-dm-serif {
+  font-family: "DM Serif", Georgia, serif;
+}
+
 @layer base {
   :root {
     --font-body: "Encode Sans Condensed", ui-sans-serif, system-ui, sans-serif;
