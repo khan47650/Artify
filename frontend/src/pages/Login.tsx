@@ -1,8 +1,8 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+
 import { CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
+import { FormEvent, useState } from "react";
+import api from "@/lib/api";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -42,20 +42,6 @@ const Login = () => {
   const isLogin = view === "login";
   const isSignup = view === "signup";
 
-  const redirectUrl = useMemo(
-    () => import.meta.env.VITE_EMAIL_REDIRECT_URL || `${window.location.origin}/auth/callback`,
-    []
-  );
-
-  useEffect(() => {
-    const hash = window.location.hash.toLowerCase();
-    const query = new URLSearchParams(window.location.search);
-    const isRecovery = hash.includes("type=recovery") || query.get("mode") === "reset-password";
-
-    if (isRecovery) {
-      setView("reset");
-    }
-  }, []);
 
   const fileToDataUrl = (file: File) =>
     new Promise<string>((resolve, reject) => {
@@ -85,29 +71,13 @@ const Login = () => {
       localStorage.setItem("artify_selected_role", role);
 
       if (isLogin) {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+        const { data } = await api.post("/auth/login", {
+          email,
+          password,
+          role,
+        });
 
-        const currentRole = ((data.user?.user_metadata?.role as string | undefined) || "buyer").toLowerCase();
-        if (role !== currentRole) {
-          const { error: roleUpdateError } = await supabase.auth.updateUser({
-            data: {
-              ...(data.user?.user_metadata || {}),
-              role,
-            },
-          });
-
-          if (roleUpdateError) throw roleUpdateError;
-          await supabase.auth.refreshSession();
-        }
-
-        if (!rememberMe) {
-          sessionStorage.setItem("artify_session_only", "true");
-        } else {
-          sessionStorage.removeItem("artify_session_only");
-        }
-
-        toast({ title: `Logged in as ${role}` });
+        toast({ title: data.message || `Logged in as ${role}` });
         navigate("/");
         return;
       }
@@ -120,78 +90,62 @@ const Login = () => {
         throw new Error("An artist picture is required for seller registration.");
       }
 
-      const { error } = await supabase.auth.signUp({
+      const { data } = await api.post("/auth/signup", {
+        role,
+        firstName,
+        lastName,
+        phoneNumber,
+        addressLine1,
+        addressLine2,
+        city,
+        state,
+        postalCode,
+        country,
+        artistPhoto,
         email,
         password,
-        options: {
-          emailRedirectTo: redirectUrl,
-          data: {
-            role,
-            first_name: firstName,
-            last_name: lastName,
-            phone_number: phoneNumber,
-            address_line1: addressLine1,
-            address_line2: addressLine2,
-            city,
-            state,
-            postal_code: postalCode,
-            country,
-            avatar_url: role === "seller" ? artistPhoto : null,
-          },
-        },
       });
 
-      if (error) throw error;
-      toast({ title: "Verify your email", description: "We sent a verification link to your inbox." });
+      toast({ title: data.message || "Signup successful" });
       setView("login");
     } catch (error: any) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({
+        title: "Error",
+        description: error.response?.data?.message || error.message || "Something went wrong",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
-
   const handleForgotPassword = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (!email) {
-      toast({ title: "Email required", description: "Enter your email to receive a reset link.", variant: "destructive" });
-      return;
-    }
-
-    setLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/login?mode=reset-password`,
-    });
-    setLoading(false);
-
-    if (error) {
-      toast({ title: "Unable to send reset link", description: error.message, variant: "destructive" });
+      toast({
+        title: "Email required",
+        description: "Enter your email to receive a reset link.",
+        variant: "destructive",
+      });
       return;
     }
 
     setView("forgot-sent");
-    toast({ title: "Recovery email sent" });
+    toast({ title: "Recovery email feature will be added later" });
   };
 
   const handleResetPassword = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (password !== confirmPassword) {
       toast({ title: "Passwords do not match", variant: "destructive" });
-      return;
-    }
-
-    setLoading(true);
-    const { error } = await supabase.auth.updateUser({ password });
-    setLoading(false);
-
-    if (error) {
-      toast({ title: "Unable to reset password", description: error.message, variant: "destructive" });
       return;
     }
 
     setView("reset-success");
     setPassword("");
     setConfirmPassword("");
+    toast({ title: "Reset password feature will be added later" });
   };
 
   const renderTitle = () => {
@@ -438,22 +392,8 @@ const Login = () => {
                   <Button
                     type="button"
                     disabled={loading}
-                    onClick={async () => {
-                      setLoading(true);
-                      try {
-                        const result = await lovable.auth.signInWithOAuth("google", {
-                          redirect_uri: window.location.origin,
-                        });
-                        if (result.error) {
-                          toast({ title: "Google sign-in failed", description: String(result.error), variant: "destructive" });
-                        }
-                        if (result.redirected) return;
-                        navigate("/");
-                      } catch (err: any) {
-                        toast({ title: "Error", description: err.message, variant: "destructive" });
-                      } finally {
-                        setLoading(false);
-                      }
+                    onClick={() => {
+                      toast({ title: "Google sign-in will be added later with Firebase" });
                     }}
                     className="h-12 w-full rounded-full border border-black/15 bg-white text-[15px] text-black hover:bg-black/5"
                   >
