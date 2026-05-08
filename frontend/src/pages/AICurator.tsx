@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 type Msg = { role: "user" | "assistant"; content: string };
 type Conversation = { id: string; title: string; messages: Msg[]; updatedAt: number };
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-curator`;
+const CHAT_URL = `${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/chat/ai-curator`;
 const HISTORY_KEY = "artify_ai_curator_history";
 
 const starterPrompts = [
@@ -137,7 +137,6 @@ const AICurator = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({ messages: allMessages }),
       });
@@ -176,10 +175,10 @@ const AICurator = () => {
                 const nextMessages =
                   last?.role === "assistant"
                     ? conversation.messages.map((message, idx) =>
-                        idx === conversation.messages.length - 1
-                          ? { ...message, content: assistantSoFar }
-                          : message,
-                      )
+                      idx === conversation.messages.length - 1
+                        ? { ...message, content: assistantSoFar }
+                        : message,
+                    )
                     : [...conversation.messages, { role: "assistant" as const, content: assistantSoFar }];
 
                 return {
@@ -228,9 +227,8 @@ const AICurator = () => {
               {chatHistory.map((chat) => (
                 <div
                   key={chat.id}
-                  className={`group flex items-center gap-1 rounded-xl px-2 py-1.5 ${
-                    chat.id === activeConversation?.id ? "bg-zinc-200 text-zinc-950" : "text-zinc-700 hover:bg-zinc-200/70"
-                  }`}
+                  className={`group flex items-center gap-1 rounded-xl px-2 py-1.5 ${chat.id === activeConversation?.id ? "bg-zinc-200 text-zinc-950" : "text-zinc-700 hover:bg-zinc-200/70"
+                    }`}
                 >
                   <button
                     onClick={() => handleSelectChat(chat.id)}
