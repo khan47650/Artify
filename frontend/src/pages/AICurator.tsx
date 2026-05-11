@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import ReactMarkdown from "react-markdown";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 type Msg = { role: "user" | "assistant"; content: string };
 type Conversation = { id: string; title: string; messages: Msg[]; updatedAt: number };
@@ -44,8 +43,14 @@ const summarizeTitle = (content: string) => {
 };
 
 const AICurator = () => {
-  const [chatHistory, setChatHistory] = useState<Conversation[]>(getInitialHistory);
-  const [activeChatId, setActiveChatId] = useState<string>(getInitialHistory()[0].id);
+  const initialChatRef = useRef<Conversation | null>(null);
+
+  if (!initialChatRef.current) {
+    initialChatRef.current = createConversation();
+  }
+
+  const [chatHistory, setChatHistory] = useState<Conversation[]>([initialChatRef.current]);
+  const [activeChatId, setActiveChatId] = useState<string>(initialChatRef.current.id);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -209,10 +214,10 @@ const AICurator = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f7f7f8] text-zinc-900">
+    <div className="h-screen overflow-hidden bg-[#f7f7f8] text-zinc-900">
       <Navbar />
-      <div className="mx-auto flex flex-1 w-full max-w-[1700px]">
-        <aside className="hidden sticky top-24 self-start h-[calc(100vh-7rem)] w-[280px] flex-col border-r border-zinc-200 bg-zinc-100/80 p-3 md:flex mt-24">
+      <div className="mx-auto flex h-[calc(100vh-78px)] w-full max-w-[1700px] pt-[78px] overflow-hidden">
+        <aside className="hidden h-full w-[280px] flex-col border-r border-zinc-200 bg-zinc-100/80 p-3 md:flex overflow-hidden">
           <Button
             onClick={handleNewChat}
             className="mb-3 h-11 justify-start gap-2 rounded-xl bg-zinc-900 px-4 text-sm text-white hover:bg-zinc-800"
@@ -251,11 +256,11 @@ const AICurator = () => {
           </div>
         </aside>
 
-        <section className="flex min-w-0 flex-1 flex-col">
+        <section className="flex h-full min-w-0 flex-1 flex-col overflow-hidden">
           <header className="sticky top-0 z-10 border-b border-zinc-200 bg-[#f7f7f8]/95 px-4 py-3 backdrop-blur md:px-8">
             <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3">
               <div>
-                <h1 className="text-base font-semibold text-zinc-900">AI Curator</h1>
+                <h1 className="font-['IVY_Mode'] text-lg font-semibold text-zinc-900">AI Curator</h1>
                 <p className="text-xs text-zinc-500">Artify assistant</p>
               </div>
               <Button onClick={handleNewChat} variant="ghost" className="h-9 rounded-lg px-3 text-zinc-700 hover:bg-zinc-200 md:hidden">
@@ -265,23 +270,23 @@ const AICurator = () => {
             </div>
           </header>
 
-          <div className="min-h-0 flex-1 overflow-y-auto">
-            <div className="mx-auto w-full max-w-3xl px-4 py-7 md:px-8">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden">
+            <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col justify-start px-4 py-3 md:px-8">
               {messages.length === 0 && (
-                <div className="mt-10 rounded-2xl border border-zinc-200 bg-white p-6 text-center shadow-sm">
-                  <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-zinc-100 text-zinc-700">
+                <div className="mt-0 rounded-2xl border border-zinc-200 bg-white px-5 py-3 text-center shadow-sm">
+                  <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-zinc-100 text-zinc-700">
                     <Sparkles className="h-5 w-5" />
                   </div>
-                  <h2 className="mt-4 text-2xl font-semibold text-zinc-900">How can I help with your art selection?</h2>
-                  <p className="mx-auto mt-2 max-w-xl text-sm text-zinc-600">
+                  <h2 className="mt-2 font-['IVY_Mode'] text-2xl font-semibold text-zinc-900">How can I help with your art selection?</h2>
+                  <p className=" font-['Encode_Sans_Condensed'] mx-auto mt-2 max-w-xl text-sm text-zinc-600">
                     Ask about styles, placements, mood, budget, or collector recommendations.
                   </p>
-                  <div className="mt-6 grid gap-2 sm:grid-cols-2">
+                  <div className="font-['Encode_Sans_Condensed'] mt-3 grid gap-2 sm:grid-cols-2">
                     {starterPrompts.map((prompt) => (
                       <button
                         key={prompt}
                         onClick={() => setInput(prompt)}
-                        className="rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-left text-sm text-zinc-800 transition hover:border-zinc-300 hover:bg-zinc-100"
+                        className="min-h-[40px] rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2 text-left text-sm leading-5 text-zinc-800 transition hover:border-zinc-300 hover:bg-zinc-100"
                       >
                         {prompt}
                       </button>
@@ -299,7 +304,7 @@ const AICurator = () => {
                       </div>
                     ) : (
                       <div className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-4 text-sm leading-7 text-zinc-900 shadow-sm">
-                        <div className="prose prose-sm max-w-none prose-zinc">
+                        <div className="prose prose-sm max-w-none prose-zinc prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-h1:leading-tight prose-h2:leading-tight prose-h3:leading-tight prose-p:my-2 prose-li:my-1">
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
                         </div>
                       </div>
@@ -309,7 +314,7 @@ const AICurator = () => {
 
                 {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
                   <div className="flex justify-start">
-                    <div className="rounded-xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
+                    <div className="mt-0 rounded-2xl border border-zinc-200 bg-white px-5 py-4 text-center shadow-sm">
                       <div className="flex gap-1.5">
                         <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" style={{ animationDelay: "0ms" }} />
                         <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" style={{ animationDelay: "120ms" }} />
@@ -323,7 +328,7 @@ const AICurator = () => {
             </div>
           </div>
 
-          <div className="border-t border-zinc-200 bg-[#f7f7f8] px-4 py-3 md:px-8 md:py-4">
+          <div className="mt-auto shrink-0 border-t border-zinc-200 bg-[#f7f7f8] px-4 pb-2 pt-3 md:px-8 md:pb-3">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -339,7 +344,7 @@ const AICurator = () => {
                   placeholder="Message AI Curator..."
                   disabled={isLoading}
                   rows={1}
-                  className="max-h-40 min-h-[28px] w-full resize-y border-0 bg-transparent text-sm leading-6 text-zinc-900 placeholder:text-zinc-500 focus:outline-none"
+                  className="max-h-32 min-h-[28px] w-full resize-none border-0 bg-transparent text-sm leading-6 text-zinc-900 placeholder:text-zinc-500 focus:outline-none"
                 />
               </div>
               <Button
@@ -350,13 +355,12 @@ const AICurator = () => {
                 <Send className="h-4 w-4" />
               </Button>
             </form>
-            <p className="mx-auto mt-2 w-full max-w-3xl text-center text-xs text-zinc-500">
+            <p className="font-['Encode_Sans_Condensed'] mx-auto mt-2 w-full max-w-3xl text-center text-xs text-zinc-500">
               AI Curator can make mistakes. Verify important details before purchasing.
             </p>
           </div>
         </section>
       </div>
-      <Footer />
     </div>
   );
 };

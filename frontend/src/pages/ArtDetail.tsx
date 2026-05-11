@@ -1,314 +1,310 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { ArrowLeft, ShoppingCart, Share2, Palette, MessageCircle, Truck, RotateCcw, ShieldCheck, Leaf } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Heart, Star } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { artworks } from "@/data/artworks";
-import { useCart } from "@/contexts/CartContext";
-import { useInventory } from "@/contexts/InventoryContext";
-import { useAuth } from "@/hooks/use-auth";
-import { supabase } from "@/integrations/supabase/client";
+import explore1 from "@/assets/explore_1.png";
+import explore2 from "@/assets/explore_2.png";
+import explore3 from "@/assets/explore_3.png";
+import truckIcon from "@/assets/truck.png";
+import returnIcon from "@/assets/return.png";
+import signatureIcon from "@/assets/signature.png";
+import { useCartDrawer } from "@/contexts/CartDrawerContext";
 
-interface ArtworkData {
-  id: string;
-  image: string;
-  title: string;
-  artist: string;
-  price: number;
-  genre: string;
-  medium: string;
-  dimensions: string;
-  year: number;
-  description: string;
-  seller_id?: string;
-}
+const headingFont = "font-['Luvy_Mode'] font-normal";
+const bodyFont = "font-['Encode_Sans_Condensed']";
+
+const artwork = {
+  id: "explore-1",
+  image: explore1,
+  title: "Echoes of Blue",
+  artist: "Ayesha Khan",
+  price: 980,
+  medium: "Acrylic on Linen",
+  dimensions: "60 × 60 cm",
+  year: 2024,
+  style: "Abstract",
+};
+
+const recommended = [
+  { id: "explore-2", image: explore2, title: "Quiet Visions", artist: "Danish Noor", price: 42000 },
+  { id: "explore-3", image: explore3, title: "Ashes in Bloom", artist: "Nida Rehman", price: 52000 },
+  { id: "explore-4", image: explore1, title: "Weight of Silence", artist: "Hamza Ali", price: 38000 },
+];
+
+const reviews = [
+  {
+    name: "Jasper",
+    time: "2 Weeks ago",
+    image: explore2,
+    text: "Got this to keep my husband warm on these chilly lake fall days. He loves it a lot and it is pretty warm.",
+  },
+  {
+    name: "Elena",
+    time: "3 Days ago",
+    image: explore3,
+    text: "Great quality, warm and super comfy. Got the XL, just okay, large but good fit for comfort.",
+  },
+];
 
 const ArtDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const [activeTab, setActiveTab] = useState<"about" | "reviews">("reviews");
   const navigate = useNavigate();
-  const { addToCart, removeFromCart, isInCart } = useCart();
-  const { ensureArtworkRecord, getArtworkStatus, getAvailableQuantity, isPurchasable } = useInventory();
-  const { user } = useAuth();
-  const [artwork, setArtwork] = useState<ArtworkData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [chattingWith, setChattingWith] = useState<string | null>(null);
-  const isListed = id?.startsWith("listed-");
-
-  const handleChatWithSeller = async () => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
-
-    if (!artwork) return;
-
-    try {
-      // Check if conversation already exists
-      const { data: existingConv, error: fetchError } = await (supabase as any)
-        .from("conversations")
-        .select("id")
-        .eq("artwork_id", artwork.id)
-        .eq("buyer_id", user.id)
-        .eq("seller_id", chattingWith!)
-        .single();
-
-      if (existingConv && !fetchError) {
-        // Conversation exists, navigate to messages
-        navigate("/messages");
-        return;
-      }
-
-      // Create new conversation
-      const { data: newConv, error: createError } = await (supabase as any)
-        .from("conversations")
-        .insert({
-          artwork_id: artwork.id,
-          buyer_id: user.id,
-          seller_id: chattingWith,
-        })
-        .select()
-        .single();
-
-      if (createError && createError.code !== "23505") {
-        // 23505 is unique violation, meaning conversation already exists
-        throw createError;
-      }
-
-      navigate("/messages");
-    } catch (error) {
-      console.error("Error starting conversation:", error);
-    }
-  };
-
-  useEffect(() => {
-    const fetchArtwork = async () => {
-      if (isListed && id) {
-        const dbId = id.replace("listed-", "");
-        const { data } = await supabase
-          .from("listed_artworks" as any)
-          .select("*")
-          .eq("id", dbId)
-          .single();
-        if (data) {
-          const d = data as any;
-          const artwork = {
-            id: `listed-${d.id}`,
-            image: d.image_url || "",
-            title: d.title,
-            artist: d.artist_name,
-            price: Number(d.price),
-            genre: d.genre || "Other",
-            medium: d.medium || "Other",
-            dimensions: d.dimensions || "",
-            year: d.year || new Date().getFullYear(),
-            description: d.description || "",
-            seller_id: d.seller_id || "",
-          };
-          setArtwork(artwork);
-          setChattingWith(artwork.seller_id || null);
-        }
-      } else {
-        const found = artworks.find((a) => a.id === id);
-        if (found) {
-          // For mock artworks, create a stable seller ID based on artist name
-          const sellerId = `artist-${found.id}`;
-          setArtwork({ ...found, seller_id: sellerId });
-          setChattingWith(sellerId);
-        }
-      }
-      setLoading(false);
-    };
-    fetchArtwork();
-  }, [id, isListed]);
-
-  useEffect(() => {
-    if (artwork) {
-      ensureArtworkRecord(artwork.id, 1);
-    }
-  }, [artwork, ensureArtworkRecord]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <main className="pt-28 pb-16 container mx-auto px-4 md:px-8">
-          <div className="grid md:grid-cols-2 gap-10">
-            <Skeleton className="aspect-[3/4] rounded-2xl" />
-            <div className="space-y-4">
-              <Skeleton className="h-8 w-48" />
-              <Skeleton className="h-6 w-32" />
-              <Skeleton className="h-10 w-24" />
-            </div>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  if (!artwork) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <main className="pt-28 pb-16 container mx-auto px-4 text-center">
-          <h1 className="page-title font-serif font-bold text-foreground">Artwork not found</h1>
-          <Button variant="outline" className="mt-6" onClick={() => navigate("/explore")}>
-            Back to Explore
-          </Button>
-        </main>
-      </div>
-    );
-  }
-
-  const related = artworks
-    .filter((a) => a.id !== artwork.id && (a.genre === artwork.genre || a.artist === artwork.artist))
-    .slice(0, 3);
-
-  const stockStatus = getArtworkStatus(artwork.id, 1);
-  const availableQuantity = getAvailableQuantity(artwork.id, 1);
-  const canBuy = isPurchasable(artwork.id, 1);
+  const { openCart } = useCartDrawer();
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-[#fbfaf7] text-[#1d1d1d]">
       <Navbar />
-      <main className="pt-24 pb-16">
-        <div className="container mx-auto px-4 md:px-8">
-          <p className="text-sm font-medium text-foreground/65">Product Detail</p>
 
-          <div className="mt-4 rounded-[1.6rem] border border-border/70 bg-[#f4f4f4] p-4 md:p-6">
-            <div className="mb-4 flex items-center gap-2 text-xs text-foreground/55">
-              <Button variant="ghost" size="sm" className="h-7 px-2 gap-1" onClick={() => navigate(-1)}>
-                <ArrowLeft className="h-3.5 w-3.5" />
-                Back
-              </Button>
-              <span>/</span>
-              <span>Home</span>
-              <span>/</span>
-              <span>Collection</span>
-              <span>/</span>
-              <span className="text-foreground/80">{artwork.title}</span>
-            </div>
+      <main className="pt-20 pb-14">
+        <div className="mx-auto max-w-[1120px] px-4 md:px-6">
+          <p className={`${bodyFont} mb-4 text-[11px] text-[#777]`}>
+            Home / Collection / Abstract & Experimental / Detail
+          </p>
 
-            <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-              <section>
-                <div className="aspect-[4/3.75] overflow-hidden rounded-2xl bg-secondary">
-                  {artwork.image ? (
-                    <img src={artwork.image} alt={artwork.title} className="h-full w-full object-cover" />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center">
-                      <Palette className="h-14 w-14 text-muted-foreground" />
-                    </div>
-                  )}
-                </div>
-
-                <Tabs defaultValue="about" className="mt-4">
-                  <TabsList className="grid w-full grid-cols-2 rounded-full bg-white">
-                    <TabsTrigger value="about" className="rounded-full">About this work</TabsTrigger>
-                    <TabsTrigger value="insights" className="rounded-full">Insights</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="about" className="rounded-xl border border-border/60 bg-white p-4 text-sm text-foreground/75">
-                    {artwork.description}
-                  </TabsContent>
-                  <TabsContent value="insights" className="rounded-xl border border-border/60 bg-white p-4 text-sm text-foreground/75">
-                    A quiet exploration of depth, atmosphere, and emotional resonance. The composition balances texture with soft tonal gradients, creating a meditative focal point.
-                  </TabsContent>
-                </Tabs>
-              </section>
-
-              <aside className="rounded-2xl border border-border/60 bg-white p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h1 className="text-4xl font-serif font-bold leading-[1.02] text-foreground">{artwork.title}</h1>
-                    <p className="mt-1 text-sm text-muted-foreground">{artwork.artist}</p>
-                  </div>
-                  <Badge variant="secondary">{artwork.genre}</Badge>
-                </div>
-
-                <p className="mt-3 text-3xl font-bold text-foreground">PKR {artwork.price.toLocaleString()}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {stockStatus === "sold-out"
-                    ? "Sold Out"
-                    : stockStatus === "booked"
-                      ? "Booked (pending verification)"
-                      : `In Stock: ${availableQuantity}`}
-                </p>
-
-                <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                  <div className="rounded-lg border border-border bg-muted/20 px-3 py-2">Authenticity Included</div>
-                  <div className="rounded-lg border border-border bg-muted/20 px-3 py-2 text-right">1 of 1 Edition</div>
-                </div>
-
-                <Button
-                  className="mt-4 w-full h-11"
-                  variant={isInCart(artwork.id) ? "secondary" : "default"}
-                  onClick={() => (isInCart(artwork.id) ? removeFromCart(artwork.id) : addToCart(artwork))}
-                  disabled={!canBuy && !isInCart(artwork.id)}
-                >
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  {isInCart(artwork.id)
-                    ? "Remove from Cart"
-                    : !canBuy
-                      ? "Unavailable"
-                      : "Add to Cart"}
-                </Button>
-
-                <div className="mt-3 flex gap-2">
-                  <Button variant="outline" size="icon" aria-label="Share" title="Share">
-                    <Share2 className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" aria-label="Chat with seller" title="Chat with seller" onClick={handleChatWithSeller}>
-                    <MessageCircle className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                <Separator className="my-5" />
-
-                <div className="space-y-2 text-sm text-foreground/75">
-                  <p className="flex items-center gap-2"><Truck className="h-4 w-4 text-foreground/70" /> Worldwide shipping available</p>
-                  <p className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-foreground/70" /> Easy returns on transit damage</p>
-                  <p className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-foreground/70" /> Certificate of authenticity included</p>
-                  <p className="flex items-center gap-2"><Leaf className="h-4 w-4 text-foreground/70" /> Sustainable packaging practice</p>
-                </div>
-
-                <Separator className="my-5" />
-
-                <div className="space-y-2 text-sm">
-                  <h3 className="font-serif text-xl font-semibold text-foreground">Artwork Details</h3>
-                  <div className="grid grid-cols-2 gap-y-1 text-muted-foreground">
-                    <span>Artist</span><span className="text-right text-foreground">{artwork.artist}</span>
-                    <span>Medium</span><span className="text-right text-foreground">{artwork.medium}</span>
-                    <span>Dimensions</span><span className="text-right text-foreground">{artwork.dimensions || "N/A"}</span>
-                    <span>Year</span><span className="text-right text-foreground">{artwork.year}</span>
-                    <span>Genre</span><span className="text-right text-foreground">{artwork.genre}</span>
-                  </div>
-                </div>
-              </aside>
-            </div>
-          </div>
-
-          {related.length > 0 && (
-            <section className="mt-12">
-              <h2 className="text-2xl font-serif font-bold text-foreground mb-5">Recommended Art</h2>
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-                {related.map((art) => (
-                  <Link key={art.id} to={`/art/${art.id}`} className="group rounded-2xl border border-border/70 bg-[#f7f7f7] p-3">
-                    <div className="aspect-[4/3] overflow-hidden rounded-xl">
-                      <img src={art.image} alt={art.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
-                    </div>
-                    <h3 className="mt-3 font-serif text-xl font-semibold text-foreground">{art.title}</h3>
-                    <p className="text-sm text-muted-foreground">{art.artist}</p>
-                    <p className="mt-1 text-sm font-medium text-foreground">PKR {art.price.toLocaleString()}</p>
-                  </Link>
-                ))}
+          <section className="grid gap-5 lg:grid-cols-[1.02fr_0.98fr]">
+            <div>
+              <div className="relative h-[650px] overflow-hidden rounded-[4px] bg-[#ede8df]">
+                <span className={`${bodyFont} absolute left-3 top-3 z-10 rounded-[2px] bg-white px-2 py-1 text-[9px] text-black`}>
+                  Original
+                </span>
+                <img src={artwork.image} alt={artwork.title} className="h-full w-full object-cover" />
               </div>
-            </section>
-          )}
+
+              <div className="mt-3 flex rounded-full border-[5px] border-black bg-white p-[3px]">
+                <button
+                  onClick={() => setActiveTab("about")}
+                  className={`${bodyFont} flex-1 rounded-full py-2 text-[12px] ${activeTab === "about" ? "bg-black text-white" : "text-black"
+                    }`}
+                >
+                  About {artwork.title}
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("reviews")}
+                  className={`${bodyFont} flex-1 rounded-full py-2 text-[12px] ${activeTab === "reviews" ? "bg-black text-white" : "text-black"
+                    }`}
+                >
+                  Reviews
+                </button>
+              </div>
+
+              {activeTab === "about" ? (
+                <div className="mt-5">
+                  <h2 className={`${headingFont} text-[21px] leading-none`}>
+                    A quiet reflection of depth, movement, and atmosphere.
+                  </h2>
+
+                  <p className={`${bodyFont} mt-3 text-[13px] leading-6 text-[#6f6a63]`}>
+                    “Echoes of Blue” blends layered textures and delicate abstraction into a calm visual rhythm,
+                    making it ideal for refined interiors and collectors seeking a timeless statement piece.
+                  </p>
+
+                  <h3 className={`${headingFont} mt-7 text-[20px] leading-none`}>Artist Note</h3>
+
+                  <p className={`${bodyFont} mt-3 text-[13px] leading-6 text-[#6f6a63]`}>
+                    This work explores silence, distance, and memory through washed pigments, textured surfaces,
+                    and soft transitions.
+                  </p>
+                </div>
+              ) : (
+                <div className="mt-4">
+                  <div className="rounded-[3px] bg-[#f1f0ee] p-6">
+                    <div className="flex items-center justify-between gap-8">
+                      <div>
+                        <p className={`${headingFont} text-[42px] leading-none`}>
+                          4.5<span className={`${bodyFont} text-[18px] text-[#8b857d]`}> /5</span>
+                        </p>
+                        <p className={`${bodyFont} mt-3 text-[12px] text-[#777]`}>(25 new reviews)</p>
+                      </div>
+
+                      <div className={`${bodyFont} flex-1 space-y-2 text-[12px]`}>
+                        {[5, 4, 3, 2, 1].map((item, index) => (
+                          <div key={item} className="flex items-center gap-2">
+                            <span className="text-[#ff9d00]">★</span>
+                            <div className="h-1.5 flex-1 rounded-full bg-white">
+                              <div className="h-1.5 rounded-full bg-black" style={{ width: `${90 - index * 16}%` }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 space-y-4">
+                    {reviews.map((review) => (
+                      <div key={review.name} className="rounded-[16px] border border-[#eee8df] bg-white p-5">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-3">
+                            <img src={review.image} alt={review.name} className="h-9 w-9 rounded-full object-cover" />
+                            <div>
+                              <h4 className={`${bodyFont} text-[13px] font-semibold`}>{review.name}</h4>
+                              <div className="flex gap-0.5 text-[#ff9d00]">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                  <Star key={i} className="h-3 w-3 fill-current" />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          <p className={`${bodyFont} text-[10px] text-[#777]`}>{review.time}</p>
+                        </div>
+
+                        <p className={`${bodyFont} mt-4 text-[12px] leading-5 text-[#6f6a63]`}>
+                          {review.text}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <aside className="pt-0">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h1 className={`${headingFont} text-[40px] leading-none text-[#111]`}>
+                    {artwork.title}
+                  </h1>
+
+                  <div className={`${bodyFont} mt-1 flex items-center gap-2 text-[12px] text-[#5f5a54]`}>
+                    <span className="tracking-[1px] text-[#f5a000]">★★★★★</span>
+                    <span>5.0 (2 Reviews)</span>
+                  </div>
+                </div>
+
+                <span className={`${bodyFont} mt-1 rounded-[2px] bg-black px-3 py-1 text-[9px] text-white`}>
+                  Original
+                </span>
+              </div>
+
+              <p className={`${headingFont} mt-3 text-[28px] leading-none text-[#111]`}>
+                ${artwork.price.toLocaleString()}
+              </p>
+
+              <div className={`${bodyFont} mt-5 grid grid-cols-2 border border-[#111] text-center text-[13px] text-[#111]`}>
+                <div className="border-r border-[#111] py-3">{artwork.medium}</div>
+                <div className="py-3">{artwork.dimensions}</div>
+              </div>
+
+              <Button
+                onClick={openCart}
+                className={`${bodyFont} mt-5 h-11 w-full rounded-full bg-black text-[13px] text-white hover:bg-black/90`}
+              >
+                Add to Cart
+              </Button>
+
+              <div className="mt-5 border-t border-[#eee8df] pt-5">
+                <div className="space-y-5">
+                  <div className="flex gap-4">
+                    <img src={truckIcon} alt="Shipping" className="mt-1 h-6 w-6 object-contain" />
+                    <div>
+                      <h3 className={`${headingFont} text-[24px] leading-none text-[#111]`}>
+                        Worldwide Shipping
+                      </h3>
+                      <p className={`${bodyFont} mt-1 text-[12px] leading-4 text-[#7b756d]`}>
+                        Carefully packaged and fully insured for global delivery.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <img src={returnIcon} alt="Returns" className="mt-1 h-6 w-6 object-contain" />
+                    <div>
+                      <h3 className={`${headingFont} text-[24px] leading-none text-[#111]`}>
+                        Easy Returns
+                      </h3>
+                      <p className={`${bodyFont} mt-1 text-[12px] leading-4 text-[#7b756d]`}>
+                        7-day return window if the artwork arrives damaged.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <img src={signatureIcon} alt="Certificate" className="mt-1 h-6 w-6 object-contain" />
+                    <div>
+                      <h3 className={`${headingFont} text-[24px] leading-none text-[#111]`}>
+                        Certificate of Authenticity
+                      </h3>
+                      <p className={`${bodyFont} mt-1 text-[12px] leading-4 text-[#7b756d]`}>
+                        Signed and issued by the artist.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 border-t border-[#eee8df] pt-5">
+                <h3 className={`${headingFont} text-[24px] leading-none text-[#111]`}>
+                  Sustainability
+                </h3>
+
+                <ul className={`${bodyFont} mt-3 space-y-2 text-[12px] text-[#6f6a63]`}>
+                  <li>◎ Ethically sourced materials</li>
+                  <li>◎ Low-impact pigments</li>
+                  <li>◎ Studio-based, small-batch creation</li>
+                </ul>
+              </div>
+
+              <div className="mt-5 border-t border-[#eee8df]">
+                <button className={`${headingFont} flex w-full items-center justify-between py-4 text-left text-[24px] leading-none text-[#111]`}>
+                  Artwork Details
+                  <span className={`${bodyFont} text-[18px]`}>+</span>
+                </button>
+              </div>
+
+              <div className="border-t border-[#eee8df]">
+                <button className={`${headingFont} flex w-full items-center justify-between py-4 text-left text-[24px] leading-none text-[#111]`}>
+                  Placement Guidance
+                  <span className={`${bodyFont} text-[18px]`}>+</span>
+                </button>
+              </div>
+            </aside>
+          </section>
+
+          <section className="mt-12">
+            <h2 className={`${headingFont} mb-5 text-[25px] leading-none`}>Recommended Art</h2>
+
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+              {recommended.map((art, index) => (
+                <Link key={art.id} to={`/art/${art.id}`} className="group">
+                  <div className="relative mb-3 aspect-[1.05] overflow-hidden rounded-[18px] bg-[#ede8df]">
+                    <img
+                      src={art.image}
+                      alt={art.title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+
+                    <button
+                      type="button"
+                      className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-white/85 shadow-sm"
+                    >
+                      <Heart className="h-3.5 w-3.5 text-[#1d1d1d]" />
+                    </button>
+
+                    {index === 0 && (
+                      <span className={`${bodyFont} absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-[9px] uppercase`}>
+                        Sold out
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className={`${headingFont} text-[20px] leading-none`}>{art.title}</h3>
+                      <p className={`${bodyFont} mt-1 text-[12px] text-[#7b756d]`}>{art.artist}</p>
+                    </div>
+                    <p className={`${bodyFont} text-[13px] font-semibold`}>${art.price.toLocaleString()}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
         </div>
       </main>
+
       <Footer />
     </div>
   );

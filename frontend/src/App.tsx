@@ -34,6 +34,7 @@ import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
 import SplashScreen from "@/components/SplashScreen";
+import { CartDrawerProvider } from "@/contexts/CartDrawerContext";
 
 const queryClient = new QueryClient();
 
@@ -125,8 +126,10 @@ const App = () => {
                   <Toaster />
                   <Sonner />
                   <BrowserRouter>
-                    <ScrollToTop />
-                    <AnimatedRoutes />
+                    <CartDrawerProvider>
+                      <ScrollToTop />
+                      <AnimatedRoutes />
+                    </CartDrawerProvider>
                   </BrowserRouter>
                 </LikedProvider>
               </CartProvider>
