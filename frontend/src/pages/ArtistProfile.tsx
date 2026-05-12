@@ -1,173 +1,282 @@
-import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { ArrowLeft, Palette, Sparkles } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
+import { ArrowLeft, Heart, Sparkles } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
-import { supabase } from "@/integrations/supabase/client";
+import explore1 from "@/assets/explore_1.png";
+import explore2 from "@/assets/explore_2.png";
+import explore3 from "@/assets/explore_3.png";
 
-interface ArtistProfile {
-  id: string;
-  user_id: string;
-  artist_name: string;
-  bio: string | null;
-  introduction: string | null;
-  specialties: string[] | null;
-  avatar_url: string | null;
-}
+const headingFont = "font-['Luvy_Mode'] font-normal";
+const bodyFont = "font-['Encode_Sans_Condensed']";
 
-interface ListedArtwork {
-  id: string;
-  title: string;
-  artist_name: string;
-  image_url: string | null;
-  price: number;
-  genre: string | null;
-  medium: string | null;
-}
+const artists = [
+  {
+    id: "1",
+    name: "Ayesha Khan",
+    image: explore1,
+    specialty: "Abstract Expressionism",
+    location: "Lahore, Pakistan",
+    artworks: 24,
+    collectors: 186,
+    intro:
+      "Ayesha Khan creates atmospheric abstract works using layered pigments, textured surfaces, and emotionally charged compositions.",
+    bio:
+      "Her practice explores memory, movement, silence, and the tension between softness and intensity.",
+  },
+  {
+    id: "2",
+    name: "Omar Rashid",
+    image: explore2,
+    specialty: "Modern Minimalism",
+    location: "Karachi, Pakistan",
+    artworks: 18,
+    collectors: 142,
+    intro:
+      "Omar focuses on refined abstraction, organic movement, and balanced contemporary compositions.",
+    bio:
+      "His work brings together clean structure with expressive surfaces, making each piece suitable for calm modern interiors.",
+  },
+  {
+    id: "3",
+    name: "Nida Rehman",
+    image: explore3,
+    specialty: "Portrait & Mixed Media",
+    location: "Islamabad, Pakistan",
+    artworks: 31,
+    collectors: 214,
+    intro:
+      "Nida explores human emotion through cinematic portraiture and expressive mixed-media details.",
+    bio:
+      "Her portraits feel intimate and mysterious, often combining shadow, texture, and symbolic details.",
+  },
+];
+
+const artworks = [
+  {
+    id: "art-1",
+    title: "Echoes of Blue",
+    image: explore1,
+    medium: "Acrylic on Linen",
+    dimensions: "60 × 60 cm",
+    price: "$980",
+  },
+  {
+    id: "art-2",
+    title: "Silent Ember",
+    image: explore2,
+    medium: "Mixed Media",
+    dimensions: "30 × 40 in",
+    price: "$1,800",
+  },
+  {
+    id: "art-3",
+    title: "Fragments of Light",
+    image: explore3,
+    medium: "Oil on Canvas",
+    dimensions: "24 × 36 in",
+    price: "$1,250",
+  },
+];
 
 const ArtistProfile = () => {
   const { id } = useParams<{ id: string }>();
-  const [artist, setArtist] = useState<ArtistProfile | null>(null);
-  const [artworks, setArtworks] = useState<ListedArtwork[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchArtist = async () => {
-      const { data } = await supabase
-        .from("artist_profiles" as any)
-        .select("*")
-        .eq("id", id)
-        .single();
-      setArtist(data as any);
-
-      if (data) {
-        const { data: arts } = await supabase
-          .from("listed_artworks" as any)
-          .select("*")
-          .eq("seller_id", (data as any).user_id);
-        setArtworks((arts as any) || []);
-      }
-      setLoading(false);
-    };
-    fetchArtist();
-  }, [id]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <main className="pt-28 pb-16 container mx-auto px-4 md:px-8">
-          <Skeleton className="h-8 w-48 mb-4" />
-          <Skeleton className="h-40 w-full mb-6" />
-          <Skeleton className="h-6 w-32" />
-        </main>
-      </div>
-    );
-  }
-
-  if (!artist) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <main className="pt-28 pb-16 container mx-auto px-4 text-center">
-          <h1 className="page-title font-serif font-bold text-foreground">Artist not found</h1>
-          <Link to="/artists">
-            <Button variant="outline" className="mt-6">Browse Artists</Button>
-          </Link>
-        </main>
-      </div>
-    );
-  }
+  const artist = artists.find((item) => item.id === id) || artists[0];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white text-[#1d1d1d]">
       <Navbar />
-      <main className="pt-28 pb-16">
-        <div className="container mx-auto px-4 md:px-8">
-          <Link to="/artists">
-            <Button variant="ghost" size="sm" className="mb-6 gap-2">
-              <ArrowLeft className="w-4 h-4" /> All Artists
-            </Button>
+
+      <main className="bg-white pt-24 pb-12">
+        <div className="mx-auto max-w-[1120px] px-4 md:px-6">
+          <Link
+            to="/artists"
+            className={`${bodyFont} mb-4 inline-flex items-center gap-2 rounded-full border border-[#d8d2c8] bg-white px-4 py-2 text-[11px] text-[#111] hover:bg-[#f7f4ee]`}
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            All Artists
           </Link>
 
-          <div className="max-w-4xl mx-auto">
-            {/* Header */}
-            <div className="flex items-start gap-6 mb-8 opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center shrink-0">
-                {artist.avatar_url ? (
-                  <img src={artist.avatar_url} alt={artist.artist_name} className="w-full h-full rounded-full object-cover" />
-                ) : (
-                  <Palette className="w-8 h-8 text-muted-foreground" />
-                )}
+          <section className="overflow-hidden rounded-[26px] border border-[#e6dfd4] bg-white shadow-[0_10px_28px_-22px_rgba(0,0,0,0.16)]">
+            <div className="grid lg:grid-cols-[0.88fr_1.12fr]">
+              <div className="relative h-[490px] overflow-hidden">
+                <img
+                  src={artist.image}
+                  alt={artist.name}
+                  className="h-full w-full object-cover"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+                <span
+                  className={`${bodyFont} absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-[9px] uppercase tracking-[0.16em] text-black`}
+                >
+                  Featured Artist
+                </span>
+
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <h1 className={`${headingFont} text-[42px] leading-none text-white`}>
+                    {artist.name}
+                  </h1>
+
+                  <p
+                    className={`${bodyFont} mt-2 text-[11px] uppercase tracking-[0.2em] text-white/80`}
+                  >
+                    {artist.specialty}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h1 className="page-title font-serif font-bold text-foreground">{artist.artist_name}</h1>
-                {artist.specialties && artist.specialties.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {artist.specialties.map((s) => (
-                      <Badge key={s} variant="secondary">{s}</Badge>
-                    ))}
+
+              <div className="p-5 md:p-6">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`${bodyFont} rounded-full bg-black px-3 py-1 text-[9px] uppercase tracking-[0.16em] text-white`}
+                  >
+                    {artist.location}
+                  </span>
+
+                  <span
+                    className={`${bodyFont} rounded-full border border-[#d8d2c8] px-3 py-1 text-[9px] uppercase tracking-[0.16em] text-[#6f6a63]`}
+                  >
+                    Contemporary Artist
+                  </span>
+                </div>
+
+                <div className="mt-5 grid grid-cols-3 gap-3 border-y border-[#eee8df] py-4">
+                  <div>
+                    <p className={`${headingFont} text-[30px] leading-none text-[#111]`}>
+                      {artist.artworks}
+                    </p>
+
+                    <p
+                      className={`${bodyFont} mt-1 text-[10px] uppercase tracking-[0.18em] text-[#8b857d]`}
+                    >
+                      Artworks
+                    </p>
                   </div>
-                )}
+
+                  <div>
+                    <p className={`${headingFont} text-[30px] leading-none text-[#111]`}>
+                      {artist.collectors}
+                    </p>
+
+                    <p
+                      className={`${bodyFont} mt-1 text-[10px] uppercase tracking-[0.18em] text-[#8b857d]`}
+                    >
+                      Collectors
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className={`${headingFont} text-[30px] leading-none text-[#111]`}>
+                      4.9
+                    </p>
+
+                    <p
+                      className={`${bodyFont} mt-1 text-[10px] uppercase tracking-[0.18em] text-[#8b857d]`}
+                    >
+                      Rating
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-5">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-[#111]" />
+
+                    <p
+                      className={`${bodyFont} text-[10px] uppercase tracking-[0.22em] text-[#777]`}
+                    >
+                      Artist Introduction
+                    </p>
+                  </div>
+
+                  <h2 className={`${headingFont} text-[24px] leading-[1.05] text-[#111]`}>
+                    Visual stories shaped through texture, emotion, and atmosphere.
+                  </h2>
+
+                  <p
+                    className={`${bodyFont} mt-4 text-[13px] leading-6 text-[#6f6a63]`}
+                  >
+                    {artist.intro}
+                  </p>
+
+                  <p
+                    className={`${bodyFont} mt-3 text-[13px] leading-6 text-[#6f6a63]`}
+                  >
+                    {artist.bio}
+                  </p>
+
+                  <div className="mt-5">
+                    <button
+                      className={`${bodyFont} inline-flex h-10 items-center rounded-full border border-[#d8d2c8] px-6 text-[12px] text-[#111] hover:bg-[#f7f4ee]`}
+                    >
+                      View Collection
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
+          </section>
 
-            {/* AI Introduction */}
-            {artist.introduction && (
-              <div className="bg-secondary/50 rounded-2xl p-6 md:p-8 mb-8 opacity-0 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-                <div className="flex items-center gap-2 mb-4">
-                  <Sparkles className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium text-muted-foreground">Artist Introduction</span>
-                </div>
-                <p className="text-foreground leading-relaxed whitespace-pre-line">{artist.introduction}</p>
-              </div>
-            )}
+          <section className="mt-9">
+            <div className="mb-5">
+              <p className={`${bodyFont} text-[11px] uppercase tracking-[0.28em] text-[#777]`}>
+                Artist Collection
+              </p>
 
-            {/* Bio */}
-            {artist.bio && (
-              <div className="mb-8 opacity-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-                <h2 className="text-xl font-serif font-semibold text-foreground mb-3">About</h2>
-                <p className="text-muted-foreground leading-relaxed">{artist.bio}</p>
-              </div>
-            )}
-
-            <Separator className="my-8" />
-
-            {/* Artworks */}
-            <section className="opacity-0 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-              <h2 className="text-2xl font-serif font-bold text-foreground mb-6">
-                Works by {artist.artist_name}
+              <h2 className={`${headingFont} mt-2 text-[36px] leading-none text-[#111]`}>
+                Works by {artist.name}
               </h2>
-              {artworks.length === 0 ? (
-                <p className="text-muted-foreground">No artworks listed yet.</p>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {artworks.map((art) => (
-                    <Link key={art.id} to={`/art/listed-${art.id}`} className="group">
-                      <div className="aspect-[3/4] rounded-xl overflow-hidden mb-3 bg-secondary">
-                        {art.image_url ? (
-                          <img src={art.image_url} alt={art.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Palette className="w-12 h-12 text-muted-foreground" />
-                          </div>
-                        )}
-                      </div>
-                      <h3 className="font-serif font-semibold text-foreground truncate">{art.title}</h3>
-                      <p className="text-sm text-muted-foreground">{art.medium} · {art.genre}</p>
-                      <p className="text-sm font-medium text-foreground mt-1">PKR {Number(art.price).toLocaleString()}</p>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </section>
-          </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
+              {artworks.map((art, index) => (
+                <Link key={art.id} to={`/art/${art.id}`} className="group">
+                  <div className="relative mb-3 h-[220px] overflow-hidden rounded-[20px] bg-[#ede8df]">
+                    <img
+                      src={art.image}
+                      alt={art.title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+
+                    <button
+                      type="button"
+                      className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90"
+                    >
+                      <Heart className="h-4 w-4 text-[#111]" />
+                    </button>
+
+                    {index === 0 && (
+                      <span
+                        className={`${bodyFont} absolute left-3 top-3 rounded-full bg-black px-3 py-1 text-[9px] uppercase tracking-[0.16em] text-white`}
+                      >
+                        Original
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className={`${headingFont} text-[20px] leading-none text-[#111]`}>
+                        {art.title}
+                      </h3>
+
+                      <p className={`${bodyFont} mt-1 text-[11px] text-[#7b756d]`}>
+                        {art.medium} · {art.dimensions}
+                      </p>
+                    </div>
+
+                    <p className={`${bodyFont} text-[12px] font-semibold text-[#111]`}>
+                      {art.price}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
         </div>
       </main>
+
       <Footer />
     </div>
   );

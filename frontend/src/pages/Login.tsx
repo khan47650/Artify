@@ -71,6 +71,12 @@ const Login = () => {
       localStorage.setItem("artify_selected_role", role);
 
       if (isLogin) {
+        if (email === "admin123@gmail.com" && password === "Admin123") {
+          localStorage.setItem("artify_admin_logged_in", "true");
+          toast({ title: "Admin login successful" });
+          navigate("/admin/dashboard");
+          return;
+        }
         const { data } = await api.post("/auth/login", {
           email,
           password,
@@ -124,14 +130,31 @@ const Login = () => {
     if (!email) {
       toast({
         title: "Email required",
-        description: "Enter your email to receive a reset link.",
+        description: "Enter your registered email.",
         variant: "destructive",
       });
       return;
     }
 
-    setView("forgot-sent");
-    toast({ title: "Recovery email feature will be added later" });
+    setLoading(true);
+
+    try {
+      const { data } = await api.post("/auth/forgot-password", { email });
+
+      toast({
+        title: data.message || "New password sent to your email",
+      });
+
+      setView("forgot-sent");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.message || error.message || "Something went wrong",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleResetPassword = async (event: FormEvent<HTMLFormElement>) => {

@@ -1,172 +1,163 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Palette } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { supabase } from "@/integrations/supabase/client";
+import explore1 from "@/assets/explore_1.png";
+import explore2 from "@/assets/explore_2.png";
+import explore3 from "@/assets/explore_3.png";
 
-interface ArtistProfile {
-  id: string;
-  artist_name: string;
-  bio: string | null;
-  introduction: string | null;
-  specialties: string[] | null;
-  avatar_url: string | null;
-  isListingOnly?: boolean;
-}
+const headingFont = "font-['Luvy_Mode'] font-normal";
+const bodyFont = "font-['Encode_Sans_Condensed']";
 
-const blockedArtistNames = new Set(["abc"]);
-const abdulRafayAiImages = [
-  "/WhatsApp%20Image%202026-04-12%20at%2012.55.17%20AM1.jpeg",
-  "/WhatsApp%20Image%202026-04-12%20at%2012.55.17%20AM2.jpeg",
-  "/6.jpeg",
+const artists = [
+  {
+    id: "1",
+    name: "Ayesha Khan",
+    image: explore1,
+    specialty: "Abstract Expressionism",
+    intro:
+      "Blending layered textures and atmospheric tones into emotionally driven contemporary artworks.",
+    artworks: 24,
+  },
+  {
+    id: "2",
+    name: "Omar Rashid",
+    image: explore2,
+    specialty: "Modern Minimalism",
+    intro:
+      "Focused on bold contrasts, organic movement, and refined contemporary compositions.",
+    artworks: 18,
+  },
+  {
+    id: "3",
+    name: "Nida Rehman",
+    image: explore3,
+    specialty: "Portrait & Mixed Media",
+    intro:
+      "Exploring human emotion through cinematic portraiture and expressive visual storytelling.",
+    artworks: 31,
+  },
+  {
+    id: "4",
+    name: "Hamza Ali",
+    image: explore2,
+    specialty: "Conceptual Art",
+    intro:
+      "Creating immersive visual narratives inspired by silence, memory, and urban culture.",
+    artworks: 15,
+  },
+  {
+    id: "5",
+    name: "Sophia Laurent",
+    image: explore1,
+    specialty: "Fine Art Textures",
+    intro:
+      "Contemporary artist known for rich surfaces, layered pigments, and timeless palettes.",
+    artworks: 28,
+  },
+  {
+    id: "6",
+    name: "Danish Noor",
+    image: explore3,
+    specialty: "Dark Aesthetic",
+    intro:
+      "Crafting moody and atmospheric pieces with dramatic light and emotional intensity.",
+    artworks: 21,
+  },
 ];
 
 const Artists = () => {
-  const [artists, setArtists] = useState<ArtistProfile[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchArtists = async () => {
-      const { data: profileData } = await supabase
-        .from("artist_profiles" as any)
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      const profiles = (((profileData as any) || []) as ArtistProfile[]).filter((artist) => {
-        const key = (artist.artist_name || "").trim().toLowerCase();
-        return !blockedArtistNames.has(key);
-      });
-      const profileNames = new Set(profiles.map((artist) => artist.artist_name.trim().toLowerCase()));
-
-      const { data: listedData } = await supabase
-        .from("listed_artworks" as any)
-        .select("artist_name")
-        .order("created_at", { ascending: false });
-
-      const listingOnlyArtists: ArtistProfile[] = [];
-      const seenListingOnly = new Set<string>();
-
-      for (const row of (listedData as any[]) || []) {
-        const name = (row?.artist_name || "").trim();
-        if (!name) continue;
-        const key = name.toLowerCase();
-        if (profileNames.has(key) || seenListingOnly.has(key) || blockedArtistNames.has(key)) continue;
-        seenListingOnly.add(key);
-        listingOnlyArtists.push({
-          id: `listed-artist-${key.replace(/[^a-z0-9]+/g, "-")}`,
-          artist_name: name,
-          bio: null,
-          introduction: "Featured from latest listed artworks.",
-          specialties: null,
-          avatar_url: null,
-          isListingOnly: true,
-        });
-      }
-
-      setArtists([...profiles, ...listingOnlyArtists]);
-      setLoading(false);
-    };
-    fetchArtists();
-  }, []);
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white text-[#1d1d1d]">
       <Navbar />
-      <main className="pt-28 pb-16">
-        <div className="container mx-auto px-4 md:px-8">
-          <div className="mb-10">
-            <h1 className="page-title font-serif font-bold text-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+
+      <main className="bg-white pt-24 pb-12">
+        <div className="mx-auto max-w-[1120px] px-4 md:px-6">
+          <div className="mb-7">
+            <p className={`${bodyFont} text-[11px] uppercase tracking-[0.28em] text-[#777]`}>
+              Featured Creators
+            </p>
+
+            <h1 className={`${headingFont} mt-2 text-[52px] leading-none text-[#111]`}>
               Artists
             </h1>
-            <p className="text-muted-foreground mt-2 opacity-0 animate-fade-in" style={{ animationDelay: "0.25s" }}>
-              Meet the creators behind the art.
+
+            <p className={`${bodyFont} mt-3 max-w-xl text-[14px] leading-5 text-[#6f6a63]`}>
+              Meet the creators behind the curated collection and discover their signature visual language.
             </p>
           </div>
 
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className="h-64 rounded-2xl" />
-              ))}
-            </div>
-          ) : artists.length === 0 ? (
-            <div className="text-center py-20">
-              <Palette className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground text-lg">No artists have joined yet.</p>
-              <p className="text-sm text-muted-foreground mt-1">Be the first to create your artist profile!</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {artists.map((artist, i) => {
-                const cardClass = "group bg-card border border-border rounded-2xl p-6 hover:shadow-lg transition-all duration-300 opacity-0 animate-fade-in";
-                const cardStyle = { animationDelay: `${0.1 + i * 0.1}s` };
-                const isAbdulRafay = artist.artist_name.trim().toLowerCase() === "abdul rafay";
-                const artistImage = isAbdulRafay
-                  ? abdulRafayAiImages[i % abdulRafayAiImages.length]
-                  : artist.avatar_url;
+          <div className="grid grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
+            {artists.map((artist) => (
+              <Link
+                key={artist.id}
+                to={`/artist/${artist.id}`}
+                className="group"
+              >
+                <div className="overflow-hidden rounded-[22px] border border-[#ece6dc] bg-white shadow-[0_8px_24px_-18px_rgba(0,0,0,0.14)] transition-all duration-300 hover:-translate-y-1">
+                  <div className="relative h-[255px] overflow-hidden">
+                    <img
+                      src={artist.image}
+                      alt={artist.name}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
 
-                const cardContent = (
-                  <>
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center shrink-0">
-                        {artistImage ? (
-                          <img src={artistImage} alt={artist.artist_name} className="w-full h-full rounded-full object-cover" />
-                        ) : (
-                          <Palette className="w-6 h-6 text-muted-foreground" />
-                        )}
-                      </div>
-                      <div>
-                        <h3 className="font-serif font-bold text-foreground text-lg group-hover:text-primary transition-colors">
-                          {artist.artist_name}
-                        </h3>
-                      </div>
-                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
 
-                    {artist.specialties && artist.specialties.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mb-3">
-                        {artist.specialties.slice(0, 3).map((s) => (
-                          <Badge key={s} variant="secondary" className="text-xs">{s}</Badge>
-                        ))}
-                      </div>
-                    )}
-
-                    {artist.introduction && (
-                      <p className="text-sm text-muted-foreground line-clamp-3">{artist.introduction}</p>
-                    )}
-                  </>
-                );
-
-                if (artist.isListingOnly) {
-                  return (
-                    <Link
-                      key={artist.id}
-                      to={`/explore?search=${encodeURIComponent(artist.artist_name)}`}
-                      className={cardClass}
-                      style={cardStyle}
+                    <span
+                      className={`${bodyFont} absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-[9px] uppercase tracking-[0.15em] text-black`}
                     >
-                      {cardContent}
-                    </Link>
-                  );
-                }
+                      Featured Artist
+                    </span>
 
-                return (
-                  <Link
-                    key={artist.id}
-                    to={`/artist/${artist.id}`}
-                    className={cardClass}
-                    style={cardStyle}
-                  >
-                    {cardContent}
-                  </Link>
-                );
-              })}
-            </div>
-          )}
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <h2 className={`${headingFont} text-[28px] leading-none text-white`}>
+                        {artist.name}
+                      </h2>
+
+                      <p
+                        className={`${bodyFont} mt-1.5 text-[11px] uppercase tracking-[0.18em] text-white/75`}
+                      >
+                        {artist.specialty}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-4">
+                    <p
+                      className={`${bodyFont} line-clamp-2 text-[12px] leading-5 text-[#6f6a63]`}
+                    >
+                      {artist.intro}
+                    </p>
+
+                    <div className="mt-4 flex items-center justify-between">
+                      <div>
+                        <p
+                          className={`${bodyFont} text-[10px] uppercase tracking-[0.18em] text-[#8b857d]`}
+                        >
+                          Artworks
+                        </p>
+
+                        <p
+                          className={`${headingFont} mt-1 text-[24px] leading-none text-[#111]`}
+                        >
+                          {artist.artworks}
+                        </p>
+                      </div>
+
+                      <span
+                        className={`${bodyFont} inline-flex h-9 items-center rounded-full bg-black px-4 text-[11px] text-white transition group-hover:bg-[#222]`}
+                      >
+                        View Profile
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </main>
+
       <Footer />
     </div>
   );

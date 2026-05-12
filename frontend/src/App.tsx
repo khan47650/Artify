@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { LikedProvider } from "@/contexts/LikedContext";
-import { AdminProvider } from "@/contexts/AdminContext";
 import { InventoryProvider } from "@/contexts/InventoryContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -30,11 +29,9 @@ import DeliveryTerms from "./pages/DeliveryTerms";
 import Liked from "./pages/Liked";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
-import AdminLogin from "./pages/Admin/AdminLogin";
-import AdminDashboard from "./pages/Admin/AdminDashboard";
-import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
 import SplashScreen from "@/components/SplashScreen";
 import { CartDrawerProvider } from "@/contexts/CartDrawerContext";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -83,17 +80,8 @@ const AnimatedRoutes = () => {
         <Route path="/liked" element={<Liked />} />
         <Route path="/services" element={<Services />} />
         <Route path="/service/:id" element={<ServiceDetail />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route
-          path="/admin/dashboard"
-          element={
-            <ProtectedAdminRoute>
-              <AdminDashboard />
-            </ProtectedAdminRoute>
-          }
-        />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -119,22 +107,21 @@ const App = () => {
       {showSplash && <SplashScreen />}
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <AdminProvider>
-            <InventoryProvider>
-              <CartProvider>
-                <LikedProvider>
-                  <Toaster />
-                  <Sonner />
-                  <BrowserRouter>
-                    <CartDrawerProvider>
-                      <ScrollToTop />
-                      <AnimatedRoutes />
-                    </CartDrawerProvider>
-                  </BrowserRouter>
-                </LikedProvider>
-              </CartProvider>
-            </InventoryProvider>
-          </AdminProvider>
+          <InventoryProvider>
+            <CartProvider>
+              <LikedProvider>
+                <Toaster />
+                <Sonner />
+
+                <BrowserRouter>
+                  <CartDrawerProvider>
+                    <ScrollToTop />
+                    <AnimatedRoutes />
+                  </CartDrawerProvider>
+                </BrowserRouter>
+              </LikedProvider>
+            </CartProvider>
+          </InventoryProvider>
         </TooltipProvider>
       </QueryClientProvider>
     </>
