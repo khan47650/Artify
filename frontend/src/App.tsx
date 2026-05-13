@@ -32,6 +32,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 import SplashScreen from "@/components/SplashScreen";
 import { CartDrawerProvider } from "@/contexts/CartDrawerContext";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
+import ArtistCollections from "./pages/Admin/ArtistCollections";
 
 const queryClient = new QueryClient();
 
@@ -81,6 +82,7 @@ const AnimatedRoutes = () => {
         <Route path="/services" element={<Services />} />
         <Route path="/service/:id" element={<ServiceDetail />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="admin/artist-collections/:id" element={<ArtistCollections/>}/>
 
 
         <Route path="*" element={<NotFound />} />
