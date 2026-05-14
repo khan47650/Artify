@@ -14,8 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/hooks/use-auth";
-import { supabase } from "@/integrations/supabase/client";
 
 interface ServiceRow {
   id: string;
@@ -35,24 +33,32 @@ interface ServiceRow {
 const ServiceDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user = true;
   const { toast } = useToast();
   const [service, setService] = useState<ServiceRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [ordering, setOrdering] = useState(false);
 
   useEffect(() => {
-    const fetch = async () => {
-      if (!id) return;
-      const { data } = await (supabase as any)
-        .from("services")
-        .select("*")
-        .eq("id", id)
-        .single();
-      setService((data as ServiceRow) || null);
-      setLoading(false);
+    if (!id) return;
+
+    const dummyService: ServiceRow = {
+      id: "1",
+      seller_id: "1",
+      artist_name: "Demo Artist",
+      title: "Custom Portrait",
+      description: "This is a demo service description.",
+      category: "Digital Art",
+      price: 5000,
+      delivery_days: 3,
+      image_url: null,
+      is_featured: false,
+      featured_until: null,
+      created_at: new Date().toISOString(),
     };
-    fetch();
+
+    setService(dummyService);
+    setLoading(false);
   }, [id]);
 
   const handleOrder = async () => {
