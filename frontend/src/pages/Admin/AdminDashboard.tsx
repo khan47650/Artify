@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import PendingOrders from "./PendingOrders";
 import ConfirmOrders from "./ConfirmOrders";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   FaHome,
   FaSignOutAlt,
@@ -11,6 +12,7 @@ import {
 import Artists from "./Artists";
 import ManageArt from "./ManageArt";
 
+
 const headingFont = "font-['Luvy_Mode'] font-normal";
 const bodyFont = "font-['Encode_Sans_Condensed']";
 
@@ -18,11 +20,7 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("pending");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
-
-  const logout = () => {
-    localStorage.removeItem("artify_admin_logged_in");
-    navigate("/login");
-  };
+  const { logout } = useAuth();
 
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
@@ -40,9 +38,8 @@ const AdminDashboard = () => {
       )}
 
       <aside
-        className={`fixed left-0 top-0 z-50 h-screen w-[260px] bg-black text-white transition-transform duration-300 lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed left-0 top-0 z-50 h-screen w-[260px] bg-black text-white transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <AdminSidebar
           activeTab={activeTab}
@@ -83,7 +80,10 @@ const AdminDashboard = () => {
             </button>
 
             <button
-              onClick={logout}
+              onClick={() => {
+                logout();
+                navigate("/");
+              }}
               className={`${bodyFont} inline-flex h-9 w-9 items-center justify-center gap-2 rounded-full bg-black text-[12px] text-white hover:bg-black/90 sm:h-10 sm:w-auto sm:px-5`}
             >
               <FaSignOutAlt />
@@ -94,9 +94,9 @@ const AdminDashboard = () => {
 
         <main className="p-4 lg:p-8">
           {activeTab === "pending" && <PendingOrders />}
-          {activeTab === "confirmed" && <ConfirmOrders/>}
-          {activeTab === "artists" && <Artists/>}
-          {activeTab === "manage-art" && <ManageArt/>}
+          {activeTab === "confirmed" && <ConfirmOrders />}
+          {activeTab === "artists" && <Artists />}
+          {activeTab === "manage-art" && <ManageArt />}
           {activeTab === "messages" && <Section title="Messages" subtitle="Customer and artist support messages." />}
         </main>
       </div>

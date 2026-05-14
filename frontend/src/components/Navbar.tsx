@@ -1,30 +1,33 @@
-import { Search, Heart, ShoppingCart, User, Menu, X, LogOut, Upload } from "lucide-react";
+import { Search, Heart, ShoppingCart, User, Menu, X, LogOut, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import artifyLogo from "@/assets/artify_logo.png";
 import { useCart } from "@/contexts/CartContext";
 import { useLikedArtworks } from "@/contexts/LikedContext";
-import { useAuth } from "@/hooks/use-auth";
-import { supabase } from "@/integrations/supabase/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [profileName, setProfileName] = useState("");
+  const { user, logout } = useAuth();
   const { totalItems } = useCart();
   const { totalLiked } = useLikedArtworks();
-  const { user, loading, signOut } = useAuth();
+
   const navigate = useNavigate();
-  const accountRole = ((user?.user_metadata?.role as string | undefined) || "buyer").toLowerCase();
+  const accountRole = user?.role || "buyer";
   const isSeller = accountRole === "seller";
+  const profileName =
+    user?.role === "admin"
+      ? "Admin"
+      : user?.lastName || user?.firstName || "User";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 0);
@@ -32,37 +35,6 @@ const Navbar = () => {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    if (!user) {
-      setProfileName("");
-      return;
-    }
-
-    const fetchProfile = async () => {
-      const { data } = await supabase
-        .from("profiles")
-        .select("first_name, last_name")
-        .eq("user_id", user.id)
-        .single();
-
-      const profile = data as { first_name: string | null; last_name: string | null } | null;
-      const profileName = profile
-        ? [profile.first_name, profile.last_name].filter(Boolean).join(" ").trim()
-        : "";
-      const meta = (user.user_metadata || {}) as Record<string, any>;
-      const metaName = [meta.first_name, meta.last_name]
-        .filter(Boolean)
-        .join(" ")
-        .trim();
-      const oauthName = (meta.full_name || meta.name || "").trim();
-      setProfileName(
-        profileName || metaName || oauthName || user.email?.split("@")[0] || "User",
-      );
-    };
-
-    fetchProfile();
-  }, [user]);
 
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -76,9 +48,8 @@ const Navbar = () => {
     <header className="fixed inset-x-0 top-4 z-50">
       <div className="mx-auto w-full max-w-[1400px] px-4 md:px-8">
         <div
-          className={`relative transition-all duration-500 rounded-full ${
-            scrolled ? "bg-foreground/40 backdrop-blur-2xl shadow-lg" : "bg-black shadow-lg"
-          }`}
+          className={`relative transition-all duration-500 rounded-full ${scrolled ? "bg-foreground/40 backdrop-blur-2xl shadow-lg" : "bg-black shadow-lg"
+            }`}
         >
           <div className="flex items-center justify-between py-2.5 px-5 md:px-6 lg:px-7">
             <Link to="/" className="inline-flex items-center" aria-label="Artify Home">
@@ -92,7 +63,6 @@ const Navbar = () => {
               <Link to="/ai-curator" className="hover:text-background transition-colors duration-200">AI Curator</Link>
               <Link to="/art-quiz" className="hover:text-background transition-colors duration-200">Art Quiz</Link>
               <Link to="/artists" className="hover:text-background transition-colors duration-200">Artists</Link>
-              <Link to="/sell" className="hover:text-background transition-colors duration-200">Sell Art</Link>
               <Link to="/contact" className="hover:text-background transition-colors duration-200">Contact</Link>
             </nav>
 
@@ -124,7 +94,7 @@ const Navbar = () => {
                 )}
               </Link>
 
-              {!loading && user ? (
+              {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="hidden md:flex items-center gap-2 bg-background text-foreground px-4 py-1.5 rounded-full text-sm font-medium hover:bg-background/90 transition-colors duration-200">
@@ -133,18 +103,25 @@ const Navbar = () => {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
-                    {isSeller && (
-                      <DropdownMenuItem asChild>
-                        <Link to="/sell" className="cursor-pointer">
-                          <Upload className="w-4 h-4 mr-2" />
-                          Sell my products
-                        </Link>
-                      </DropdownMenuItem>
-                    )}
-                    <DropdownMenuItem onClick={signOut} className="cursor-pointer">
+
+                    <DropdownMenuItem
+                      onClick={() => {
+                        navigate(user?.role === "admin" ? "/admin/dashboard" : "/user/dashboard");
+                      }}
+                      className="cursor-pointer"
+                    >
+                      <LayoutDashboard className="w-4 h-4 mr-2" />
+                      Dashboard
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                      onClick={logout}
+                      className="cursor-pointer"
+                    >
                       <LogOut className="w-4 h-4 mr-2" />
                       Log out
                     </DropdownMenuItem>
+
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
@@ -198,22 +175,42 @@ const Navbar = () => {
               <Link to="/ai-curator" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>AI Curator</Link>
               <Link to="/art-quiz" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>Art Quiz</Link>
               <Link to="/artists" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>Artists</Link>
-              <Link to="/sell" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>Sell Art</Link>
               <Link to="/contact" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>Contact</Link>
               <div className="my-1 mx-2 h-px bg-background/15" />
-              {!loading && user ? (
-                <button
-                  onClick={() => {
-                    signOut();
-                    setMobileOpen(false);
-                  }}
-                  className="flex items-center gap-2 px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors text-left"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  Log out
-                </button>
+              {user ? (
+                <>
+                  <button
+                    onClick={() => {
+                      navigate(
+                        user?.role === "admin"
+                          ? "/admin/dashboard"
+                          : "/user/dashboard"
+                      );
+                      setMobileOpen(false);
+                    }}
+                    className="flex items-center gap-2 px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors text-left"
+                  >
+                    <LayoutDashboard className="w-3.5 h-3.5" />
+                    Dashboard
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileOpen(false);
+                    }}
+                    className="flex items-center gap-2 px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors text-left"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    Log out
+                  </button>
+                </>
               ) : (
-                <Link to="/login" className="flex items-center gap-2 px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
                   <User className="w-3.5 h-3.5" />
                   Sign In
                 </Link>

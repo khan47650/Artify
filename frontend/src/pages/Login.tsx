@@ -3,6 +3,7 @@ import { CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
 import api from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ const Login = () => {
   const [view, setView] = useState<AuthView>("login");
   const [role, setRole] = useState<"buyer" | "seller">("buyer");
   const [rememberMe, setRememberMe] = useState(true);
+  const { login } = useAuth();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -72,9 +74,21 @@ const Login = () => {
 
       if (isLogin) {
         if (email === "admin123@gmail.com" && password === "Admin123") {
-          localStorage.setItem("artify_admin_logged_in", "true");
-          toast({ title: "Admin login successful" });
+
+          login("admin-token", {
+            id: "admin-id",
+            firstName: "Admin",
+            lastName: "",
+            email: "admin123@gmail.com",
+            role: "admin",
+          });
+
+          toast({
+            title: "Admin login successful",
+          });
+
           navigate("/admin/dashboard");
+
           return;
         }
         const { data } = await api.post("/auth/login", {
@@ -83,8 +97,18 @@ const Login = () => {
           role,
         });
 
-        toast({ title: data.message || `Logged in as ${role}` });
-        navigate("/");
+        login(data.token, data.user);
+
+        toast({
+          title: data.message || `Logged in as ${role}`,
+        });
+
+        if (data.user.role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
+
         return;
       }
 
@@ -112,8 +136,13 @@ const Login = () => {
         password,
       });
 
-      toast({ title: data.message || "Signup successful" });
-      setView("login");
+      login(data.token, data.user);
+
+      toast({
+        title: data.message || "Signup successful",
+      });
+
+      navigate("/");
     } catch (error: any) {
       toast({
         title: "Error",
