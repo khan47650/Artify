@@ -122,9 +122,22 @@ exports.signup = async (req, res) => {
       user: {
         id: user._id,
         role: user.role,
+
         firstName: user.firstName,
         lastName: user.lastName,
+
         email: user.email,
+
+        phoneNumber: user.phoneNumber,
+        addressLine1: user.addressLine1,
+        addressLine2: user.addressLine2,
+
+        city: user.city,
+        state: user.state,
+        postalCode: user.postalCode,
+        country: user.country,
+
+        artistPhoto: user.artistPhoto,
       },
     });
   } catch (error) {
@@ -178,9 +191,22 @@ exports.login = async (req, res) => {
       user: {
         id: user._id,
         role: user.role,
+
         firstName: user.firstName,
         lastName: user.lastName,
+
         email: user.email,
+
+        phoneNumber: user.phoneNumber,
+        addressLine1: user.addressLine1,
+        addressLine2: user.addressLine2,
+
+        city: user.city,
+        state: user.state,
+        postalCode: user.postalCode,
+        country: user.country,
+
+        artistPhoto: user.artistPhoto,
       },
     });
   } catch (error) {

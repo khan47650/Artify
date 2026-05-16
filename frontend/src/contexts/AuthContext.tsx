@@ -11,7 +11,18 @@ type UserType = {
   firstName: string;
   lastName: string;
   email: string;
+
   role: "buyer" | "seller" | "admin";
+
+  phoneNumber?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
+
+  artistPhoto?: string;
 };
 
 type AuthContextType = {

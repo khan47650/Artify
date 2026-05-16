@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import Artists from "./Artists";
 import ManageArt from "./ManageArt";
+import PendingArts from "../Users/PendingArts";
 
 
 const headingFont = "font-['Luvy_Mode'] font-normal";
@@ -96,6 +97,7 @@ const AdminDashboard = () => {
           {activeTab === "pending" && <PendingOrders />}
           {activeTab === "confirmed" && <ConfirmOrders />}
           {activeTab === "artists" && <Artists />}
+          {activeTab === "pending-arts" && <PendingArts />}
           {activeTab === "manage-art" && <ManageArt />}
           {activeTab === "messages" && <Section title="Messages" subtitle="Customer and artist support messages." />}
         </main>

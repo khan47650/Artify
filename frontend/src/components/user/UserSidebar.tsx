@@ -40,11 +40,15 @@ const UserSidebar = ({
             icon: FaClock,
         },
 
-        {
-            id: "orders-history",
-            label: "Orders History",
-            icon: FaHistory,
-        },
+        ...(!isSeller
+            ? [
+                {
+                    id: "orders-history",
+                    label: "Orders History",
+                    icon: FaHistory,
+                },
+            ]
+            : []),
 
         {
             id: "profile",
@@ -107,8 +111,8 @@ const UserSidebar = ({
                             key={tab.id}
                             onClick={() => onTabClick(tab.id)}
                             className={`flex w-full items-center gap-4 px-7 py-4 text-left transition-all duration-200 ${isActive
-                                    ? "border-r-4 border-white bg-white/20"
-                                    : "hover:bg-white/10"
+                                ? "border-r-4 border-white bg-white/20"
+                                : "hover:bg-white/10"
                                 }`}
                         >
                             <Icon className="text-[18px] text-white" />

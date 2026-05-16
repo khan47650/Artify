@@ -5,6 +5,7 @@ import {
   FaImage,
   FaEnvelope,
   FaTimes,
+  FaHourglassHalf,
 } from "react-icons/fa";
 
 const bodyFont = "font-['Encode_Sans_Condensed']";
@@ -14,6 +15,7 @@ const tabs = [
   { id: "pending", label: "Pending Orders", icon: FaClock },
   { id: "confirmed", label: "Confirm Orders", icon: FaCheckCircle },
   { id: "artists", label: "Artists", icon: FaPalette },
+  { id: "pending-arts", label: "Pending Arts", icon: FaHourglassHalf },
   { id: "manage-art", label: "Manage Art", icon: FaImage },
   { id: "messages", label: "Messages", icon: FaEnvelope },
 ];
@@ -61,11 +63,10 @@ const AdminSidebar = ({
             <button
               key={tab.id}
               onClick={() => onTabClick(tab.id)}
-              className={`flex w-full items-center gap-4 px-7 py-4 text-left transition-all duration-200 ${
-                isActive
-                  ? "border-r-4 border-white bg-white/20"
-                  : "hover:bg-white/10"
-              }`}
+              className={`flex w-full items-center gap-4 px-7 py-4 text-left transition-all duration-200 ${isActive
+                ? "border-r-4 border-white bg-white/20"
+                : "hover:bg-white/10"
+                }`}
             >
               <Icon className="text-[18px] text-white" />
 

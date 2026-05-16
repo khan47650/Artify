@@ -9,6 +9,11 @@ import {
     FaBars,
 } from "react-icons/fa";
 import UserPendingOrders from "./UserPendingOrders";
+import UserConfirmOrders from "./UserConfirmOrders";
+import OrdersHistory from "./OrdersHistory";
+import MyProfile from "./MyProfile";
+import MyArtwork from "./MyArtWork";
+import SalesHistory from "./SalesHistory";
 
 const headingFont = "font-['Luvy_Mode'] font-normal";
 const bodyFont = "font-['Encode_Sans_Condensed']";
@@ -105,23 +110,16 @@ const UserDashboard = () => {
                         <UserPendingOrders />
                     )}
                     {activeTab === "confirm-orders" && (
-                        <Section
-                            title="My Confirm Orders"
-                            subtitle="View all your confirmed artwork orders."
+                        <UserConfirmOrders
                         />
                     )}
 
                     {activeTab === "orders-history" && (
-                        <Section
-                            title="My Orders History"
-                            subtitle="View your completed and delivered orders."
-                        />
+                        <OrdersHistory />
                     )}
 
                     {activeTab === "profile" && (
-                        <Section
-                            title="My Profile"
-                            subtitle="Manage your account details and personal information."
+                        <MyProfile    
                         />
                     )}
 
@@ -133,17 +131,11 @@ const UserDashboard = () => {
                     )}
 
                     {activeTab === "my-artwork" && (
-                        <Section
-                            title="My Artwork"
-                            subtitle="Manage all artworks uploaded by you."
-                        />
+                        <MyArtwork  />
                     )}
 
                     {activeTab === "sales-history" && (
-                        <Section
-                            title="My Sold Arts"
-                            subtitle="Track all artwork sales and earnings."
-                        />
+                        <SalesHistory    />
                     )}
                 </main>
             </div>
