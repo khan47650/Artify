@@ -4,7 +4,7 @@ async function sendEmail(to, subject, html, attachments = []) {
   try {
     const emailData = {
       sender: {
-        email: "right2abdullah@gmail.com",
+        email: "artifyofficial1122@gmail.com",
         name: "Artify",
       },
       to: [{ email: to }],
