@@ -14,6 +14,7 @@ import OrdersHistory from "./OrdersHistory";
 import MyProfile from "./MyProfile";
 import MyArtwork from "./MyArtWork";
 import SalesHistory from "./SalesHistory";
+import Activities from "./Activities";
 
 const headingFont = "font-['Luvy_Mode'] font-normal";
 const bodyFont = "font-['Encode_Sans_Condensed']";
@@ -124,10 +125,7 @@ const UserDashboard = () => {
                     )}
 
                     {activeTab === "messages" && (
-                        <Section
-                            title="Messages"
-                            subtitle="Check your conversations and support messages."
-                        />
+                        <Activities />
                     )}
 
                     {activeTab === "my-artwork" && (

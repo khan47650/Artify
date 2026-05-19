@@ -15,6 +15,22 @@ const generatePlainPassword = () => {
   return Math.random().toString(36).slice(-8) + Math.floor(1000 + Math.random() * 9000);
 };
 
+const buildUserResponse = (user) => ({
+  id: user._id,
+  role: user.role,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  email: user.email,
+  phoneNumber: user.phoneNumber,
+  addressLine1: user.addressLine1,
+  addressLine2: user.addressLine2,
+  city: user.city,
+  state: user.state,
+  postalCode: user.postalCode,
+  country: user.country,
+  artistPhoto: user.artistPhoto,
+});
+
 exports.signup = async (req, res) => {
   try {
     const {
@@ -35,10 +51,6 @@ exports.signup = async (req, res) => {
 
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });
-    }
-
-    if (role === "seller" && !artistPhoto) {
-      return res.status(400).json({ message: "Artist picture is required for seller" });
     }
 
     const normalizedEmail = email.toLowerCase();
@@ -69,19 +81,15 @@ exports.signup = async (req, res) => {
 
     let uploadedArtistPhoto = "";
 
-    if (role === "seller" && artistPhoto) {
+    if (artistPhoto) {
       const uploadedResponse = await cloudinary.uploader.upload(artistPhoto, {
-        folder: "artify-artists",
+        folder: role === "seller" ? "artify-artists" : "artify-buyers",
       });
 
       uploadedArtistPhoto = uploadedResponse.secure_url;
     }
 
-    if (role === "seller" && !uploadedArtistPhoto) {
-      return res.status(400).json({
-        message: "Artist image upload failed",
-      });
-    }
+
     const user = await User.create({
       role,
       firstName,
@@ -261,5 +269,99 @@ exports.forgotPassword = async (req, res) => {
     res.json({ message: "New password has been sent to your registered email" });
   } catch (error) {
     res.status(500).json({ message: "Forgot password failed", error: error.message });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const {
+      userId,
+      firstName,
+      lastName,
+      phoneNumber,
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      postalCode,
+      country,
+      artistPhoto,
+    } = req.body;
+
+    const user = await User.findById(userId);
+
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    let uploadedImage = user.artistPhoto;
+
+    if (artistPhoto && artistPhoto.startsWith("data:image")) {
+      const uploadedResponse = await cloudinary.uploader.upload(artistPhoto, {
+        folder: user.role === "seller" ? "artify-artists" : "artify-buyers",
+      });
+
+      uploadedImage = uploadedResponse.secure_url;
+    }
+
+    user.firstName = firstName ?? user.firstName;
+    user.lastName = lastName ?? user.lastName;
+    user.phoneNumber = phoneNumber ?? user.phoneNumber;
+    user.addressLine1 = addressLine1 ?? user.addressLine1;
+    user.addressLine2 = addressLine2 ?? user.addressLine2;
+    user.city = city ?? user.city;
+    user.state = state ?? user.state;
+    user.postalCode = postalCode ?? user.postalCode;
+    user.country = country ?? user.country;
+    user.artistPhoto = uploadedImage;
+
+    await user.save();
+
+    res.json({
+      message: "Profile updated successfully",
+      user: buildUserResponse(user),
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Profile update failed", error: error.message });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { userId, newPassword } = req.body;
+
+    if (!newPassword) {
+      return res.status(400).json({ message: "New password is required" });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    await sendEmail(
+      user.email,
+      "Artify Password Updated",
+      `
+      <div style="font-family:Arial,sans-serif;background:#f7f7f7;padding:30px;">
+        <div style="max-width:600px;margin:auto;background:#ffffff;border-radius:14px;padding:28px;">
+          <h1 style="color:#111;">Password Updated</h1>
+          <p>Hi ${user.firstName || "there"},</p>
+          <p>Your Artify account password has been updated successfully.</p>
+          <p>If this was not you, please contact support immediately.</p>
+          <p style="margin-top:24px;">Regards,<br/><strong>Artify Team</strong></p>
+        </div>
+      </div>
+      `
+    );
+
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Password update failed", error: error.message });
   }
 };

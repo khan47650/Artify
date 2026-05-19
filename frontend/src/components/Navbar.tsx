@@ -59,7 +59,7 @@ const Navbar = () => {
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-background/70">
               <Link to="/" className="hover:text-background transition-colors duration-200">Home</Link>
               <Link to="/explore" className="hover:text-background transition-colors duration-200">Explore</Link>
-              <Link to="/services" className="hover:text-background transition-colors duration-200">Services</Link>
+              {/* <Link to="/services" className="hover:text-background transition-colors duration-200">Services</Link> */}
               <Link to="/ai-curator" className="hover:text-background transition-colors duration-200">AI Curator</Link>
               <Link to="/art-quiz" className="hover:text-background transition-colors duration-200">Art Quiz</Link>
               <Link to="/artists" className="hover:text-background transition-colors duration-200">Artists</Link>
@@ -171,7 +171,7 @@ const Navbar = () => {
             <nav className="md:hidden absolute right-3 top-[calc(100%+8px)] z-50 w-44 rounded-lg bg-black/95 backdrop-blur-xl shadow-xl ring-1 ring-background/10 py-1.5 flex flex-col text-[13px] font-medium animate-fade-in">
               <Link to="/" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>Home</Link>
               <Link to="/explore" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>Explore</Link>
-              <Link to="/services" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>Services</Link>
+              {/* <Link to="/services" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>Services</Link> */}
               <Link to="/ai-curator" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>AI Curator</Link>
               <Link to="/art-quiz" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>Art Quiz</Link>
               <Link to="/artists" className="px-3 py-1.5 text-background/85 hover:bg-background/10 hover:text-background transition-colors" onClick={() => setMobileOpen(false)}>Artists</Link>

@@ -7,6 +7,8 @@ const app = express();
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const artworkRoutes=require("./routes/artworkRoutes");
+const activityRoutes=require("./routes/activityRoutes");
 
 connectDB();
 
@@ -22,6 +24,8 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/artworks",artworkRoutes);
+app.use("/api/activities",activityRoutes);
 
 const PORT = process.env.PORT || 5000;
 

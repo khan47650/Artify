@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import Artists from "./Artists";
 import ManageArt from "./ManageArt";
-import PendingArts from "../Users/PendingArts";
+import PendingArts from "./PendingArts";
 
 
 const headingFont = "font-['Luvy_Mode'] font-normal";

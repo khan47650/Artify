@@ -330,7 +330,7 @@ const Login = () => {
                           className="h-12 rounded-full border-black/15 bg-transparent"
                         />
                       </div>
-                      {role === "seller" && (
+                      {isSignup && (
                         <div className="rounded-[22px] border border-black/15 bg-white/50 p-4">
                           <div className="flex items-center gap-4">
                             <div className="h-16 w-16 overflow-hidden rounded-full border border-black/10 bg-[#efefef]">
@@ -343,15 +343,16 @@ const Login = () => {
                               )}
                             </div>
                             <div className="flex-1">
-                              <p className="text-sm font-medium text-black">Artist Picture *</p>
-                              <p className="mt-1 text-xs text-black/55">Upload the artist photo or avatar that will appear in the artist sections.</p>
+                              <p className="text-sm font-medium text-black">Upload your picture</p>
+                              <p className="mt-1 text-xs text-black/55">
+                                Upload your photo or avatar.
+                              </p>
                             </div>
                           </div>
                           <Input
                             type="file"
                             accept="image/*"
                             onChange={handleArtistPhotoUpload}
-                            required={role === "seller"}
                             className="mt-3 h-12 rounded-full border-black/15 bg-transparent"
                           />
                         </div>

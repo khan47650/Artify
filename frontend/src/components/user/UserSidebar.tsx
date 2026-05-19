@@ -58,7 +58,7 @@ const UserSidebar = ({
 
         {
             id: "messages",
-            label: "Messages",
+            label: "Activities",
             icon: FaEnvelope,
         },
 
