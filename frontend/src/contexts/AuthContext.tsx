@@ -13,6 +13,7 @@ type UserType = {
   email: string;
 
   role: "buyer" | "seller" | "admin";
+  accountStatus?: "active" | "freeze";
 
   phoneNumber?: string;
   addressLine1?: string;

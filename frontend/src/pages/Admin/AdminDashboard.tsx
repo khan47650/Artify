@@ -12,6 +12,8 @@ import {
 import Artists from "./Artists";
 import ManageArt from "./ManageArt";
 import PendingArts from "./PendingArts";
+import AdminActivities from "./AdminActivities";
+import Message from "./Message";
 
 
 const headingFont = "font-['Luvy_Mode'] font-normal";
@@ -99,7 +101,8 @@ const AdminDashboard = () => {
           {activeTab === "artists" && <Artists />}
           {activeTab === "pending-arts" && <PendingArts />}
           {activeTab === "manage-art" && <ManageArt />}
-          {activeTab === "messages" && <Section title="Messages" subtitle="Customer and artist support messages." />}
+          {activeTab === "messages" && <AdminActivities/>}
+          {activeTab === "contact" && <Message/>}
         </main>
       </div>
     </div>

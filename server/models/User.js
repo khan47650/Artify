@@ -28,7 +28,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    accountStatus: {
+      type: String,
+      enum: ["active", "freeze"],
+      default: "active",
+    },
+
   },
+
   { timestamps: true, collection: "Users" }
 );
 

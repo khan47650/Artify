@@ -18,16 +18,22 @@ const generatePlainPassword = () => {
 const buildUserResponse = (user) => ({
   id: user._id,
   role: user.role,
+  accountStatus: user.accountStatus || "active",
+
   firstName: user.firstName,
   lastName: user.lastName,
+
   email: user.email,
+
   phoneNumber: user.phoneNumber,
   addressLine1: user.addressLine1,
   addressLine2: user.addressLine2,
+
   city: user.city,
   state: user.state,
   postalCode: user.postalCode,
   country: user.country,
+
   artistPhoto: user.artistPhoto,
 });
 
@@ -58,22 +64,18 @@ exports.signup = async (req, res) => {
     const existingUser = await User.findOne({ email: normalizedEmail });
 
     if (existingUser) {
-
-      // buyer already exists
       if (existingUser.role === "buyer" && role === "seller") {
         return res.status(409).json({
           message: "This email is already registered as buyer. Please use another email for seller account.",
         });
       }
 
-      // seller already exists
       if (existingUser.role === "seller" && role === "buyer") {
         return res.status(409).json({
           message: "This email is already registered as seller. Please use another email for buyer account.",
         });
       }
 
-      // same role already exists
       return res.status(409).json({
         message: `This email is already registered as ${existingUser.role}`,
       });
@@ -89,9 +91,9 @@ exports.signup = async (req, res) => {
       uploadedArtistPhoto = uploadedResponse.secure_url;
     }
 
-
     const user = await User.create({
       role,
+      accountStatus: "active",
       firstName,
       lastName,
       phoneNumber,
@@ -127,26 +129,7 @@ exports.signup = async (req, res) => {
     res.status(201).json({
       message: "Signup successful",
       token,
-      user: {
-        id: user._id,
-        role: user.role,
-
-        firstName: user.firstName,
-        lastName: user.lastName,
-
-        email: user.email,
-
-        phoneNumber: user.phoneNumber,
-        addressLine1: user.addressLine1,
-        addressLine2: user.addressLine2,
-
-        city: user.city,
-        state: user.state,
-        postalCode: user.postalCode,
-        country: user.country,
-
-        artistPhoto: user.artistPhoto,
-      },
+      user: buildUserResponse(user),
     });
   } catch (error) {
     res.status(500).json({ message: "Signup failed", error: error.message });
@@ -163,17 +146,16 @@ exports.login = async (req, res) => {
 
     const normalizedEmail = email.toLowerCase();
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (!user || user.password !== password) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+
     if (role && user.role !== role) {
       return res.status(403).json({ message: `This account is registered as ${user.role}` });
     }
-
-
     await sendEmail(
       normalizedEmail,
       "New Login on Artify",
@@ -196,26 +178,7 @@ exports.login = async (req, res) => {
     res.json({
       message: "Login successful",
       token,
-      user: {
-        id: user._id,
-        role: user.role,
-
-        firstName: user.firstName,
-        lastName: user.lastName,
-
-        email: user.email,
-
-        phoneNumber: user.phoneNumber,
-        addressLine1: user.addressLine1,
-        addressLine2: user.addressLine2,
-
-        city: user.city,
-        state: user.state,
-        postalCode: user.postalCode,
-        country: user.country,
-
-        artistPhoto: user.artistPhoto,
-      },
+      user: buildUserResponse(user),
     });
   } catch (error) {
     res.status(500).json({ message: "Login failed", error: error.message });
@@ -289,7 +252,6 @@ exports.updateProfile = async (req, res) => {
     } = req.body;
 
     const user = await User.findById(userId);
-
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

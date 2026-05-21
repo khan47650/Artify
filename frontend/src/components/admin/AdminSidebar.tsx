@@ -6,6 +6,7 @@ import {
   FaEnvelope,
   FaTimes,
   FaHourglassHalf,
+  FaComments,
 } from "react-icons/fa";
 
 const bodyFont = "font-['Encode_Sans_Condensed']";
@@ -17,7 +18,8 @@ const tabs = [
   { id: "artists", label: "Artists", icon: FaPalette },
   { id: "pending-arts", label: "Pending Arts", icon: FaHourglassHalf },
   { id: "manage-art", label: "Manage Art", icon: FaImage },
-  { id: "messages", label: "Messages", icon: FaEnvelope },
+  { id: "messages", label: "Activities", icon: FaEnvelope },
+  { id: "contact", label: "Messages", icon: FaComments },
 ];
 
 interface Props {

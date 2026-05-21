@@ -1,6 +1,7 @@
 const Artwork = require("../models/Artwork");
 const cloudinary = require("../utils/cloudinary");
 const Activity = require("../models/Activity");
+const User = require("../models/User");
 
 exports.addArtwork = async (req, res) => {
     try {
@@ -35,10 +36,20 @@ exports.getAllArtworks = async (req, res) => {
         const limit = Number(req.query.limit) || 9;
         const skip = (page - 1) * limit;
 
-        const total = await Artwork.countDocuments();
+        const activeUsers = await User.find({
+            accountStatus: { $ne: "freeze" },
+        }).select("_id");
 
-        const artworks = await Artwork.find()
-            .populate("userId", "firstName lastName email")
+        const activeUserIds = activeUsers.map((user) => user._id);
+
+        const filter = {
+            userId: { $in: activeUserIds },
+        };
+
+        const total = await Artwork.countDocuments(filter);
+
+        const artworks = await Artwork.find(filter)
+            .populate("userId", "firstName lastName email accountStatus")
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);
@@ -50,10 +61,12 @@ exports.getAllArtworks = async (req, res) => {
             totalPages: Math.ceil(total / limit),
         });
     } catch (error) {
-        res.status(500).json({ message: "Failed to fetch artworks", error: error.message });
+        res.status(500).json({
+            message: "Failed to fetch artworks",
+            error: error.message,
+        });
     }
 };
-
 exports.getCurrentUserArtworks = async (req, res) => {
     try {
         const { userId } = req.params;

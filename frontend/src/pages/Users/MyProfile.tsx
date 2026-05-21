@@ -220,17 +220,31 @@ const MyProfile = () => {
               <p className={`${bodyFont} text-[11px] uppercase tracking-[0.22em] text-black/55 lg:text-white/60`}>
                 Account Status
               </p>
-
               <div className="mt-3 flex items-center gap-3 lg:mt-4">
-                <div className="h-3 w-3 shrink-0 rounded-full bg-green-500" />
-                <span className={`${bodyFont} text-[15px] font-semibold text-black lg:text-white`}>
-                  Active Account
+                <div
+                  className={`h-3 w-3 shrink-0 rounded-full ${user?.accountStatus === "freeze"
+                    ? "bg-red-500"
+                    : "bg-green-500"
+                    }`}
+                />
+
+                <span
+                  className={`${bodyFont} text-[15px] font-semibold text-black lg:text-white`}
+                >
+                  {user?.accountStatus === "freeze"
+                    ? "Frozen Account"
+                    : "Active Account"}
                 </span>
               </div>
 
-              <p className={`${bodyFont} mt-3 text-[13px] leading-5 text-black/60 lg:mt-4 lg:leading-6 lg:text-white/70`}>
-                Your Artify account is active and verified successfully.
+              <p
+                className={`${bodyFont} mt-3 text-[13px] leading-5 text-black/60 lg:mt-4 lg:leading-6 lg:text-white/70`}
+              >
+                {user?.accountStatus === "freeze"
+                  ? "Your Artify account is currently frozen by admin."
+                  : "Your Artify account is active and verified successfully."}
               </p>
+
             </div>
           </div>
 

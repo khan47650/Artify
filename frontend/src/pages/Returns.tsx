@@ -1,75 +1,167 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import {
+  FaShieldAlt,
+  FaBan,
+  FaPalette,
+  FaUserCheck,
+  FaStore,
+  FaEnvelope,
+} from "react-icons/fa";
+
+const headingFont = "font-['Luvy_Mode'] font-normal";
+const bodyFont = "font-['Encode_Sans_Condensed']";
+
+const sections = [
+  {
+    icon: FaBan,
+    title: "No Refund Policy",
+    description:
+      "All purchases made on Artify are final and non-refundable. Once an artwork or creative service is purchased, refunds cannot be issued.",
+  },
+
+  {
+    icon: FaPalette,
+    title: "Digital & Creative Products",
+    points: [
+      "Most artworks are digital or custom-made.",
+      "Delivered artworks cannot be returned.",
+      "Every artwork is unique and created with artistic effort.",
+    ],
+  },
+
+  {
+    icon: FaUserCheck,
+    title: "Buyer Responsibility",
+    points: [
+      "Review artwork previews and descriptions carefully.",
+      "Verify pricing and artwork details before purchase.",
+      "Understand purchases are final before confirming orders.",
+    ],
+  },
+
+  {
+    icon: FaStore,
+    title: "Seller Responsibility",
+    description:
+      "Sellers are required to provide accurate previews and descriptions. Misleading information may lead to warnings, restrictions, or account suspension.",
+  },
+
+  {
+    icon: FaShieldAlt,
+    title: "Support & Resolution",
+    points: [
+      "Our support team can help resolve disputes.",
+      "We aim to ensure fair communication between buyers and sellers.",
+      "Support requests are reviewed carefully by the Artify team.",
+    ],
+  },
+
+];
 
 const Returns = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#fbfaf7] text-[#111]">
       <Navbar />
-      <main className="pt-24 pb-8">
-        <div className="container mx-auto max-w-6xl px-4 md:px-8">
-          <h1 className="page-title mb-3 font-serif font-bold">
-            Refund Policy
-          </h1>
-          <p className="mb-4 text-sm leading-6 text-muted-foreground">
-            At Artify, we provide a platform for buying and selling art,
-            including digital artworks and creative services. Please review our
-            refund policy carefully before making a purchase.
-          </p>
-          <div className="grid gap-3 md:grid-cols-2">
-            <section className="rounded-2xl border border-border bg-card p-4">
-              <h2 className="mb-2 text-lg font-serif font-semibold">No Refund Policy</h2>
-              <p className="text-sm leading-6 text-muted-foreground">
-                All transactions on Artify are final and non-refundable. Once an artwork or service is purchased, refunds will not be issued.
+
+      <main className="pt-28 pb-12">
+        <div className="mx-auto max-w-[1280px] px-4 md:px-6">
+          {/* HERO */}
+          <section className="relative overflow-hidden rounded-[42px] bg-gradient-to-br from-black via-[#0d0d0d] to-[#1a1a1a] px-6 py-12 text-white shadow-[0_35px_90px_-35px_rgba(0,0,0,0.65)] md:px-10 md:py-14">
+            <div className="absolute -left-20 top-0 h-[260px] w-[260px] rounded-full bg-white/10 blur-3xl" />
+            <div className="absolute -right-24 bottom-0 h-[280px] w-[280px] rounded-full bg-white/10 blur-3xl" />
+
+            <div className="relative max-w-[760px]">
+              <p
+                className={`${bodyFont} text-[11px] uppercase tracking-[0.35em] text-white/55`}
+              >
+                Artify Marketplace
               </p>
-            </section>
 
-            <section className="rounded-2xl border border-border bg-card p-4">
-              <h2 className="mb-2 text-lg font-serif font-semibold">Digital and Creative Nature of Products</h2>
-              <ul className="list-inside list-disc space-y-1 text-sm leading-6 text-muted-foreground">
-                <li>Most artworks are digital or custom-made.</li>
-                <li>Once delivered or accessed, they cannot be returned.</li>
-                <li>Each piece is unique and created with effort.</li>
-              </ul>
-            </section>
+              <h1
+                className={`${headingFont} mt-5 text-[58px] leading-[0.9] tracking-[-0.03em] md:text-[90px]`}
+              >
+                Refund Policy
+              </h1>
 
-            <section className="rounded-2xl border border-border bg-card p-4">
-              <h2 className="mb-2 text-lg font-serif font-semibold">Buyer Responsibility</h2>
-              <p className="mb-2 text-sm text-muted-foreground">By making a purchase on Artify, you agree to:</p>
-              <ul className="list-inside list-disc space-y-1 text-sm leading-6 text-muted-foreground">
-                <li>Carefully review artwork details, pricing, and previews.</li>
-                <li>Understand what you are purchasing before confirming the order.</li>
-                <li>Accept that refunds are not applicable.</li>
-              </ul>
-            </section>
-
-            <section className="rounded-2xl border border-border bg-card p-4">
-              <h2 className="mb-2 text-lg font-serif font-semibold">Seller Responsibility</h2>
-              <p className="text-sm leading-6 text-muted-foreground">
-                Sellers must provide accurate descriptions and previews. Any misleading information may lead to action by Artify.
+              <p
+                className={`${bodyFont} mt-6 max-w-[620px] text-[15px] leading-8 text-white/70 md:text-[16px]`}
+              >
+                Artify is a marketplace for digital artworks and creative
+                services. Please review our refund policy carefully before
+                purchasing any artwork or service from the platform.
               </p>
-            </section>
+            </div>
+          </section>
 
-            <section className="rounded-2xl border border-border bg-card p-4">
-              <h2 className="mb-2 text-lg font-serif font-semibold">Support and Issue Resolution</h2>
-              <ul className="list-inside list-disc space-y-1 text-sm leading-6 text-muted-foreground">
-                <li>In case of any issue, you can contact support.</li>
-                <li>We may assist in resolving disputes between buyers and sellers.</li>
-              </ul>
-            </section>
+          {/* CARDS */}
+          <section className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {sections.map((section, index) => {
+              const Icon = section.icon;
 
-            <section className="rounded-2xl border border-border bg-card p-4">
-              <h2 className="mb-2 text-lg font-serif font-semibold">Contact Us</h2>
-              <p className="text-sm leading-6 text-muted-foreground">
-                For any questions or concerns regarding your order, contact us at:{" "}
-                <a href="mailto:support@artify.com" className="underline">
-                  [your email here]
-                </a>
-              </p>
-              <p className="mt-2 text-xs text-muted-foreground">Update this placeholder with your real support email address.</p>
-            </section>
-          </div>
+              return (
+                <div
+                  key={index}
+                  className="
+                    group
+                    relative
+                    overflow-hidden
+                    rounded-[32px]
+                    border
+                    border-[#ece4d8]
+                    bg-white
+                    p-6
+                    shadow-[0_20px_60px_-35px_rgba(0,0,0,0.2)]
+                    transition-all
+                    duration-500
+                    hover:-translate-y-1
+                    hover:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.28)]
+                  "
+                >
+                  <div className="absolute right-0 top-0 h-[120px] w-[120px] rounded-full bg-black/[0.03] blur-3xl transition-all duration-500 group-hover:bg-black/[0.05]" />
+
+                  <div className="relative">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-black text-white shadow-lg">
+                      <Icon className="text-[20px]" />
+                    </div>
+
+                    <h2
+                      className={`${headingFont} mt-6 text-[34px] leading-none text-[#111]`}
+                    >
+                      {section.title}
+                    </h2>
+
+                    {section.description && (
+                      <p
+                        className={`${bodyFont} mt-4 text-[14px] leading-7 text-[#6e6961]`}
+                      >
+                        {section.description}
+                      </p>
+                    )}
+
+                    {section.points && (
+                      <ul className="mt-4 space-y-3">
+                        {section.points.map((point, idx) => (
+                          <li
+                            key={idx}
+                            className={`${bodyFont} flex items-start gap-3 text-[14px] leading-7 text-[#6e6961]`}
+                          >
+                            <span className="mt-[9px] h-2 w-2 rounded-full bg-black" />
+                            <span>{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+
+                  </div>
+                </div>
+              );
+            })}
+          </section>
         </div>
       </main>
+
       <Footer />
     </div>
   );

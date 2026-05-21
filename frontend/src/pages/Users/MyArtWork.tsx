@@ -19,6 +19,7 @@ const bodyFont = "font-['Encode_Sans_Condensed']";
 const MyArtwork = () => {
     const { user } = useAuth();
     const { toast } = useToast();
+    const isFrozen = user?.accountStatus === "freeze";
 
     const [loading, setLoading] = useState(true);
     const [saveLoading, setSaveLoading] = useState(false);
@@ -186,14 +187,18 @@ const MyArtwork = () => {
                     </div>
 
                     <button
+                        disabled={isFrozen}
                         onClick={() => {
+                            if (isFrozen) return;
+
                             setSelectedArtwork(null);
                             setDialogOpen(true);
                         }}
                         className={`${bodyFont}
-              inline-flex items-center justify-center gap-2 rounded-full
-              bg-black px-6 py-3 text-[13px] text-white transition-all duration-300
-              hover:scale-[1.02] hover:bg-black/90`}
+                                inline-flex items-center justify-center gap-2 rounded-full
+                                bg-black px-6 py-3 text-[13px] text-white transition-all duration-300
+                                hover:scale-[1.02] hover:bg-black/90 
+                                disabled:cursor-not-allowed disabled:opacity-50`}
                     >
                         <FaPlus />
                         Add New Artwork
@@ -373,21 +378,33 @@ const MyArtwork = () => {
 
                                         <div className="flex items-center gap-2">
                                             <button
+                                                disabled={isFrozen}
                                                 onClick={() => {
+                                                    if (isFrozen) return;
+
                                                     setSelectedArtwork(art);
                                                     setDialogOpen(true);
                                                 }}
-                                                className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white"
+                                                className={`flex h-10 w-10 items-center justify-center rounded-full ${isFrozen
+                                                    ? "cursor-not-allowed bg-[#bdbdbd] text-white opacity-60"
+                                                    : "bg-black text-white"
+                                                    }`}
                                             >
                                                 <FaEdit className="text-[13px]" />
                                             </button>
 
                                             <button
+                                                disabled={isFrozen}
                                                 onClick={() => {
+                                                    if (isFrozen) return;
+
                                                     setSelectedArtwork(art);
                                                     setDeleteDialogOpen(true);
                                                 }}
-                                                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#ddd6ca] bg-white text-[#111]"
+                                                className={`flex h-10 w-10 items-center justify-center rounded-full border ${isFrozen
+                                                        ? "cursor-not-allowed border-[#ddd] bg-[#efefef] text-[#999] opacity-60"
+                                                        : "border-[#ddd6ca] bg-white text-[#111]"
+                                                    }`}
                                             >
                                                 <FaTrash className="text-[13px]" />
                                             </button>
