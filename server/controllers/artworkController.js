@@ -44,6 +44,7 @@ exports.getAllArtworks = async (req, res) => {
 
         const filter = {
             userId: { $in: activeUserIds },
+            sellingStatus: { $ne: "sold" },
         };
 
         const total = await Artwork.countDocuments(filter);
