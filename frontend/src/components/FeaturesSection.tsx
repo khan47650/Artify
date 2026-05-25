@@ -7,18 +7,24 @@ import topDots from "/top_dots.png";
 const features = [
   {
     image: picCollectors,
-    title: "For Collectors",
-    description: "Buy original art directly from artists you believe in.",
+    eyebrow: "Collectors",
+    title: "Discover Art With Meaning",
+    description:
+      "Explore original artworks from real artists, understand the story behind each piece, and collect with confidence.",
   },
   {
     image: picArtists,
-    title: "For Artists",
-    description: "Share your work globally without losing control or voice.",
+    eyebrow: "Artists",
+    title: "Share Your Creative Voice",
+    description:
+      "Artify gives artists a clean space to present their work, build trust, and reach people who value originality.",
   },
   {
     image: picWorld,
-    title: "For the Work",
-    description: "Art deserves context, care, and permanence not trends.",
+    eyebrow: "Marketplace",
+    title: "Built Around Care",
+    description:
+      "Every artwork deserves context, visibility, and a thoughtful experience from discovery to collection.",
   },
 ];
 
@@ -26,48 +32,83 @@ const FeaturesSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section className="relative min-h-screen bg-[#F5F5F5] py-[120px] overflow-hidden" ref={ref}>
-      <img src={topDots} alt="" className="absolute right-[90px] top-[170px] w-[125px] pointer-events-none" />
+    <section
+      ref={ref}
+      className="relative overflow-hidden bg-[#F5F5F5] py-[105px]"
+    >
+      <img
+        src={topDots}
+        alt=""
+        className="pointer-events-none absolute right-[80px] top-[135px] w-[120px] opacity-70"
+      />
 
-      <img src={topDots} alt="" className="absolute left-0 top-[120px] w-[120px] pointer-events-none" />
+      <img
+        src={topDots}
+        alt=""
+        className="pointer-events-none absolute -left-8 bottom-[80px] w-[115px] opacity-60"
+      />
 
-      <div className="mx-auto w-full max-w-[860px] px-6 relative z-10">
-        <h2
-          className={`font-ivy text-[38px] md:text-[46px] font-normal leading-[0.95] text-center mb-[58px] text-black transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
-        >
-          A Thoughtful Way to Buy, Sell,<br />
-          and Share Art
-        </h2>
+      <div className="relative z-10 mx-auto w-full max-w-[1040px] px-6">
+        <div className="mx-auto mb-[54px] max-w-[680px] text-center">
+          <p
+            className={`font-encode text-[11px] uppercase tracking-[0.32em] text-black/45 transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
+              }`}
+          >
+            Why Artify
+          </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-[14px] items-start justify-center">
-          {features.map((f, i) => (
-            <div
-              key={f.title}
-              className={`relative flex flex-col items-center text-center transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          <h2
+            className={`font-ivy mt-4 text-[40px] font-normal leading-[0.95] text-black md:text-[52px] transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+              }`}
+          >
+            A More Thoughtful Way
+            <br />
+            to Experience Art
+          </h2>
+
+          <p
+            className={`font-encode mx-auto mt-5 max-w-[560px] text-[13px] leading-6 text-black/60 transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+              }`}
+          >
+            Artify connects collectors and artists through a calm, curated, and
+            story-driven marketplace designed for original digital art.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          {features.map((feature, index) => (
+            <article
+              key={feature.title}
+              className={`group overflow-hidden rounded-[26px] border border-black/10 bg-white shadow-[0_18px_45px_-35px_rgba(0,0,0,0.35)] transition-all duration-700 hover:-translate-y-1 hover:shadow-[0_28px_65px_-38px_rgba(0,0,0,0.45)] ${isVisible ? "translate-y-0 opacity-100" : "translate-y-7 opacity-0"
                 }`}
-              style={{ transitionDelay: isVisible ? `${(i + 1) * 150}ms` : "0ms" }}
+              style={{
+                transitionDelay: isVisible ? `${(index + 1) * 140}ms` : "0ms",
+              }}
             >
-              <div className="group relative w-full max-w-[260px] h-[245px] rounded-[18px] overflow-hidden bg-white transition-all duration-300 ease-out hover:cursor-pointer hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
-
+              <div className="relative h-[245px] overflow-hidden">
                 <img
-                  src={f.image}
-                  alt={f.title}
-                  className="w-full h-full object-cover rounded-[18px] transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                  src={feature.image}
+                  alt={feature.title}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
                 />
 
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+
+                <span className="font-encode absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-[9px] uppercase tracking-[0.2em] text-black">
+                  {feature.eyebrow}
+                </span>
               </div>
 
-              <div className="mt-3 max-w-[230px]">
-                <h3 className="font-ivy text-[18px] font-semibold leading-tight text-black">
-                  {f.title}
+              <div className="p-5">
+                <h3 className="font-ivy text-[25px] font-normal leading-none text-black">
+                  {feature.title}
                 </h3>
 
-                <p className="font-encode mt-2 text-[12px] leading-[1.25] text-black/55">
-                  {f.description}
+                <p className="font-encode mt-3 text-[12px] leading-5 text-black/55">
+                  {feature.description}
                 </p>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>

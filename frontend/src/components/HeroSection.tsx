@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import heroArt from "@/assets/Group2.png";
 import topDots from "/top_dots.png";
 import { useState } from "react";
 
@@ -46,16 +45,19 @@ const HeroSection = () => {
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3 opacity-0 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-              <a
-                href="/explore"
-                className="inline-flex h-[38px] min-w-[125px] items-center justify-center rounded-full bg-black px-6 text-[13px] font-medium text-white transition-colors hover:bg-black/85" >
+              <Link
+                to="/explore"
+                className="inline-flex h-[38px] min-w-[125px] items-center justify-center rounded-full bg-black px-6 text-[13px] font-medium text-white transition-colors hover:bg-black/85"
+              >
                 Explore Art
-              </a>
-              <a
-                href="/ai-curator"
-                className="inline-flex h-[38px] min-w-[175px] items-center justify-center rounded-full border border-black/60 bg-transparent px-6 text-[13px] font-medium text-black transition-colors hover:bg-black/5">
+              </Link>
+
+              <Link
+                to="/ai-curator"
+                className="inline-flex h-[38px] min-w-[175px] items-center justify-center rounded-full border border-black/60 bg-transparent px-6 text-[13px] font-medium text-black transition-colors hover:bg-black/5"
+              >
                 Try AI Art Placement
-              </a>
+              </Link>
             </div>
           </div>
 

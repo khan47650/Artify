@@ -18,7 +18,7 @@ const bodyFont = "font-['Encode_Sans_Condensed']";
 
 const ExploreArt = () => {
   const { user } = useAuth();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const searchQuery = (searchParams.get("search") || "").trim().toLowerCase();
 
@@ -82,9 +82,19 @@ const ExploreArt = () => {
   }, [page]);
 
   useEffect(() => {
+    setPage(1);
+  }, [searchQuery]);
+
+  useEffect(() => {
     fetchLiked();
   }, [user]);
 
+  const resetExplorePage = () => {
+    setSelectedCategories([]);
+    setSortBy("newest");
+    setPage(1);
+    setSearchParams({});
+  };
   const filtered = useMemo(() => {
     let result = artworks.filter(
       (art: any) =>
@@ -112,6 +122,10 @@ const ExploreArt = () => {
 
   const clearFilters = () => {
     setSelectedCategories([]);
+
+    if (searchQuery) {
+      setSearchParams({});
+    }
   };
 
   const handleToggleLike = async (artworkId: string) => {
@@ -206,10 +220,22 @@ const ExploreArt = () => {
           </div>
 
           {searchQuery && (
-            <p className={`${bodyFont} mb-5 text-[14px] text-[#6b6b6b]`}>
-              Search results for:{" "}
-              <span className="text-[#1d1d1d]">{searchParams.get("search")}</span>
-            </p>
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-[18px] border border-[#e6dfd4] bg-white px-5 py-4">
+              <p className={`${bodyFont} text-[14px] text-[#6b6b6b]`}>
+                Search results for:{" "}
+                <span className="font-semibold text-[#1d1d1d]">
+                  {searchParams.get("search")}
+                </span>
+              </p>
+
+              <button
+                type="button"
+                onClick={resetExplorePage}
+                className={`${bodyFont} rounded-full bg-black px-5 py-2 text-[12px] font-semibold text-white transition hover:bg-black/85`}
+              >
+                View All Artworks
+              </button>
+            </div>
           )}
 
           <div className="mb-6 flex items-center justify-between md:hidden">
@@ -288,9 +314,9 @@ const ExploreArt = () => {
                   <Button
                     variant="outline"
                     className="mt-4 rounded-full"
-                    onClick={clearFilters}
+                    onClick={resetExplorePage}
                   >
-                    Clear Filters
+                    View All Artworks
                   </Button>
                 </div>
               ) : (
@@ -319,8 +345,8 @@ const ExploreArt = () => {
                             >
                               <Heart
                                 className={`h-4 w-4 transition-colors ${likedIds.includes(art._id)
-                                    ? "fill-destructive text-destructive"
-                                    : "text-[#1d1d1d]"
+                                  ? "fill-destructive text-destructive"
+                                  : "text-[#1d1d1d]"
                                   }`}
                               />
                             </button>

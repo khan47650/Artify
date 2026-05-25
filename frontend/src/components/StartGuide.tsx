@@ -1,4 +1,5 @@
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { Link } from "react-router-dom";
 
 const artworks = [
   { fileName: "WhatsApp Image 2026-04-12 at 12.55.17 AM0.jpeg", className: "left-[6%] top-[27%] h-[54px] w-[54px]" },
@@ -16,7 +17,7 @@ const StartGuide = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-   <section className="relative min-h-screen overflow-hidden bg-[#ececec] py-[90px]" ref={ref}>
+    <section className="relative min-h-screen overflow-hidden bg-[#ececec] py-[90px]" ref={ref}>
       <div className="mx-auto w-full max-w-[1040px] px-6 relative z-10 min-h-[420px]">
         <div className="pointer-events-none absolute right-0 top-[12%] hidden md:grid grid-cols-8 gap-3 opacity-45">
           {Array.from({ length: 32 }).map((_, idx) => (
@@ -34,9 +35,8 @@ const StartGuide = () => {
         {artworks.map((art, i) => (
           <div
             key={i}
-            className={`absolute hidden overflow-hidden rounded-2xl shadow-sm md:block ${art.className} transition-all duration-700 ${
-              isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"
-            }`}
+            className={`absolute hidden overflow-hidden rounded-2xl shadow-sm md:block ${art.className} transition-all duration-700 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"
+              }`}
             style={{
               transitionDelay: isVisible ? `${i * 80}ms` : "0ms",
             }}
@@ -58,9 +58,8 @@ const StartGuide = () => {
             {artworks.slice(0, 3).map((art, i) => (
               <div
                 key={`mobile-${i}`}
-                className={`aspect-square overflow-hidden rounded-lg transition-all duration-700 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
+                className={`aspect-square overflow-hidden rounded-lg transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  }`}
                 style={{ transitionDelay: isVisible ? `${120 + i * 80}ms` : "0ms" }}
               >
                 <img
@@ -76,30 +75,27 @@ const StartGuide = () => {
           </div>
 
           <h2
-            className={`font-ivy text-[34px] md:text-[40px] font-normal leading-none text-black mb-2 transition-all duration-700 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`font-ivy text-[34px] md:text-[40px] font-normal leading-none text-black mb-2 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
             style={{ transitionDelay: isVisible ? "200ms" : "0ms" }}
           >
             Not Sure Where to Start?
           </h2>
           <p
-            className={`font-encode max-w-[430px] text-[12px] leading-[1.25] text-black/55 mb-7 transition-all duration-700 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`font-encode max-w-[430px] text-[12px] leading-[1.25] text-black/55 mb-7 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
             style={{ transitionDelay: isVisible ? "300ms" : "0ms" }}
           >
             Let our AI guide you to artworks that fit your space, light, and the way you want to live with art.
           </p>
-          <a
-            href="/art-quiz"
-           className={`font-encode inline-block rounded-full bg-black px-7 py-3 text-[12px] font-semibold text-white hover:bg-gray-800 transition-all duration-700  ${
-              isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-            }`}
+          <Link
+            to="/art-quiz"
+            className={`font-encode inline-block rounded-full bg-black px-7 py-3 text-[12px] font-semibold text-white hover:bg-gray-800 transition-all duration-700 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+              }`}
             style={{ transitionDelay: isVisible ? "400ms" : "0ms" }}
           >
             Find Art for My Space
-          </a>
+          </Link>
         </div>
       </div>
     </section>

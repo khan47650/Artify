@@ -1,99 +1,142 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
+
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import artist1 from "@/assets/artis_behind_1.png";
-import artist2 from "@/assets/artist_behind_2.png";
-import artist3 from "@/assets/artist_behind_3.png";
-
-interface FeaturedArtist {
-  id: string;
-  image: string;
-  name: string;
-  bio: string;
-  href: string;
-}
-
-const blockedArtistNames = new Set(["abc"]);
-const abdulRafayAiImages = [
-  "/WhatsApp%20Image%202026-04-12%20at%2012.55.17%20AM2.jpeg",
-  "/6.jpeg",
-  "/WhatsApp%20Image%202026-04-12%20at%2012.55.17%20AM1.jpeg",
-];
-
-const artists = [
-  {
-    image: artist1,
-    bio: "My work is about restraint — what remains after movement fades.",
-    name: "Jade Fadolaumi",
-    category: "Abstract Artist",
-  },
-  {
-    image: artist2,
-    bio: "I paint faces as landscapes shaped by memory and silence.",
-    name: "Yvadney Davis",
-    category: "Portrait / Figurative Artist",
-  },
-  {
-    image: artist3,
-    bio: "I’m interested in texture as a form of emotional language.",
-    name: "Jessica Brilli",
-    category: "Experimental / Mixed Media",
-  },
-];
+import api from "@/lib/api";
 
 const ArtistsSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
+  const [artists, setArtists] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchTopArtists = async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await api.get("/users/sellers");
+
+      const topArtists = (data.sellers || [])
+        .filter((artist: any) => artist.accountStatus !== "freeze")
+        .sort((a: any, b: any) => Number(b.totalSales || 0) - Number(a.totalSales || 0))
+        .slice(0, 3);
+
+      setArtists(topArtists);
+    } catch (error) {
+      console.log(error);
+      setArtists([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTopArtists();
+  }, []);
 
   return (
-    <section className="relative min-h-screen bg-white py-[90px] overflow-hidden" ref={ref}>
+    <section
+      ref={ref}
+      className="relative min-h-screen overflow-hidden bg-white py-[90px]"
+    >
       <div className="mx-auto w-full max-w-[1240px] px-10">
         <h2
-          className={`font-ivy text-[34px] md:text-[40px] font-normal leading-none text-center text-black transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          className={`font-ivy text-center text-[34px] font-normal leading-none text-black transition-all duration-700 md:text-[40px] ${isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
             }`}
         >
           The Artists Behind the Work
         </h2>
 
         <p
-          className={`font-encode mx-auto mt-2 mb-8 max-w-[620px] text-center text-[11px] leading-[1.25] text-black/55 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          className={`font-encode mx-auto mt-2 mb-8 max-w-[620px] text-center text-[11px] leading-[1.25] text-black/55 transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
             }`}
           style={{ transitionDelay: isVisible ? "100ms" : "0ms" }}
         >
-          Meet the voices shaping our collections. Each artist brings a distinct perspective, process, and way of seeing the world.
+          Meet top-selling creators shaping Artify through original collections,
+          expressive visual language, and meaningful artistic stories.
         </p>
 
-       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {artists.map((artist, i) => (
-            <article
-              key={artist.name}
-              className={`overflow-hidden rounded-[10px] bg-[#F5F5F5] text-center transition-all duration-700 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)] ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                }`}
-              style={{ transitionDelay: isVisible ? `${(i + 1) * 150}ms` : "0ms" }}
-            >
-              <div className="h-[270px] overflow-hidden rounded-t-[10px]">
-                <img
-                  src={artist.image}
-                  alt={artist.name}
-                  className="h-full w-full object-cover transition-transform duration-500 ease-out hover:scale-[1.05]"
-                />
+        {loading ? (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {[1, 2, 3].map((item) => (
+              <div
+                key={item}
+                className="animate-pulse overflow-hidden rounded-[10px] bg-[#F5F5F5]"
+              >
+                <div className="h-[270px] bg-[#e5e5e5]" />
+                <div className="px-5 py-4">
+                  <div className="mx-auto h-4 w-[80%] rounded bg-[#e5e5e5]" />
+                  <div className="mx-auto mt-3 h-5 w-[45%] rounded bg-[#e5e5e5]" />
+                  <div className="mx-auto mt-2 h-3 w-[35%] rounded bg-[#e5e5e5]" />
+                </div>
               </div>
+            ))}
+          </div>
+        ) : artists.length === 0 ? (
+          <div
+            className={`rounded-[18px] border border-black/10 bg-[#F5F5F5] px-6 py-16 text-center transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+              }`}
+          >
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-black text-white">
+              <FaUserCircle className="text-[28px]" />
+            </div>
 
-              <div className="px-5 py-4">
-                <p className="font-ivy text-[14px] font-normal leading-[1.15] text-black">
-                  {artist.bio}
-                </p>
+            <h3 className="font-ivy mt-5 text-[34px] font-normal leading-none text-black">
+              Artists Coming Soon
+            </h3>
 
-                <h3 className="font-ivy mt-3 text-[14px] font-semibold leading-tight text-black">
-                  {artist.name}
-                </h3>
+            <p className="font-encode mx-auto mt-3 max-w-[520px] text-[13px] leading-6 text-black/55">
+              Once sellers publish approved artworks and start making sales,
+              top artists will appear here automatically.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {artists.map((artist, index) => (
+              <Link
+                key={artist._id}
+                to={`/artist/${artist._id}`}
+                className="group"
+              >
+                <article
+                  className={`overflow-hidden rounded-[10px] bg-[#F5F5F5] text-center transition-all duration-700 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)] ${isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+                    }`}
+                  style={{
+                    transitionDelay: isVisible ? `${(index + 1) * 150}ms` : "0ms",
+                  }}
+                >
+                  <div className="flex h-[270px] items-center justify-center overflow-hidden rounded-t-[10px] bg-[#ece7df]">
+                    {artist.artistPhoto ? (
+                      <img
+                        src={artist.artistPhoto}
+                        alt={`${artist.firstName} ${artist.lastName}`}
+                        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                      />
+                    ) : (
+                      <FaUserCircle className="text-[115px] text-[#b8b2aa]" />
+                    )}
+                  </div>
 
-                <p className="font-encode mt-1 text-[10px] leading-tight text-black/55">
-                  {artist.category}
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
+                  <div className="px-5 py-4">
+                    <p className="font-ivy line-clamp-2 text-[14px] font-normal leading-[1.15] text-black">
+                      {artist.introduction ||
+                        "Creating original artworks with a personal visual language and thoughtful artistic expression."}
+                    </p>
+
+                    <h3 className="font-ivy mt-3 text-[14px] font-semibold leading-tight text-black">
+                      {artist.firstName} {artist.lastName}
+                    </h3>
+
+                    <p className="font-encode mt-1 text-[10px] leading-tight text-black/55">
+                      {artist.totalSales || 0} Sales · {artist.totalArts || 0} Artworks
+                    </p>
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div>
+        )}
 
         <div className="mt-3 flex justify-center">
           <Link

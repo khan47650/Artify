@@ -35,6 +35,7 @@ const buildUserResponse = (user) => ({
   country: user.country,
 
   artistPhoto: user.artistPhoto,
+  introduction: user.introduction,
 });
 
 exports.signup = async (req, res) => {
@@ -51,6 +52,7 @@ exports.signup = async (req, res) => {
       postalCode,
       country,
       artistPhoto,
+      introduction,
       email,
       password,
     } = req.body;
@@ -104,6 +106,7 @@ exports.signup = async (req, res) => {
       postalCode,
       country,
       artistPhoto: uploadedArtistPhoto,
+      introduction,
       email: normalizedEmail,
       password,
     });
@@ -249,6 +252,7 @@ exports.updateProfile = async (req, res) => {
       postalCode,
       country,
       artistPhoto,
+      introduction,
     } = req.body;
 
     const user = await User.findById(userId);
@@ -277,6 +281,7 @@ exports.updateProfile = async (req, res) => {
     user.postalCode = postalCode ?? user.postalCode;
     user.country = country ?? user.country;
     user.artistPhoto = uploadedImage;
+    user.introduction = introduction ?? user.introduction;
 
     await user.save();
 

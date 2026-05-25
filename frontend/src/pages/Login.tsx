@@ -30,6 +30,7 @@ const Login = () => {
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
   const [artistPhoto, setArtistPhoto] = useState("");
+  const [introduction, setIntroduction] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -132,6 +133,7 @@ const Login = () => {
         postalCode,
         country,
         artistPhoto,
+        introduction,
         email,
         password,
       });
@@ -331,31 +333,158 @@ const Login = () => {
                         />
                       </div>
                       {isSignup && (
-                        <div className="rounded-[22px] border border-black/15 bg-white/50 p-4">
-                          <div className="flex items-center gap-4">
-                            <div className="h-16 w-16 overflow-hidden rounded-full border border-black/10 bg-[#efefef]">
-                              {artistPhoto ? (
-                                <img src={artistPhoto} alt="Artist preview" className="h-full w-full object-cover" />
-                              ) : (
-                                <div className="flex h-full w-full items-center justify-center text-[11px] text-black/45">
-                                  Required
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-black">Upload your picture</p>
-                              <p className="mt-1 text-xs text-black/55">
-                                Upload your photo or avatar.
-                              </p>
-                            </div>
+                        <>
+                          <div className="grid grid-cols-2 gap-2">
+                            <Input
+                              value={firstName}
+                              onChange={(e) => setFirstName(e.target.value)}
+                              placeholder="First name"
+                              required
+                              className="h-12 rounded-full border-black/15 bg-transparent"
+                            />
+
+                            <Input
+                              value={lastName}
+                              onChange={(e) => setLastName(e.target.value)}
+                              placeholder="Last name"
+                              required
+                              className="h-12 rounded-full border-black/15 bg-transparent"
+                            />
                           </div>
+
                           <Input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleArtistPhotoUpload}
-                            className="mt-3 h-12 rounded-full border-black/15 bg-transparent"
+                            type="tel"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                            placeholder="Phone number"
+                            required
+                            className="h-12 rounded-full border-black/15 bg-transparent"
                           />
-                        </div>
+
+                          <Input
+                            value={addressLine1}
+                            onChange={(e) => setAddressLine1(e.target.value)}
+                            placeholder="Address line 1"
+                            required
+                            className="h-12 rounded-full border-black/15 bg-transparent"
+                          />
+
+                          <Input
+                            value={addressLine2}
+                            onChange={(e) => setAddressLine2(e.target.value)}
+                            placeholder="Address line 2 (optional)"
+                            className="h-12 rounded-full border-black/15 bg-transparent"
+                          />
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <Input
+                              value={city}
+                              onChange={(e) => setCity(e.target.value)}
+                              placeholder="City"
+                              required
+                              className="h-12 rounded-full border-black/15 bg-transparent"
+                            />
+
+                            <Input
+                              value={state}
+                              onChange={(e) => setState(e.target.value)}
+                              placeholder="State / Province"
+                              required
+                              className="h-12 rounded-full border-black/15 bg-transparent"
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <Input
+                              value={postalCode}
+                              onChange={(e) => setPostalCode(e.target.value)}
+                              placeholder="Postal code"
+                              required
+                              className="h-12 rounded-full border-black/15 bg-transparent"
+                            />
+
+                            <Input
+                              value={country}
+                              onChange={(e) => setCountry(e.target.value)}
+                              placeholder="Country"
+                              required
+                              className="h-12 rounded-full border-black/15 bg-transparent"
+                            />
+                          </div>
+
+                          {/* Buyer + Seller dono ke liye image upload */}
+                          <div className="rounded-[22px] border border-black/15 bg-white/50 p-4">
+                            <div className="flex items-center gap-4">
+                              <div className="h-16 w-16 overflow-hidden rounded-full border border-black/10 bg-[#efefef]">
+                                {artistPhoto ? (
+                                  <img
+                                    src={artistPhoto}
+                                    alt="Preview"
+                                    className="h-full w-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="flex h-full w-full items-center justify-center text-[11px] text-black/45">
+                                    Upload
+                                  </div>
+                                )}
+                              </div>
+
+                              <div className="flex-1">
+                                <p className="text-sm font-medium text-black">
+                                  Upload your picture
+                                </p>
+
+                                <p className="mt-1 text-xs text-black/55">
+                                  Upload your profile photo or avatar.
+                                </p>
+                              </div>
+                            </div>
+
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleArtistPhotoUpload}
+                              className="mt-3 h-12 rounded-full border-black/15 bg-transparent"
+                            />
+                          </div>
+
+                          {/* Sirf Seller ke liye Introduction */}
+                          {role === "seller" && (
+                            <div className="rounded-[22px] border border-black/15 bg-white/50 p-4">
+                              <div className="mb-3">
+                                <p className="text-sm font-medium text-black">
+                                  Artist Introduction
+                                </p>
+
+                                <p className="mt-1 text-xs text-black/55">
+                                  Write a short introduction about yourself and your art style.
+                                </p>
+                              </div>
+
+                              <textarea
+                                value={introduction}
+                                onChange={(e) => setIntroduction(e.target.value)}
+                                placeholder="Tell buyers about yourself..."
+                                rows={5}
+                                required
+                                className="
+            w-full
+            resize-none
+            rounded-[22px]
+            border
+            border-black/15
+            bg-transparent
+            px-4
+            py-4
+            text-sm
+            outline-none
+            transition
+            focus:border-black
+          "
+                              />
+                            </div>
+                          )}
+                        </>
                       )}
                     </>
                   )}

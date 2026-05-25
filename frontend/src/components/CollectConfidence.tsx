@@ -1,5 +1,7 @@
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import topDots from "/top_dots.png";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 import certificateIcon from "@/assets/cirtificate_authenticity.png";
 import directArtistIcon from "@/assets/direct_artist.png";
@@ -45,6 +47,21 @@ const cardClasses =
 
 const CollectConfidence = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const showJoinCard = !user || user.role === "admin";
+
+  const handleJoinCircle = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    if (user.role === "admin") {
+      return;
+    }
+  };
 
   return (
     <section className="relative min-h-screen bg-[#F5F5F5] py-[70px] overflow-hidden" ref={ref}>
@@ -120,41 +137,44 @@ const CollectConfidence = () => {
           </div>
         </div>
 
-        <div className="mt-[70px] px-4">
-          {/* white outer card */}
-          <div className=" bg-white p-3 md:p-4 shadow-sm">
+        {showJoinCard && (
+          <div className="mt-[70px] px-4">
+            {/* white outer card */}
+            <div className=" bg-white p-3 md:p-4 shadow-sm">
 
-            {/* black inner card */}
-            <div className="rounded-[30px] bg-black px-8 py-8 text-white overflow-hidden relative">
-              <div
-                className="pointer-events-none absolute inset-0 opacity-70"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(#151515 2px, transparent 2px), linear-gradient(90deg, #151515 2px, transparent 2px)",
-                  backgroundSize: "130px 58px",
-                }}
-              />
+              {/* black inner card */}
+              <div className="rounded-[30px] bg-black px-8 py-8 text-white overflow-hidden relative">
+                <div
+                  className="pointer-events-none absolute inset-0 opacity-70"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(#151515 2px, transparent 2px), linear-gradient(90deg, #151515 2px, transparent 2px)",
+                    backgroundSize: "130px 58px",
+                  }}
+                />
 
-              <div className="relative z-10 flex items-center justify-between gap-6">
-                <div className="text-left">
-                  <h3 className="font-ivy text-[34px] font-normal leading-none text-white">
-                    Stay Connected to the Art World
-                  </h3>
-                  <p className="font-encode mt-2 text-[12px] text-white/45">
-                    New collections, artist stories, and exhibitions delivered thoughtfully.
-                  </p>
+                <div className="relative z-10 flex items-center justify-between gap-6">
+                  <div className="text-left">
+                    <h3 className="font-ivy text-[34px] font-normal leading-none text-white">
+                      Stay Connected to the Art World
+                    </h3>
+                    <p className="font-encode mt-2 text-[12px] text-white/45">
+                      New collections, artist stories, and exhibitions delivered thoughtfully.
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleJoinCircle}
+                    className="font-encode shrink-0 rounded-full bg-white px-7 py-3 text-[12px] font-semibold text-black transition-colors hover:bg-white/85"
+                  >
+                    Join the Circle
+                  </button>
                 </div>
-
-                <a
-                  href="/contact"
-                  className="font-encode shrink-0 rounded-full bg-white px-7 py-3 text-[12px] font-semibold text-black transition-colors hover:bg-white/85"
-                >
-                  Join the Circle
-                </a>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

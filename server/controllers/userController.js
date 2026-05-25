@@ -63,11 +63,10 @@ exports.updateSellerStatus = async (req, res) => {
         <div style="max-width:600px;margin:auto;background:#ffffff;border-radius:14px;padding:28px;">
           <h1 style="color:#111;">${isFreeze ? "Account Frozen" : "Account Unfrozen"}</h1>
           <p>Hi ${seller.firstName || "there"},</p>
-          <p>${
-            isFreeze
-              ? "Your seller account has been frozen by Artify admin."
-              : "Your seller account has been unfrozen and is active again."
-          }</p>
+          <p>${isFreeze
+        ? "Your seller account has been frozen by Artify admin."
+        : "Your seller account has been unfrozen and is active again."
+      }</p>
           <p style="margin-top:24px;">Regards,<br/><strong>Artify Team</strong></p>
         </div>
       </div>
@@ -92,5 +91,40 @@ exports.getSellerArtworks = async (req, res) => {
     res.json({ artworks });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch seller artworks", error: error.message });
+  }
+};
+
+exports.getSellerById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const seller = await User.findOne({
+      _id: id,
+      role: "seller",
+    }).select("-password");
+
+    if (!seller) {
+      return res.status(404).json({ message: "Seller not found" });
+    }
+
+    const totalArts = await Artwork.countDocuments({ userId: seller._id });
+
+    const totalSales = await Artwork.countDocuments({
+      userId: seller._id,
+      sellingStatus: "sold",
+    });
+
+    res.json({
+      seller: {
+        ...seller.toObject(),
+        totalArts,
+        totalSales,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch seller",
+      error: error.message,
+    });
   }
 };

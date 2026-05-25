@@ -24,6 +24,7 @@ type UserType = {
   country?: string;
 
   artistPhoto?: string;
+  introduction?: string;
 };
 
 type AuthContextType = {

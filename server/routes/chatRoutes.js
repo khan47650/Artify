@@ -1,4 +1,5 @@
 const express = require("express");
+const ChatHistory = require("../models/ChatHistory");
 
 const router = express.Router();
 
@@ -72,6 +73,60 @@ router.post("/ai-curator", async (req, res) => {
     } catch (error) {
         console.error("AI curator error:", error);
         res.status(500).json({ error: error.message || "Unknown error" });
+    }
+});
+
+router.get("/history/:userId", async (req, res) => {
+    try {
+        const chats = await ChatHistory.find({ userId: req.params.userId }).sort({
+            updatedAt: -1,
+        });
+
+        res.json({ chats });
+    } catch (error) {
+        res.status(500).json({ message: "Chat history fetch failed", error: error.message });
+    }
+});
+
+router.post("/history", async (req, res) => {
+    try {
+        const { userId, title, messages } = req.body;
+
+        const chat = await ChatHistory.create({
+            userId,
+            title: title || "New chat",
+            messages: messages || [],
+        });
+
+        res.status(201).json({ chat });
+    } catch (error) {
+        res.status(500).json({ message: "Chat create failed", error: error.message });
+    }
+});
+
+router.put("/history/:id", async (req, res) => {
+    try {
+        const { title, messages } = req.body;
+
+        const chat = await ChatHistory.findByIdAndUpdate(
+            req.params.id,
+            { title, messages },
+            { returnDocument: "after" }
+        );
+
+        res.json({ chat });
+    } catch (error) {
+        res.status(500).json({ message: "Chat update failed", error: error.message });
+    }
+});
+
+router.delete("/history/:id", async (req, res) => {
+    try {
+        await ChatHistory.findByIdAndDelete(req.params.id);
+
+        res.json({ message: "Chat deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Chat delete failed", error: error.message });
     }
 });
 

@@ -56,32 +56,43 @@ const Footer = () => {
       <div className="border-b border-white/20">
         <div className="mx-auto grid w-full max-w-[1400px] border-white/20 px-4 md:grid-cols-[1.15fr_0.85fr] md:px-8">
           <section className="border-b border-white/20 py-8 md:border-b-0 md:border-r md:py-10 md:pr-10">
-            <h3 className="font-ivy text-[20px] font-normal">Join our Nourishment Circle</h3>
-            <p className="font-encode mt-3 max-w-xl text-[12px] text-white/65">
-              New collections, artist stories, and curatorial insights delivered thoughtfully.
-            </p>
+            <div className="max-w-[560px]">
+              <p className="font-encode text-[11px] uppercase tracking-[0.28em] text-white/45">
+                About Artify
+              </p>
 
-            <form className="mt-8 max-w-xl" onSubmit={handleSubscribe}>
-              <div className="relative">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email Address"
-                  disabled={submitting}
-                  className="h-12 w-full rounded-full border border-white/35 bg-transparent px-5 pr-14 text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-1 focus:ring-white/40 disabled:opacity-60"
-                />
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="no-lift absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black hover:bg-white/90 disabled:opacity-70"
-                  aria-label="Subscribe"
-                >
-                  {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
-                </button>
+              <h3 className="font-ivy mt-4 text-[34px] font-normal leading-[1.02] text-white md:text-[42px]">
+                A Curated Space
+                <br />
+                for Original Art
+              </h3>
+
+              <p className="font-encode mt-5 max-w-[520px] text-[13px] leading-6 text-white/60">
+                Artify connects independent artists with collectors through a calm,
+                story-driven marketplace focused on originality, thoughtful presentation,
+                and meaningful creative expression.
+              </p>
+
+              <div className="mt-7 flex flex-wrap gap-3">
+                <div className="rounded-full border border-white/15 bg-white/5 px-4 py-2">
+                  <p className="font-encode text-[10px] uppercase tracking-[0.18em] text-white/70">
+                    Original Artworks
+                  </p>
+                </div>
+
+                <div className="rounded-full border border-white/15 bg-white/5 px-4 py-2">
+                  <p className="font-encode text-[10px] uppercase tracking-[0.18em] text-white/70">
+                    Independent Artists
+                  </p>
+                </div>
+
+                <div className="rounded-full border border-white/15 bg-white/5 px-4 py-2">
+                  <p className="font-encode text-[10px] uppercase tracking-[0.18em] text-white/70">
+                    Curated Experience
+                  </p>
+                </div>
               </div>
-            </form>
+            </div>
 
             <div className="mt-7 flex items-center gap-4">
               <a href="#" className="transition-opacity hover:opacity-75">

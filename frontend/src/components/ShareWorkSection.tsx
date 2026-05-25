@@ -1,10 +1,15 @@
 import shareYourWorkImage from "@/assets/share_your_work.png";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import orangeLines from "@/assets/left_orange_lines.png";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import topDots from "/top_dots.png";
+
 
 const ShareWorkSection = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   return (
     <section className="relative bg-white pt-[90px] md:pt-[140px] pb-[60px] md:pb-[120px] overflow-hidden" ref={ref}>
@@ -36,7 +41,7 @@ const ShareWorkSection = () => {
             </div>
 
             <div
-             className={`px-5 md:px-0 max-w-[470px] transition-all duration-700 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
+              className={`px-5 md:px-0 max-w-[470px] transition-all duration-700 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
               style={{ transitionDelay: isVisible ? "180ms" : "0ms" }}
             >
               <h2 className="font-ivy text-[36px] md:text-[50px] font-normal leading-[0.95] tracking-[-0.02em] text-black">
@@ -49,12 +54,30 @@ const ShareWorkSection = () => {
                 Join as an independent artist and reach global buyers. Share your work with collectors who value originality, process, and intention.
               </p>
 
-              <a
-                href="/sell"
+              <button
+                onClick={() => {
+                  if (!user) {
+                    navigate("/login");
+                    return;
+                  }
+
+                  if (user.role === "seller") {
+                    navigate("/user/dashboard");
+                    return;
+                  }
+
+                  if (user.role === "buyer") {
+                    navigate("/login");
+                    return;
+                  }
+
+                  // admin case
+                  return;
+                }}
                 className="font-encode mt-6 md:mt-12 inline-flex items-center justify-center rounded-full bg-black px-7 md:px-8 py-3 text-[12px] font-semibold text-white transition-colors hover:bg-black/85"
               >
                 Start Selling on Artify
-              </a>
+              </button>
 
               <p className="font-encode mt-3 text-[10px] md:text-[11px] leading-5 text-black/55">
                 <span className="font-medium text-black/72">Note:</span> Applications are reviewed to maintain curatorial quality.

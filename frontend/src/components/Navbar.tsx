@@ -1,6 +1,6 @@
 import { Search, Heart, ShoppingCart, User, Menu, X, LogOut, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import artifyLogo from "@/assets/artify_logo.png";
 import { useCart } from "@/contexts/CartContext";
 import { useLikedArtworks } from "@/contexts/LikedContext";
@@ -20,6 +20,9 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const { totalItems } = useCart();
   const { totalLiked } = useLikedArtworks();
+  const location = useLocation();
+
+  const isExplorePage = location.pathname === "/explore";
 
   const navigate = useNavigate();
   const accountRole = user?.role || "buyer";
@@ -67,15 +70,16 @@ const Navbar = () => {
             </nav>
 
             <div className="flex items-center gap-2">
-              <button
-                type="button"
-                className="p-2 hover:bg-background/10 rounded-full transition-colors duration-200 text-background"
-                aria-label="Open search"
-                onClick={() => setSearchOpen((prev) => !prev)}
-              >
-                <Search className="w-4 h-4" />
-              </button>
-
+              {isExplorePage && (
+                <button
+                  type="button"
+                  className="p-2 hover:bg-background/10 rounded-full transition-colors duration-200 text-background"
+                  aria-label="Open search"
+                  onClick={() => setSearchOpen((prev) => !prev)}
+                >
+                  <Search className="w-4 h-4" />
+                </button>
+              )}
               <Link to="/liked" className="relative p-2 hover:bg-background/10 rounded-full transition-colors duration-200 text-background" aria-label="Liked">
                 <Heart className="w-4 h-4" />
                 {totalLiked > 0 && (
@@ -97,9 +101,26 @@ const Navbar = () => {
               {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="hidden md:flex items-center gap-2 bg-background text-foreground px-4 py-1.5 rounded-full text-sm font-medium hover:bg-background/90 transition-colors duration-200">
-                      <User className="w-3.5 h-3.5" />
-                      {profileName}
+                    <button className={`hidden md:flex items-center gap-2 rounded-full px-2 py-1 transition-colors duration-200 ${user?.role === "admin"
+                        ? "bg-background text-foreground px-4 py-1.5 text-sm font-medium hover:bg-background/90"
+                        : "bg-transparent"
+                      }`}>
+                      {user.role === "admin" ? (
+                        <>
+                          <User className="w-3.5 h-3.5" />
+                          Admin
+                        </>
+                      ) : user.artistPhoto ? (
+                        <img
+                          src={user.artistPhoto}
+                          alt={profileName}
+                          className="h-7 w-7 rounded-full object-cover"
+                        />
+                      ) : (
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-black text-[12px] font-semibold uppercase text-white">
+                          {(user.firstName || user.lastName || "U").charAt(0)}
+                        </span>
+                      )}
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
@@ -143,25 +164,48 @@ const Navbar = () => {
           </div>
 
           {searchOpen && (
-            <div className="absolute right-4 top-[calc(100%+10px)] z-50 w-[250px] md:right-8 md:w-[300px]">
+            <div className="absolute right-4 top-[calc(100%+10px)] z-50 w-[280px] md:right-8 md:w-[340px]">
               <form
                 onSubmit={handleSearchSubmit}
-                className="flex items-center gap-2 rounded-full border border-background/30 bg-black/85 p-1.5 backdrop-blur-xl"
+                className="flex items-center gap-2 rounded-full border border-background/20 bg-black/90 p-1.5 shadow-2xl backdrop-blur-xl"
               >
                 <input
-                  type="search"
+                  type="text"
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
                   placeholder="Search artworks..."
-                  className="h-9 w-full bg-transparent px-3 text-sm text-background placeholder:text-background/60 focus:outline-none"
+                  className="h-9 w-full bg-transparent px-3 text-sm text-background placeholder:text-background/50 focus:outline-none"
                   autoFocus
                 />
+
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchTerm("")}
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full text-background/70 transition hover:bg-white/10 hover:text-background"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+
                 <button
                   type="submit"
                   className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-foreground transition-colors hover:bg-background/90"
                   aria-label="Submit search"
                 >
                   <Search className="h-4 w-4" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchOpen(false);
+                    setSearchTerm("");
+                  }}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full text-background transition hover:bg-white/10"
+                  aria-label="Close search"
+                >
+                  <X className="h-4 w-4" />
                 </button>
               </form>
             </div>

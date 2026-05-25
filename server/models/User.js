@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema(
     postalCode: String,
     country: String,
     artistPhoto: String,
+    introduction: {
+      type: String,
+      default: "",
+    },
     email: {
       type: String,
       required: true,

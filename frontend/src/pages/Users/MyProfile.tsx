@@ -35,6 +35,7 @@ const MyProfile = () => {
     postalCode: user?.postalCode || "",
     country: user?.country || "",
     artistPhoto: user?.artistPhoto || "",
+    introduction: user?.introduction || "",
   });
 
   const fileToDataUrl = (file: File) =>
@@ -282,6 +283,15 @@ const MyProfile = () => {
             <EditableInfoCard icon={<FaMapMarkerAlt />} label="Postal Code" value={formData.postalCode} disabled={!isEditing} onChange={(value) => handleFieldChange("postalCode", value)} />
             <EditableInfoCard icon={<FaMapMarkerAlt />} label="Address Line 1" value={formData.addressLine1} disabled={!isEditing} onChange={(value) => handleFieldChange("addressLine1", value)} />
             <EditableInfoCard icon={<FaMapMarkerAlt />} label="Address Line 2" value={formData.addressLine2} disabled={!isEditing} onChange={(value) => handleFieldChange("addressLine2", value)} />
+            {user?.role === "seller" && (
+              <EditableTextareaCard
+                icon={<FaUserEdit />}
+                label="Artist Introduction"
+                value={formData.introduction}
+                disabled={!isEditing}
+                onChange={(value) => handleFieldChange("introduction", value)}
+              />
+            )}
           </div>
 
 
@@ -405,6 +415,48 @@ const EditableInfoCard = ({
             className={`${bodyFont} mt-1 w-full rounded-full border px-3 py-2 text-[15px] font-semibold text-[#111] outline-none ${disabled
               ? "border-transparent bg-transparent px-0"
               : "border-black/15 bg-[#f7f4ee]"
+              }`}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const EditableTextareaCard = ({
+  icon,
+  label,
+  value,
+  disabled,
+  onChange,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  disabled: boolean;
+  onChange: (value: string) => void;
+}) => {
+  return (
+    <div className="rounded-[24px] border border-[#ececec] bg-white p-5 transition hover:-translate-y-1 hover:shadow-[0_20px_40px_-18px_rgba(0,0,0,0.16)] md:col-span-2 xl:col-span-3">
+      <div className="flex items-start gap-4">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-black text-white">
+          {icon}
+        </div>
+
+        <div className="w-full">
+          <p className={`${bodyFont} text-[11px] uppercase tracking-[0.18em] text-[#888]`}>
+            {label}
+          </p>
+
+          <textarea
+            value={value}
+            disabled={disabled}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="Not Provided"
+            rows={5}
+            className={`${bodyFont} mt-2 w-full resize-none rounded-[22px] border px-4 py-3 text-[15px] font-semibold leading-7 text-[#111] outline-none ${disabled
+                ? "border-transparent bg-transparent px-0"
+                : "border-black/15 bg-[#f7f4ee]"
               }`}
           />
         </div>
