@@ -5,9 +5,9 @@ const User = require("../models/User");
 
 exports.addArtwork = async (req, res) => {
     try {
-        const { image, name, userId, description, price, category } = req.body;
+        const { image, name, userId, description, price, category, quantity } = req.body;
 
-        if (!image || !name || !userId || !description || !price || !category) {
+        if (!image || !name || !userId || !description || !price || !category || quantity === undefined) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -22,6 +22,8 @@ exports.addArtwork = async (req, res) => {
             description,
             price,
             category,
+            quantity: Number(quantity),
+            sellingStatus: Number(quantity) > 0 ? "pending" : "sold",
         });
 
         res.status(201).json({ message: "Artwork added successfully", artwork });
@@ -83,7 +85,7 @@ exports.getCurrentUserArtworks = async (req, res) => {
 exports.updateArtwork = async (req, res) => {
     try {
         const { id } = req.params;
-        const { image, name, description, price, category } = req.body;
+        const { image, name, description, price, category, quantity } = req.body;
 
         const artwork = await Artwork.findById(id);
 
@@ -105,6 +107,10 @@ exports.updateArtwork = async (req, res) => {
         artwork.description = description ?? artwork.description;
         artwork.price = price ?? artwork.price;
         artwork.category = category ?? artwork.category;
+        if (quantity !== undefined) {
+            artwork.quantity = Number(quantity);
+            artwork.sellingStatus = Number(quantity) > 0 ? "pending" : "sold";
+        }
 
         await artwork.save();
 

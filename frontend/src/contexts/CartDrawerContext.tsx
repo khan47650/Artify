@@ -58,6 +58,19 @@ export const CartDrawerProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const updateQuantity = async (id: string, quantity: number) => {
+    try {
+      await api.put(`/cart/${id}/quantity`, { quantity });
+      fetchCart();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.message || "Quantity update failed",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <CartDrawerContext.Provider
       value={{
@@ -152,8 +165,34 @@ export const CartDrawerProvider = ({ children }: { children: ReactNode }) => {
                             </button>
                           </div>
 
+                          <div className="mt-3 flex items-center gap-2">
+                            <button
+                              onClick={() => updateQuantity(item._id, Number(item.quantity || 1) - 1)}
+                              disabled={Number(item.quantity || 1) <= 1}
+                              className="flex h-7 w-7 items-center justify-center rounded-full border border-[#ddd6ca] bg-white disabled:opacity-40"
+                            >
+                              -
+                            </button>
+
+                            <span className={`${bodyFont} min-w-[24px] text-center text-[13px] text-[#111]`}>
+                              {item.quantity || 1}
+                            </span>
+
+                            <button
+                              onClick={() => updateQuantity(item._id, Number(item.quantity || 1) + 1)}
+                              disabled={Number(item.quantity || 1) >= Number(art.quantity || 1)}
+                              className="flex h-7 w-7 items-center justify-center rounded-full border border-[#ddd6ca] bg-white disabled:opacity-40"
+                            >
+                              +
+                            </button>
+
+                            <span className={`${bodyFont} text-[11px] text-[#777]`}>
+                              Available: {art.quantity || 0}
+                            </span>
+                          </div>
+
                           <p className={`${headingFont} mt-3 text-[22px] leading-none text-[#111]`}>
-                            ${Number(art.price).toLocaleString()}
+                            ${Number(Number(art.price) * Number(item.quantity || 1)).toLocaleString()}
                           </p>
                         </div>
                       </div>

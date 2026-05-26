@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 type ArtworkDialogProps = {
   open: boolean;
@@ -8,13 +9,20 @@ type ArtworkDialogProps = {
   loading?: boolean;
 };
 
-const ArtworkDialog = ({ open, onClose, onSave, artwork, loading }: ArtworkDialogProps) => {
+const ArtworkDialog = ({
+  open,
+  onClose,
+  onSave,
+  artwork,
+  loading,
+}: ArtworkDialogProps) => {
   const [formData, setFormData] = useState({
     image: "",
     name: "",
     description: "",
     price: "",
     category: "",
+    quantity: "",
   });
 
   useEffect(() => {
@@ -25,6 +33,7 @@ const ArtworkDialog = ({ open, onClose, onSave, artwork, loading }: ArtworkDialo
         description: artwork.description || "",
         price: artwork.price || "",
         category: artwork.category || "",
+        quantity: String(artwork.quantity ?? 1),
       });
     } else {
       setFormData({
@@ -33,6 +42,7 @@ const ArtworkDialog = ({ open, onClose, onSave, artwork, loading }: ArtworkDialo
         description: "",
         price: "",
         category: "",
+        quantity: "",
       });
     }
   }, [artwork, open]);
@@ -53,6 +63,17 @@ const ArtworkDialog = ({ open, onClose, onSave, artwork, loading }: ArtworkDialo
 
     const dataUrl = await fileToDataUrl(file);
     setFormData((prev) => ({ ...prev, image: dataUrl }));
+  };
+
+  const handleSave = () => {
+    if (!formData.quantity || Number(formData.quantity) < 1) {
+      toast.error("Please enter quantity");
+      return;
+    }
+    onSave({
+      ...formData,
+      quantity: Number(formData.quantity || 1),
+    });
   };
 
   return (
@@ -103,6 +124,15 @@ const ArtworkDialog = ({ open, onClose, onSave, artwork, loading }: ArtworkDialo
           className="mt-3 h-11 w-full rounded-full border border-black/15 px-4 outline-none"
         />
 
+        <input
+          type="number"
+          min={1}
+          value={formData.quantity}
+          onChange={(e) => setFormData((p) => ({ ...p, quantity: e.target.value }))}
+          placeholder="Quantity"
+          className="mt-3 h-11 w-full rounded-full border border-black/15 px-4 outline-none"
+        />
+
         <div className="mt-5 flex gap-3">
           <button onClick={onClose} className="h-11 flex-1 rounded-full border border-black/15">
             Cancel
@@ -110,7 +140,7 @@ const ArtworkDialog = ({ open, onClose, onSave, artwork, loading }: ArtworkDialo
 
           <button
             disabled={loading}
-            onClick={() => onSave(formData)}
+            onClick={handleSave}
             className="h-11 flex-1 rounded-full bg-black text-white disabled:bg-black/40"
           >
             {loading ? "Saving..." : "Save"}

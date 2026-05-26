@@ -81,6 +81,19 @@ const Cart = () => {
     }
   };
 
+  const updateQuantity = async (id: string, quantity: number) => {
+    try {
+      await api.put(`/cart/${id}/quantity`, { quantity });
+      fetchCart();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.message || "Quantity update failed",
+        variant: "destructive",
+      });
+    }
+  };
+
   const clearCart = async () => {
     if (!user?.id) return;
 
@@ -293,11 +306,35 @@ const Cart = () => {
                               {art.category}
                             </p>
                           </div>
+                          <div className="mt-4 flex items-center gap-2">
+                            <button
+                              onClick={() => updateQuantity(item._id, Number(item.quantity || 1) - 1)}
+                              disabled={Number(item.quantity || 1) <= 1}
+                              className="flex h-8 w-8 items-center justify-center rounded-full border border-[#d8d2c8] bg-white disabled:opacity-40"
+                            >
+                              -
+                            </button>
 
+                            <span className={`${bodyFont} min-w-[28px] text-center text-[14px] text-[#111]`}>
+                              {item.quantity || 1}
+                            </span>
+
+                            <button
+                              onClick={() => updateQuantity(item._id, Number(item.quantity || 1) + 1)}
+                              disabled={Number(item.quantity || 1) >= Number(art.quantity || 1)}
+                              className="flex h-8 w-8 items-center justify-center rounded-full border border-[#d8d2c8] bg-white disabled:opacity-40"
+                            >
+                              +
+                            </button>
+
+                            <span className={`${bodyFont} ml-2 text-[12px] text-[#777]`}>
+                              Available: {art.quantity || 0}
+                            </span>
+                          </div>
                           <p
                             className={`${headingFont} mt-4 text-[26px] leading-none text-[#111]`}
                           >
-                            ${Number(art.price).toLocaleString()}
+                            ${Number(Number(art.price) * Number(item.quantity || 1)).toLocaleString()}
                           </p>
                         </div>
 
@@ -331,8 +368,8 @@ const Cart = () => {
                     type="button"
                     onClick={() => setPaymentMethod("easypaisa")}
                     className={`${bodyFont} rounded-[20px] border p-4 text-left transition ${paymentMethod === "easypaisa"
-                        ? "border-black bg-black text-white"
-                        : "border-[#e6dfd4] bg-[#fbfaf7] text-[#111]"
+                      ? "border-black bg-black text-white"
+                      : "border-[#e6dfd4] bg-[#fbfaf7] text-[#111]"
                       }`}
                   >
                     <div className="flex items-center gap-3">
@@ -350,8 +387,8 @@ const Cart = () => {
                     type="button"
                     onClick={() => setPaymentMethod("jazzcash")}
                     className={`${bodyFont} rounded-[20px] border p-4 text-left transition ${paymentMethod === "jazzcash"
-                        ? "border-black bg-black text-white"
-                        : "border-[#e6dfd4] bg-[#fbfaf7] text-[#111]"
+                      ? "border-black bg-black text-white"
+                      : "border-[#e6dfd4] bg-[#fbfaf7] text-[#111]"
                       }`}
                   >
                     <div className="flex items-center gap-3">

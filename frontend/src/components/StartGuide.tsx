@@ -9,6 +9,10 @@ const artworks = [
   { fileName: "6.jpeg", className: "right-[15%] top-[50%] h-[58px] w-[58px]" },
   { fileName: "WhatsApp Image 2026-04-12 at 12.55.17 AM2.jpeg", className: "left-[24%] top-[74%] h-[48px] w-[48px]" },
   { fileName: "WhatsApp Image 2026-04-12 at 12.55.17 AM.jpeg", className: "right-[25%] top-[74%] h-[48px] w-[48px]" },
+  {
+    fileName: "WhatsApp Image 2026-04-12 at 12.55.17 AM5.jpeg",
+    className: "right-[7%] top-[30%] h-[54px] w-[54px]",
+  },
 ];
 
 const toPublicImagePath = (fileName: string) => `/${encodeURIComponent(fileName).replace(/%2F/g, "/")}`;

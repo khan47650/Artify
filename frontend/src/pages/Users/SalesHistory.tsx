@@ -53,11 +53,11 @@ const SalesHistory = () => {
 
     const getOrderTotalForSeller = (order: any) => {
         return getSellerArtworks(order).reduce(
-            (sum: number, item: any) => sum + Number(item.artworkId?.price || 0),
+            (sum: number, item: any) =>
+                sum + Number(item.artworkId?.price || 0) * Number(item.quantity || 1),
             0
         );
     };
-
     const totalEarnings = orders.reduce(
         (sum, order) => sum + getOrderTotalForSeller(order),
         0
@@ -134,7 +134,9 @@ const SalesHistory = () => {
 
             doc.setFontSize(9);
             doc.text(`Category: ${art?.category || "N/A"}`, 18, y + 7);
-            doc.text(`Price: $${Number(art?.price || 0).toLocaleString()}`, 18, y + 14);
+            doc.text(`Qty: ${item.quantity || 1} x $${Number(art?.price || 0).toLocaleString()} = $${(
+                Number(art?.price || 0) * Number(item.quantity || 1)
+            ).toLocaleString()}`, 18, y + 14);
 
             y += 28;
         });

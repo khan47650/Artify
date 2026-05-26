@@ -208,6 +208,10 @@ const ManageArt = () => {
                                             ${art.price}
                                         </p>
 
+                                        <p className={`${bodyFont} mt-2 text-[12px] text-[#6f6a63]`}>
+                                            Quantity: <span className="font-semibold text-[#111]">{art.quantity || 0}</span>
+                                        </p>
+
                                         {/* BUTTONS */}
                                         <div className="mt-4 flex flex-wrap gap-2">
                                             <button

@@ -20,6 +20,13 @@ const orderSchema = new mongoose.Schema(
                     ref: "User",
                     required: true,
                 },
+
+                quantity: {
+                    type: Number,
+                    required: true,
+                    default: 1,
+                    min: 1,
+                },
             },
         ],
 

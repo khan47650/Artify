@@ -30,12 +30,14 @@ exports.placeOrder = async (req, res) => {
 
         const validItems = cartItems.filter((item) => {
             const art = item.artworkId;
+            const qty = Number(item.quantity || 1);
 
             return (
                 art &&
                 art.approvedStatus === "approved" &&
                 art.sellingStatus !== "sold" &&
-                art.userId?.accountStatus !== "freeze"
+                art.userId?.accountStatus !== "freeze" &&
+                Number(art.quantity || 0) >= qty
             );
         });
 
@@ -50,6 +52,7 @@ exports.placeOrder = async (req, res) => {
         const orderArtworks = validItems.map((item) => ({
             artworkId: item.artworkId._id,
             sellerId: item.artworkId.userId._id,
+            quantity: Number(item.quantity || 1),
         }));
 
         const order = await Order.create({
@@ -150,7 +153,7 @@ exports.getAllOrders = async (req, res) => {
         const orders = await Order.find()
             .populate("buyerId", "firstName lastName email phoneNumber")
             .populate("artworks.sellerId", "firstName lastName email")
-            .populate("artworks.artworkId", "name image price category sellingStatus")
+            .populate("artworks.artworkId", "name image price category sellingStatus,quantity")
             .sort({ createdAt: -1 });
 
         res.json({ orders });
@@ -183,11 +186,19 @@ exports.confirmOrder = async (req, res) => {
             .map((item) => item.artworkId?.name)
             .filter(Boolean)
             .join(", ");
-
         for (const item of order.artworks) {
-            await Artwork.findByIdAndUpdate(item.artworkId._id, {
-                sellingStatus: "sold",
-            });
+            const artwork = await Artwork.findById(item.artworkId._id);
+
+            if (!artwork) continue;
+
+            const orderedQty = Number(item.quantity || 1);
+            const currentQty = Number(artwork.quantity || 0);
+            const newQty = Math.max(currentQty - orderedQty, 0);
+
+            artwork.quantity = newQty;
+            artwork.sellingStatus = newQty <= 0 ? "sold" : "pending";
+
+            await artwork.save();
         }
 
         await Activity.create({
@@ -287,7 +298,7 @@ exports.getUserPendingOrders = async (req, res) => {
         const orders = await Order.find(query)
             .populate("buyerId", "firstName lastName email")
             .populate("artworks.sellerId", "firstName lastName email")
-            .populate("artworks.artworkId", "name image price category")
+            .populate("artworks.artworkId", "name image price category,quantity")
             .sort({ createdAt: -1 });
 
         res.json({ orders });
@@ -422,7 +433,7 @@ exports.getUserConfirmedOrders = async (req, res) => {
         const orders = await Order.find(query)
             .populate("buyerId", "firstName lastName email")
             .populate("artworks.sellerId", "firstName lastName email")
-            .populate("artworks.artworkId", "name image price category")
+            .populate("artworks.artworkId", "name image price category,quantity")
             .sort({ updatedAt: -1 });
 
         res.json({ orders });
@@ -468,7 +479,7 @@ exports.getBuyerOrdersHistory = async (req, res) => {
         const orders = await Order.find(query)
             .populate("buyerId", "firstName lastName email")
             .populate("artworks.sellerId", "firstName lastName email")
-            .populate("artworks.artworkId", "name image price category")
+            .populate("artworks.artworkId", "name image price category,quantity")
             .sort({ updatedAt: -1 });
 
         res.json({ orders });
@@ -521,7 +532,7 @@ exports.getSellerSalesHistory = async (req, res) => {
         })
             .populate("buyerId", "firstName lastName email")
             .populate("artworks.sellerId", "firstName lastName email")
-            .populate("artworks.artworkId", "name image price category")
+            .populate("artworks.artworkId", "name image price category,quantity")
             .sort({ updatedAt: -1 });
 
         res.json({ orders });

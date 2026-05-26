@@ -4,10 +4,16 @@ const User = require("../models/User");
 
 exports.addToCart = async (req, res) => {
     try {
-        const { userId, artworkId } = req.body;
+        const { userId, artworkId, quantity = 1 } = req.body;
 
         if (!userId || !artworkId) {
             return res.status(400).json({ message: "UserId and artworkId are required" });
+        }
+
+        const requestedQty = Number(quantity);
+
+        if (requestedQty < 1) {
+            return res.status(400).json({ message: "Quantity must be at least 1" });
         }
 
         const user = await User.findById(userId);
@@ -26,8 +32,12 @@ exports.addToCart = async (req, res) => {
             return res.status(400).json({ message: "Artwork is not approved yet" });
         }
 
-        if (artwork.sellingStatus === "sold") {
+        if (artwork.sellingStatus === "sold" || Number(artwork.quantity || 0) <= 0) {
             return res.status(400).json({ message: "Artwork is already sold" });
+        }
+
+        if (requestedQty > Number(artwork.quantity || 0)) {
+            return res.status(400).json({ message: `Only ${artwork.quantity} item(s) available` });
         }
 
         if (artwork.userId?.accountStatus === "freeze") {
@@ -37,10 +47,20 @@ exports.addToCart = async (req, res) => {
         const existing = await Cart.findOne({ userId, artworkId });
 
         if (existing) {
-            return res.status(409).json({ message: "Artwork already exists in cart" });
+            existing.quantity = requestedQty;
+            await existing.save();
+
+            return res.json({
+                message: "Cart quantity updated",
+                cartItem: existing,
+            });
         }
 
-        const cartItem = await Cart.create({ userId, artworkId });
+        const cartItem = await Cart.create({
+            userId,
+            artworkId,
+            quantity: requestedQty,
+        });
 
         res.status(201).json({
             message: "Artwork added to cart",
@@ -74,7 +94,7 @@ exports.getUserCart = async (req, res) => {
         );
 
         const totalPrice = filtered.reduce(
-            (sum, item) => sum + Number(item.artworkId.price || 0),
+            (sum, item) => sum + Number(item.artworkId.price || 0) * Number(item.quantity || 1),
             0
         );
 
@@ -113,5 +133,40 @@ exports.clearCart = async (req, res) => {
         res.json({ message: "Cart cleared successfully" });
     } catch (error) {
         res.status(500).json({ message: "Clear cart failed", error: error.message });
+    }
+};
+
+exports.updateCartQuantity = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { quantity } = req.body;
+
+        const cartItem = await Cart.findById(id).populate("artworkId");
+
+        if (!cartItem) {
+            return res.status(404).json({ message: "Cart item not found" });
+        }
+
+        const requestedQty = Number(quantity);
+
+        if (requestedQty < 1) {
+            return res.status(400).json({ message: "Quantity must be at least 1" });
+        }
+
+        if (requestedQty > Number(cartItem.artworkId.quantity || 0)) {
+            return res.status(400).json({
+                message: `Only ${cartItem.artworkId.quantity} item(s) available`,
+            });
+        }
+
+        cartItem.quantity = requestedQty;
+        await cartItem.save();
+
+        res.json({
+            message: "Cart quantity updated",
+            cartItem,
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Quantity update failed", error: error.message });
     }
 };

@@ -12,6 +12,12 @@ const cartSchema = new mongoose.Schema(
             ref: "Artwork",
             required: true,
         },
+
+        quantity: {
+            type: Number,
+            default: 1,
+            min: 1,
+        },
     },
     { timestamps: true }
 );

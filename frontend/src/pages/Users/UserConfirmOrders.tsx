@@ -51,7 +51,8 @@ const UserConfirmOrders = () => {
   const getOrderTotal = (order: any) => {
     return (
       order.artworks?.reduce(
-        (sum: number, item: any) => sum + Number(item.artworkId?.price || 0),
+        (sum: number, item: any) =>
+          sum + Number(item.artworkId?.price || 0) * Number(item.quantity || 1),
         0
       ) || 0
     );
@@ -131,7 +132,9 @@ const UserConfirmOrders = () => {
       );
       doc.text(`Category: ${art?.category || "N/A"}`, 18, y + 14);
       doc.text(
-        `Price: $${Number(art?.price || 0).toLocaleString()}`,
+        `Qty: ${item.quantity || 1} x $${Number(art?.price || 0).toLocaleString()} = $${(
+          Number(art?.price || 0) * Number(item.quantity || 1)
+        ).toLocaleString()}`,
         18,
         y + 21
       );

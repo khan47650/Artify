@@ -160,7 +160,7 @@ const UserPendingOrders = () => {
 
             const totalPrice = order.artworks?.reduce(
               (sum: number, item: any) =>
-                sum + Number(item.artworkId?.price || 0),
+                sum + Number(item.artworkId?.price || 0) * Number(item.quantity || 1),
               0
             );
 

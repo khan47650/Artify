@@ -361,7 +361,7 @@ const MyArtwork = () => {
                                         {art.description}
                                     </p>
 
-                                    <div className="mt-5 flex items-center justify-between">
+                                    <div className="mt-5 flex items-center justify-between gap-4">
                                         <div>
                                             <p
                                                 className={`${bodyFont} text-[10px] uppercase tracking-[0.18em] text-[#8a847c]`}
@@ -374,6 +374,15 @@ const MyArtwork = () => {
                                             >
                                                 ${art.price}
                                             </h3>
+                                            <div>
+                                                <p className={`${bodyFont} text-[10px] uppercase tracking-[0.18em] text-[#8a847c]`}>
+                                                    Quantity
+                                                </p>
+
+                                                <h3 className={`${headingFont} mt-1 text-[24px] leading-none text-[#111]`}>
+                                                    {art.quantity || 0}
+                                                </h3>
+                                            </div>
                                         </div>
 
                                         <div className="flex items-center gap-2">
@@ -402,8 +411,8 @@ const MyArtwork = () => {
                                                     setDeleteDialogOpen(true);
                                                 }}
                                                 className={`flex h-10 w-10 items-center justify-center rounded-full border ${isFrozen
-                                                        ? "cursor-not-allowed border-[#ddd] bg-[#efefef] text-[#999] opacity-60"
-                                                        : "border-[#ddd6ca] bg-white text-[#111]"
+                                                    ? "cursor-not-allowed border-[#ddd] bg-[#efefef] text-[#999] opacity-60"
+                                                    : "border-[#ddd6ca] bg-white text-[#111]"
                                                     }`}
                                             >
                                                 <FaTrash className="text-[13px]" />
