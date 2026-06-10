@@ -83,13 +83,13 @@ const ArtQuiz = () => {
   const answeredCount = answers.filter(Boolean).length;
 
   return (
-    <div className="min-h-screen bg-white text-[#1d1d1d]">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-white text-[#1d1d1d]">
       <Navbar />
 
-      <main className="relative overflow-hidden bg-white pt-20 pb-10">
-        <div className="mx-auto max-w-[1120px] px-4 md:px-6">
+      <main className="relative w-full max-w-[100vw] overflow-x-hidden bg-white pt-20 pb-10">
+        <div className="mx-auto w-full max-w-[1120px] overflow-hidden px-4 md:px-6">
           {!showResults ? (
-            <div className="grid items-start gap-6 lg:grid-cols-[0.62fr_1.38fr]">
+            <div className="grid min-w-0 items-start gap-6 lg:grid-cols-[0.62fr_1.38fr]">
               <aside className="rounded-[28px] border border-[#e6dfd4] bg-white p-5 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.12)]">
                 <div className={`${bodyFont} inline-flex items-center gap-2 rounded-full border border-[#d8d2c8] bg-white px-3 py-1.5 text-[11px] uppercase tracking-[0.22em] text-[#6f6a63]`}>
                   <Sparkles className="h-3.5 w-3.5" />
@@ -119,11 +119,10 @@ const ArtQuiz = () => {
                   {questions.map((q, idx) => (
                     <div
                       key={q.question}
-                      className={`${bodyFont} rounded-[12px] border px-3 py-2 text-[12px] ${
-                        idx === currentQ
-                          ? "border-black bg-black text-white"
-                          : "border-[#e6dfd4] bg-white text-[#6f6a63]"
-                      }`}
+                      className={`${bodyFont} rounded-[12px] border px-3 py-2 text-[12px] ${idx === currentQ
+                        ? "border-black bg-black text-white"
+                        : "border-[#e6dfd4] bg-white text-[#6f6a63]"
+                        }`}
                     >
                       Q{idx + 1}: {answers[idx] ? "Answered" : "Pending"}
                     </div>
@@ -131,8 +130,8 @@ const ArtQuiz = () => {
                 </div>
               </aside>
 
-              <section className="rounded-[28px] border border-[#e6dfd4] bg-white p-6 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.12)] md:p-7">
-                <div className="flex items-center justify-between gap-4">
+              <section className="min-w-0 rounded-[24px] border border-[#e6dfd4] bg-white p-4 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.12)] sm:p-6 md:p-7">
+                <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className={`${bodyFont} text-[12px] uppercase tracking-[0.22em] text-[#777]`}>
                     Question {currentQ + 1} of {questions.length}
                   </p>
@@ -145,7 +144,7 @@ const ArtQuiz = () => {
                   </button>
                 </div>
 
-                <h2 className={`${headingFont} mt-4 max-w-[680px] text-[52px] leading-[0.92] text-[#111]`}>
+                <h2 className={`${headingFont} mt-4 max-w-[680px] break-words text-[34px] leading-[0.95] text-[#111] sm:text-[42px] md:text-[52px]`}>
                   {questions[currentQ].question}
                 </h2>
 
@@ -154,18 +153,16 @@ const ArtQuiz = () => {
                     <button
                       key={option}
                       onClick={() => handleAnswer(option)}
-                      className={`${bodyFont} flex w-full items-center gap-4 rounded-[18px] border px-5 py-4 text-left text-[18px] transition-all ${
-                        answers[currentQ] === option
-                          ? "border-black bg-black text-white"
-                          : "border-[#d8d2c8] bg-white text-[#1d1d1d] hover:border-black/50"
-                      }`}
+                      className={`${bodyFont} flex w-full min-w-0 items-center gap-3 rounded-[16px] border px-4 py-3 text-left text-[15px] transition-all sm:gap-4 sm:px-5 sm:py-4 sm:text-[18px] ${answers[currentQ] === option
+                        ? "border-black bg-black text-white"
+                        : "border-[#d8d2c8] bg-white text-[#1d1d1d] hover:border-black/50"
+                        }`}
                     >
-                      <span className={`inline-flex h-7 w-7 items-center justify-center rounded-full text-[12px] ${
-                        answers[currentQ] === option ? "bg-white/20 text-white" : "bg-[#f1f0ee] text-[#777]"
-                      }`}>
+                      <span className={`inline-flex h-7 w-7 items-center justify-center rounded-full text-[12px] ${answers[currentQ] === option ? "bg-white/20 text-white" : "bg-[#f1f0ee] text-[#777]"
+                        }`}>
                         {optionBadge[idx]}
                       </span>
-                      <span>{option}</span>
+                      <span className="min-w-0 break-words">{option}</span>
                     </button>
                   ))}
                 </div>
@@ -181,7 +178,7 @@ const ArtQuiz = () => {
               </section>
             </div>
           ) : (
-            <div className="rounded-[28px] border border-[#e6dfd4] bg-white p-8 text-center shadow-[0_10px_30px_-20px_rgba(0,0,0,0.12)] md:p-10">
+            <div className="overflow-hidden rounded-[24px] border border-[#e6dfd4] bg-white p-5 text-center shadow-[0_10px_30px_-20px_rgba(0,0,0,0.12)] sm:p-8 md:p-10">
               <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-black text-white">
                 <Wand2 className="h-5 w-5" />
               </div>
@@ -190,7 +187,7 @@ const ArtQuiz = () => {
                 Your Curator Result
               </p>
 
-              <h2 className={`${headingFont} mt-3 text-[52px] leading-none text-[#111]`}>
+              <h2 className={`${headingFont} mt-3 break-words text-[34px] leading-none text-[#111] sm:text-[44px] md:text-[52px]`}>
                 {result.genre}
               </h2>
 

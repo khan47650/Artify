@@ -109,10 +109,10 @@ const ArtistProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white text-[#1d1d1d]">
+      <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-white text-[#1d1d1d]">
         <Navbar />
-        <main className="bg-white pt-24 pb-12">
-          <div className="mx-auto max-w-[1120px] px-4 md:px-6">
+        <main className="w-full max-w-[100vw] overflow-x-hidden bg-white pt-24 pb-12">
+          <div className="mx-auto w-full max-w-[1120px] overflow-hidden px-4 md:px-6">
             <div className="h-[520px] animate-pulse rounded-[26px] bg-[#ececec]" />
           </div>
         </main>
@@ -152,8 +152,8 @@ const ArtistProfile = () => {
           </Link>
 
           <section className="overflow-hidden rounded-[26px] border border-[#e6dfd4] bg-white shadow-[0_10px_28px_-22px_rgba(0,0,0,0.16)]">
-            <div className="grid lg:grid-cols-[0.88fr_1.12fr]">
-              <div className="relative flex h-[490px] items-center justify-center overflow-hidden bg-[#f7f4ee]">
+            <div className="grid min-w-0 lg:grid-cols-[0.88fr_1.12fr]">
+              <div className="relative flex h-[320px] items-center justify-center overflow-hidden bg-[#f7f4ee] sm:h-[400px] lg:h-[490px]">
                 {artist.artistPhoto ? (
                   <img
                     src={artist.artistPhoto}
@@ -166,20 +166,20 @@ const ArtistProfile = () => {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
-                <span className={`${bodyFont} absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-[9px] uppercase tracking-[0.16em] text-black`}>
+                <span className={`${bodyFont} absolute left-3 top-3 rounded-full bg-white/95 px-2 py-1 text-[8px] uppercase tracking-[0.12em] text-black sm:left-4 sm:top-4 sm:px-3 sm:text-[9px]`}>
                   Featured Artist
                 </span>
 
                 <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <h1 className={`${headingFont} text-[42px] leading-none text-white`}>
+                  <h1 className={`${headingFont} break-words text-[30px] leading-none text-white sm:text-[36px] lg:text-[42px]`}>
                     {artist.firstName} {artist.lastName}
                   </h1>
 
-                 
+
                 </div>
               </div>
 
-              <div className="p-5 md:p-6">
+              <div className="min-w-0 p-4 sm:p-5 md:p-6">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className={`${bodyFont} rounded-full bg-black px-3 py-1 text-[9px] uppercase tracking-[0.16em] text-white`}>
                     {artist.city || "Unknown City"}, {artist.country || "Unknown Country"}
@@ -218,7 +218,7 @@ const ArtistProfile = () => {
                   </div>
 
                   <h2
-                    className={`${headingFont} text-[30px] leading-[1.18] text-[#111]`}
+                    className={`${headingFont} break-words text-[24px] leading-[1.25] text-[#111] sm:text-[30px]`}
                   >
                     {artist.introduction ||
                       "This artist has not added an introduction yet."}
@@ -243,7 +243,7 @@ const ArtistProfile = () => {
                 Artist Collection
               </p>
 
-              <h2 className={`${headingFont} mt-2 text-[36px] leading-none text-[#111]`}>
+              <h2 className={`${headingFont} mt-2 break-words text-[30px] leading-none text-[#111] sm:text-[36px]`}>
                 Works by {artist.firstName} {artist.lastName}
               </h2>
             </div>
@@ -290,9 +290,9 @@ const ArtistProfile = () => {
                       </span>
                     </div>
 
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
-                        <h3 className={`${headingFont} text-[20px] leading-none text-[#111]`}>
+                        <h3 className={`${headingFont} break-words text-[18px] leading-none text-[#111] sm:text-[20px]`}>
                           {art.name}
                         </h3>
 
@@ -301,7 +301,7 @@ const ArtistProfile = () => {
                         </p>
                       </div>
 
-                      <p className={`${bodyFont} text-[12px] font-semibold text-[#111]`}>
+                      <p className={`${bodyFont} shrink-0 text-[12px] font-semibold text-[#111]`}>
                         ${Number(art.price).toLocaleString()}
                       </p>
                     </div>

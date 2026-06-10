@@ -184,11 +184,11 @@ const Cart = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fbfaf7] text-[#111]">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-[#fbfaf7] text-[#111]">
       <Navbar />
 
-      <main className="pt-28 pb-16">
-        <div className="mx-auto max-w-[1180px] px-4 md:px-6">
+      <main className="w-full max-w-[100vw] overflow-x-hidden pt-24 pb-16 md:pt-28">
+        <div className="mx-auto w-full max-w-[1180px] overflow-hidden px-4 md:px-6">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
             <div>
               <p
@@ -198,7 +198,7 @@ const Cart = () => {
               </p>
 
               <h1
-                className={`${headingFont} mt-3 text-[56px] leading-none text-[#111]`}
+                className={`${headingFont} mt-3 break-words text-[40px] leading-none text-[#111] sm:text-[48px] md:text-[56px]`}
               >
                 Your Cart
               </h1>
@@ -227,7 +227,7 @@ const Cart = () => {
                   key={item}
                   className="animate-pulse rounded-[28px] border border-[#e6dfd4] bg-white p-5"
                 >
-                  <div className="flex gap-5">
+                  <div className="flex flex-col gap-5 sm:flex-row">
                     <div className="h-[130px] w-[110px] rounded-[20px] bg-[#ececec]" />
                     <div className="flex-1">
                       <div className="h-8 w-[45%] rounded bg-[#ececec]" />
@@ -239,7 +239,7 @@ const Cart = () => {
               ))}
             </div>
           ) : items.length === 0 ? (
-            <div className="rounded-[34px] border border-[#e6dfd4] bg-white p-12 text-center shadow-[0_20px_60px_-35px_rgba(0,0,0,0.2)]">
+            <div className="overflow-hidden rounded-[34px] border border-[#e6dfd4] bg-white p-6 text-center shadow-[0_20px_60px_-35px_rgba(0,0,0,0.2)] sm:p-12">
               <ShoppingBag className="mx-auto h-14 w-14 text-[#777]" />
 
               <h2
@@ -262,7 +262,7 @@ const Cart = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid gap-8 lg:grid-cols-[1fr_390px]">
+            <div className="grid min-w-0 gap-8 lg:grid-cols-[1fr_390px]">
               <div className="space-y-5">
                 {items.map((item) => {
                   const art = item.artworkId;
@@ -272,8 +272,8 @@ const Cart = () => {
                       key={item._id}
                       className="rounded-[28px] border border-[#e6dfd4] bg-white p-5 shadow-[0_18px_50px_-35px_rgba(0,0,0,0.2)]"
                     >
-                      <div className="flex gap-5">
-                        <Link to={`/art/${art._id}`} className="shrink-0">
+                      <div className="flex flex-col gap-5 sm:flex-row">
+                        <Link to={`/art/${art._id}`} className="mx-auto shrink-0 sm:mx-0">
                           <div className="h-[135px] w-[115px] overflow-hidden rounded-[22px] bg-[#ede8df]">
                             <img
                               src={art.image}
@@ -287,7 +287,7 @@ const Cart = () => {
                           <div>
                             <Link to={`/art/${art._id}`}>
                               <h3
-                                className={`${headingFont} truncate text-[30px] leading-none text-[#111]`}
+                                className={`${headingFont} break-words text-[24px] leading-none text-[#111] sm:text-[30px]`}
                               >
                                 {art.name}
                               </h3>
@@ -306,7 +306,7 @@ const Cart = () => {
                               {art.category}
                             </p>
                           </div>
-                          <div className="mt-4 flex items-center gap-2">
+                          <div className="mt-4 flex flex-wrap items-center gap-2">
                             <button
                               onClick={() => updateQuantity(item._id, Number(item.quantity || 1) - 1)}
                               disabled={Number(item.quantity || 1) <= 1}
@@ -327,12 +327,12 @@ const Cart = () => {
                               +
                             </button>
 
-                            <span className={`${bodyFont} ml-2 text-[12px] text-[#777]`}>
+                            <span className={`${bodyFont} w-full text-[12px] text-[#777] sm:ml-2 sm:w-auto`}>
                               Available: {art.quantity || 0}
                             </span>
                           </div>
                           <p
-                            className={`${headingFont} mt-4 text-[26px] leading-none text-[#111]`}
+                            className={`${headingFont} mt-4 text-[22px] leading-none text-[#111] sm:text-[26px]`}
                           >
                             ${Number(Number(art.price) * Number(item.quantity || 1)).toLocaleString()}
                           </p>
@@ -340,7 +340,7 @@ const Cart = () => {
 
                         <button
                           onClick={() => removeFromCart(item._id)}
-                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d8d2c8] bg-white text-[#111] hover:bg-[#f7f4ee]"
+                          className="self-end flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d8d2c8] bg-white text-[#111] hover:bg-[#f7f4ee] sm:self-auto"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -350,7 +350,7 @@ const Cart = () => {
                 })}
               </div>
 
-              <aside className="h-fit rounded-[32px] border border-[#e6dfd4] bg-white p-6 shadow-[0_20px_60px_-35px_rgba(0,0,0,0.2)]">
+              <aside className="h-fit overflow-hidden rounded-[32px] border border-[#e6dfd4] bg-white p-4 shadow-[0_20px_60px_-35px_rgba(0,0,0,0.2)] sm:p-6">
                 <p
                   className={`${bodyFont} text-[11px] uppercase tracking-[0.28em] text-[#777]`}
                 >
@@ -358,7 +358,7 @@ const Cart = () => {
                 </p>
 
                 <h2
-                  className={`${headingFont} mt-2 text-[36px] leading-none text-[#111]`}
+                  className={`${headingFont} mt-2 break-words text-[30px] leading-none text-[#111] sm:text-[36px]`}
                 >
                   Checkout
                 </h2>
@@ -425,7 +425,7 @@ const Cart = () => {
                   </span>
 
                   <span
-                    className={`${headingFont} text-[34px] leading-none text-[#111]`}
+                    className={`${headingFont} break-words text-[28px] leading-none text-[#111] sm:text-[34px]`}
                   >
                     ${Number(totalPrice).toLocaleString()}
                   </span>
@@ -443,7 +443,7 @@ const Cart = () => {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="Enter your delivery address..."
-                    className={`${bodyFont} h-[95px] w-full resize-none rounded-[20px] border border-[#d8d2c8] bg-[#fbfaf7] p-4 text-[13px] outline-none focus:border-black`}
+                    className={`${bodyFont} h-[95px] w-full min-w-0 resize-none rounded-[20px] border border-[#d8d2c8] bg-[#fbfaf7] p-4 text-[13px] outline-none focus:border-black`}
                   />
                 </div>
 
@@ -455,7 +455,7 @@ const Cart = () => {
                     Payment Receipt
                   </label>
 
-                  <label className="flex cursor-pointer flex-col items-center justify-center rounded-[22px] border border-dashed border-[#d8d2c8] bg-[#fbfaf7] p-5 text-center transition hover:bg-[#f7f4ee]">
+                  <label className="flex min-w-0 cursor-pointer flex-col items-center justify-center rounded-[22px] border border-dashed border-[#d8d2c8] bg-[#fbfaf7] p-4 text-center transition hover:bg-[#f7f4ee] sm:p-5">
                     {paymentReceipt ? (
                       <img
                         src={paymentReceipt}

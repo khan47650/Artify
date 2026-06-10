@@ -43,17 +43,16 @@ const Artists = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-[#1d1d1d]">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-white text-[#1d1d1d]">
       <Navbar />
-
-      <main className="bg-white pt-24 pb-12">
-        <div className="mx-auto max-w-[1120px] px-4 md:px-6">
+      <main className="w-full max-w-[100vw] overflow-x-hidden bg-white pt-24 pb-12">
+        <div className="mx-auto w-full max-w-[1120px] overflow-hidden px-4 md:px-6">
           <div className="mb-7">
             <p className={`${bodyFont} text-[11px] uppercase tracking-[0.28em] text-[#777]`}>
               Featured Creators
             </p>
 
-            <h1 className={`${headingFont} mt-2 text-[52px] leading-none text-[#111]`}>
+            <h1 className={`${headingFont} mt-2 break-words text-[38px] leading-none text-[#111] sm:text-[44px] md:text-[52px]`}>
               Artists
             </h1>
 
@@ -77,7 +76,7 @@ const Artists = () => {
             </div>
           ) : artists.length === 0 ? (
             <div className="rounded-[28px] border border-[#ece6dc] bg-white py-20 text-center">
-              <h2 className={`${headingFont} text-[38px] leading-none text-[#111]`}>
+              <h2 className={`${headingFont} break-words text-[30px] leading-none text-[#111] sm:text-[38px]`}>
                 No Artists Found
               </h2>
             </div>
@@ -90,7 +89,7 @@ const Artists = () => {
                   className="group"
                 >
                   <div className="overflow-hidden rounded-[22px] border border-[#ece6dc] bg-white shadow-[0_8px_24px_-18px_rgba(0,0,0,0.14)] transition-all duration-300 hover:-translate-y-1">
-                    <div className="relative flex h-[255px] items-center justify-center overflow-hidden bg-[#f7f4ee]">
+                    <div className="relative flex h-[220px] items-center justify-center overflow-hidden bg-[#f7f4ee] sm:h-[255px]">
                       {artist.artistPhoto ? (
                         <img
                           src={artist.artistPhoto}
@@ -103,12 +102,12 @@ const Artists = () => {
 
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
 
-                      <span className={`${bodyFont} absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-[9px] uppercase tracking-[0.15em] text-black`}>
+                      <span className={`${bodyFont} absolute left-3 top-3 rounded-full bg-white/95 px-2 py-1 text-[8px] uppercase tracking-[0.12em] text-black sm:left-4 sm:top-4 sm:px-3 sm:text-[9px]`}>
                         Featured Artist
                       </span>
 
                       <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <h2 className={`${headingFont} text-[28px] leading-none text-white`}>
+                        <h2 className={`${headingFont} break-words text-[24px] leading-none text-white sm:text-[28px]`}>
                           {artist.firstName} {artist.lastName}
                         </h2>
 
@@ -123,7 +122,7 @@ const Artists = () => {
                         {artist.introduction || "No introduction added yet."}
                       </p>
 
-                      <div className="mt-4 flex items-center justify-between">
+                      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                         <div>
                           <p className={`${bodyFont} text-[10px] uppercase tracking-[0.18em] text-[#8b857d]`}>
                             Artworks
@@ -134,7 +133,7 @@ const Artists = () => {
                           </p>
                         </div>
 
-                        <span className={`${bodyFont} inline-flex h-9 items-center rounded-full bg-black px-4 text-[11px] text-white transition group-hover:bg-[#222]`}>
+                        <span className={`${bodyFont} inline-flex h-9 shrink-0 items-center rounded-full bg-black px-4 text-[11px] text-white transition group-hover:bg-[#222]`}>
                           View Profile
                         </span>
                       </div>

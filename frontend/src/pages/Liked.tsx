@@ -95,13 +95,13 @@ const Liked = () => {
   const totalLiked = likedItems.length;
 
   return (
-    <div className="min-h-screen bg-white text-[#1d1d1d]">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-white text-[#1d1d1d]">
       <Navbar />
 
-      <main className="bg-white pt-24 pb-12">
-        <div className="mx-auto max-w-[1120px] px-4 md:px-6">
+      <main className="w-full max-w-[100vw] overflow-x-hidden bg-white pt-24 pb-12">
+        <div className="mx-auto w-full max-w-[1120px] overflow-hidden px-4 md:px-6">
           {/* HEADER */}
-          <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+          <div className="mb-7 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
             <div>
               <p
                 className={`${bodyFont} text-[12px] uppercase tracking-[0.28em] text-[#777]`}
@@ -110,7 +110,7 @@ const Liked = () => {
               </p>
 
               <h1
-                className={`${headingFont} mt-3 text-[54px] leading-none text-[#111]`}
+                className={`${headingFont} mt-3 break-words text-[38px] leading-none text-[#111] sm:text-[46px] md:text-[54px]`}
               >
                 Liked Artworks
               </h1>
@@ -152,11 +152,11 @@ const Liked = () => {
             </div>
           ) : likedItems.length === 0 ? (
             /* EMPTY */
-            <div className="rounded-[28px] border border-[#e6dfd4] bg-white p-10 text-center shadow-[0_10px_30px_-20px_rgba(0,0,0,0.12)]">
+            <div className="overflow-hidden rounded-[28px] border border-[#e6dfd4] bg-white p-6 text-center shadow-[0_10px_30px_-20px_rgba(0,0,0,0.12)] sm:p-10">
               <Heart className="mx-auto h-11 w-11 text-[#777]" />
 
               <h2
-                className={`${headingFont} mt-5 text-[34px] leading-none text-[#111]`}
+                className={`${headingFont} mt-5 break-words text-[28px] leading-none text-[#111] sm:text-[34px]`}
               >
                 No liked artworks yet
               </h2>
@@ -194,7 +194,7 @@ const Liked = () => {
                 return (
                   <article key={item._id} className="group">
                     <Link to={`/art/${art._id}`}>
-                      <div className="relative mb-3 h-[235px] overflow-hidden rounded-[20px] bg-[#ede8df] shadow-sm">
+                      <div className="relative mb-3 h-[220px] overflow-hidden rounded-[20px] bg-[#ede8df] shadow-sm sm:h-[235px]">
                         <img
                           src={art.image}
                           alt={art.name}
@@ -202,17 +202,17 @@ const Liked = () => {
                         />
 
                         <span
-                          className={`${bodyFont} absolute left-4 top-4 rounded-full bg-black px-3 py-1 text-[10px] text-white`}
+                          className={`${bodyFont} absolute left-3 top-3 rounded-full bg-black px-3 py-1 text-[9px] text-white sm:left-4 sm:top-4 sm:text-[10px]`}
                         >
                           {art.category}
                         </span>
                       </div>
                     </Link>
 
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex min-w-0 items-start justify-between gap-3">
                       <div className="min-w-0 flex-1">
                         <h3
-                          className={`${headingFont} truncate text-[21px] leading-none text-[#111]`}
+                          className={`${headingFont} break-words text-[20px] leading-none text-[#111] sm:text-[21px]`}
                         >
                           {art.name}
                         </h3>

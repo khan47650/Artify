@@ -58,13 +58,13 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fbfaf7] text-[#1d1d1d]">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-[#fbfaf7] text-[#1d1d1d]">
       <Navbar />
 
-     <main className="pt-28 pb-20">
-        <div className="mx-auto max-w-[1280px] px-4 md:px-6">
-          <section className="grid gap-6 xl:gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch">
-            <div className="relative overflow-hidden rounded-[38px] bg-gradient-to-br from-black via-[#0f0f0f] to-[#1c1c1c] p-5 text-white shadow-[0_35px_90px_-30px_rgba(0,0,0,0.65)] ring-1 ring-white/10 md:p-6">
+      <main className="w-full max-w-[100vw] overflow-x-hidden pt-24 pb-14 md:pt-28 md:pb-20">
+        <div className="mx-auto w-full max-w-[1280px] overflow-hidden px-4 md:px-6">
+          <section className="grid min-w-0 gap-6 xl:gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch">
+            <div className="relative min-w-0 overflow-hidden rounded-[28px] bg-gradient-to-br from-black via-[#0f0f0f] to-[#1c1c1c] p-4 text-white shadow-[0_35px_90px_-30px_rgba(0,0,0,0.65)] ring-1 ring-white/10 sm:p-5 md:rounded-[38px] md:p-6">
               <div className="absolute -right-20 -top-20 h-[220px] w-[220px] rounded-full bg-white/10 blur-2xl" />
               <div className="absolute -bottom-24 -left-20 h-[260px] w-[260px] rounded-full bg-white/10 blur-3xl" />
 
@@ -73,7 +73,7 @@ const Contact = () => {
                   Artify Support
                 </p>
 
-                <h1 className={`${headingFont} mt-5 text-[52px] leading-[0.92] tracking-[-0.03em] md:text-[72px]`}>
+                <h1 className={`${headingFont} mt-5 break-words text-[42px] leading-[0.95] tracking-[-0.03em] sm:text-[52px] md:text-[72px]`}>
                   Contact Us
                 </h1>
 
@@ -104,14 +104,14 @@ const Contact = () => {
 
             <form
               onSubmit={handleSubmit}
-              className="rounded-[38px] border border-[#ece5db] bg-white/90 p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.18)] backdrop-blur-xl md:p-6"
+              className="min-w-0 rounded-[28px] border border-[#ece5db] bg-white/90 p-4 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:p-5 md:rounded-[38px] md:p-6"
             >
               <div className="mb-5">
                 <p className={`${bodyFont} text-[11px] uppercase tracking-[0.28em] text-[#8a847c]`}>
                   Send Message
                 </p>
 
-                <h2 className={`${headingFont} mt-2 text-[38px] leading-none text-[#111]`}>
+                <h2 className={`${headingFont} mt-2 break-words text-[32px] leading-none text-[#111] sm:text-[38px]`}>
                   Let’s Talk
                 </h2>
               </div>
@@ -215,17 +215,17 @@ const InfoItem = ({
   title: string;
   value: string;
 }) => (
-  <div className="group flex items-center gap-4 rounded-[24px] border border-white/10 bg-gradient-to-r from-white/8 to-white/5 px-4 py-3 backdrop-blur-2xl transition-all duration-500 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10">
+  <div className="group flex min-w-0 items-center gap-3 rounded-[20px] border border-white/10 bg-gradient-to-r from-white/8 to-white/5 px-3 py-3 backdrop-blur-2xl transition-all duration-500 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10 sm:gap-4 sm:rounded-[24px] sm:px-4">
     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-black">
       {icon}
     </div>
 
-    <div>
+    <div className="min-w-0">
       <p className={`${bodyFont} text-[11px] uppercase tracking-[0.22em] text-white/50`}>
         {title}
       </p>
 
-      <h3 className={`${bodyFont} mt-1 text-[14px] font-semibold text-white`}>
+      <h3 className={`${bodyFont} mt-1 break-words text-[13px] font-semibold text-white sm:text-[14px]`}>
         {value}
       </h3>
     </div>

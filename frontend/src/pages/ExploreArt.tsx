@@ -186,12 +186,12 @@ const ExploreArt = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#fbfaf7]">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-[#fbfaf7]">
       <Navbar />
 
-      <main className="pt-24 pb-16">
-        <div className="mx-auto max-w-[1180px] px-4 md:px-8">
-          <div className="mb-8 flex items-end justify-between gap-4">
+      <main className="w-full max-w-[100vw] overflow-x-hidden pt-24 pb-16">
+        <div className="mx-auto w-full max-w-[1180px] overflow-hidden px-4 md:px-8">
+          <div className="mb-8 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <p className={`${bodyFont} mb-3 text-[13px] text-[#777]`}>
                 Home / Artwork / Explore
@@ -210,7 +210,7 @@ const ExploreArt = () => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className={`${bodyFont} rounded-full border border-[#d8d2c8] bg-white py-2 pl-4 pr-10 text-[13px] text-[#222] outline-none transition focus:border-[#1d1d1d]`}
+                className={`${bodyFont} min-w-0 max-w-[160px] rounded-full border border-[#d8d2c8] bg-white px-3 py-2 text-[12px] text-[#222] outline-none sm:max-w-none sm:px-4 sm:text-[13px]`}
               >
                 <option value="newest">Newest</option>
                 <option value="price-low">Price: Low → High</option>
@@ -238,7 +238,7 @@ const ExploreArt = () => {
             </div>
           )}
 
-          <div className="mb-6 flex items-center justify-between md:hidden">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 md:hidden">
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" size="sm" className={`${bodyFont} gap-2 rounded-full`}>
@@ -288,12 +288,12 @@ const ExploreArt = () => {
             </div>
           )}
 
-          <div className="flex gap-10">
+          <div className="flex w-full min-w-0 gap-10">
             <aside className="hidden w-[190px] shrink-0 md:block">
               <FilterPanel />
             </aside>
 
-            <section className="flex-1">
+            <section className="min-w-0 flex-1">
               {loading ? (
                 <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
                   {[1, 2, 3, 4, 5, 6].map((item) => (
@@ -406,7 +406,7 @@ const ExploreArt = () => {
                 <span>of {totalPages}</span>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex max-w-full flex-wrap items-center justify-center gap-2">
                 <button
                   disabled={page === 1}
                   onClick={() => setPage(1)}

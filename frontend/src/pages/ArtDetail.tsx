@@ -120,7 +120,7 @@ const ArtDetail = () => {
 
   if (loading || !artwork) {
     return (
-      <div className="min-h-screen bg-[#fbfaf7]">
+      <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-[#fbfaf7] text-[#1d1d1d]">
         <Navbar />
 
         <div className="mx-auto max-w-[1120px] px-4 pt-24">
@@ -165,18 +165,18 @@ const ArtDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fbfaf7] text-[#1d1d1d]">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-[#fbfaf7] text-[#1d1d1d]">
       <Navbar />
 
-      <main className="pt-20 pb-14">
-        <div className="mx-auto max-w-[1120px] px-4 md:px-6">
+      <main className="w-full max-w-[100vw] overflow-x-hidden pt-20 pb-14">
+        <div className="mx-auto w-full max-w-[1120px] overflow-hidden px-4 md:px-6">
           <p className={`${bodyFont} mb-4 text-[11px] text-[#777]`}>
             Home / Explore / Detail
           </p>
 
-          <section className="grid gap-5 lg:grid-cols-[1.02fr_0.98fr]">
+          <section className="grid min-w-0 gap-5 lg:grid-cols-[1.02fr_0.98fr]">
             <div>
-              <div className="relative h-[650px] overflow-hidden rounded-[4px] bg-[#ede8df]">
+              <div className="relative h-[320px] overflow-hidden rounded-[4px] bg-[#ede8df] sm:h-[450px] lg:h-[650px]">
                 <img
                   src={artwork.image}
                   alt={artwork.name}
@@ -184,7 +184,7 @@ const ArtDetail = () => {
                 />
               </div>
 
-              <div className="mt-3 flex rounded-full border-[5px] border-black bg-white p-[3px]">
+              <div className="mt-3 flex w-full rounded-full border-[3px] border-black bg-white p-[3px] sm:border-[5px]">
                 <button
                   onClick={() => setActiveTab("about")}
                   className={`${bodyFont} flex-1 rounded-full py-2 text-[12px] ${activeTab === "about"
@@ -219,14 +219,14 @@ const ArtDetail = () => {
                   {/* REVIEW INPUT */}
 
                   {user && (
-                    <div className="rounded-[18px] border border-[#ece6dc] bg-white p-5">
+                    <div className="overflow-hidden rounded-[18px] border border-[#ece6dc] bg-white p-4 sm:p-5">
                       <textarea
                         value={reviewText}
                         onChange={(e) =>
                           setReviewText(e.target.value)
                         }
                         placeholder="Write your review..."
-                        className={`${bodyFont} h-[120px] w-full resize-none rounded-[16px] border border-[#ece6dc] bg-[#faf8f4] p-4 text-[13px] outline-none`}
+                        className={`${bodyFont} h-[120px] w-full min-w-0 resize-none rounded-[16px] border border-[#ece6dc] bg-[#faf8f4] p-4 text-[13px] outline-none`}
                       />
 
                       <Button
@@ -297,11 +297,11 @@ const ArtDetail = () => {
               )}
             </div>
 
-            <aside className="pt-0">
+            <aside className="min-w-0 pt-0">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h1
-                    className={`${headingFont} text-[40px] leading-none text-[#111]`}
+                    className={`${headingFont} break-words text-[30px] leading-none text-[#111] sm:text-[36px] lg:text-[40px]`}
                   >
                     {artwork.name}
                   </h1>
@@ -316,15 +316,15 @@ const ArtDetail = () => {
               </div>
 
               <p
-                className={`${headingFont} mt-3 text-[28px] leading-none text-[#111]`}
+                className={`${headingFont} mt-3 break-words text-[24px] leading-none text-[#111] sm:text-[28px]`}
               >
                 ${Number(artwork.price).toLocaleString()}
               </p>
 
               <div
-                className={`${bodyFont} mt-5 grid grid-cols-2 border border-[#111] text-center text-[13px] text-[#111]`}
+                className={`${bodyFont} mt-5 grid grid-cols-1 border border-[#111] text-center text-[13px] text-[#111] sm:grid-cols-2`}
               >
-                <div className="border-r border-[#111] py-3">
+                <div className="border-b border-[#111] py-3 sm:border-b-0 sm:border-r">
                   {artwork.category}
                 </div>
 
@@ -344,7 +344,7 @@ const ArtDetail = () => {
 
               <div className="mt-5 border-t border-[#eee8df] pt-5">
                 <div className="space-y-5">
-                  <div className="flex gap-4">
+                  <div className="flex items-start gap-3 sm:gap-4">
                     <img
                       src={truckIcon}
                       alt="Shipping"
@@ -366,7 +366,7 @@ const ArtDetail = () => {
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
+                  <div className="flex items-start gap-3 sm:gap-4">
                     <img
                       src={returnIcon}
                       alt="Returns"
@@ -388,7 +388,7 @@ const ArtDetail = () => {
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
+                  <div className="flex items-start gap-3 sm:gap-4">
                     <img
                       src={signatureIcon}
                       alt="Certificate"
@@ -397,7 +397,7 @@ const ArtDetail = () => {
 
                     <div>
                       <h3
-                        className={`${headingFont} text-[24px] leading-none text-[#111]`}
+                        className={`${headingFont} break-words text-[20px] leading-none text-[#111] sm:text-[24px]`}
                       >
                         Authentic Artwork
                       </h3>
@@ -411,7 +411,7 @@ const ArtDetail = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-6 rounded-[26px] border border-[#eee8df] bg-white p-6 shadow-[0_18px_45px_-30px_rgba(0,0,0,0.22)]">
+              <div className="mt-6 overflow-hidden rounded-[26px] border border-[#eee8df] bg-white p-4 shadow-[0_18px_45px_-30px_rgba(0,0,0,0.22)] sm:p-6">
                 <p
                   className={`${bodyFont} text-[11px] uppercase tracking-[0.28em] text-[#8a847c]`}
                 >
@@ -419,7 +419,7 @@ const ArtDetail = () => {
                 </p>
 
                 <h3
-                  className={`${headingFont} mt-3 text-[30px] leading-none text-[#111]`}
+                  className={`${headingFont} mt-3 break-words text-[24px] leading-none text-[#111] sm:text-[30px]`}
                 >
                   Buy with confidence
                 </h3>
@@ -470,7 +470,7 @@ const ArtDetail = () => {
                   </p>
 
                   <h4
-                    className={`${headingFont} mt-2 text-[26px] leading-none`}
+                    className={`${headingFont} mt-2 break-words text-[22px] leading-none sm:text-[26px]`}
                   >
                     Trusted Marketplace
                   </h4>
@@ -490,7 +490,7 @@ const ArtDetail = () => {
 
           <section className="mt-12">
             <h2
-              className={`${headingFont} mb-5 text-[25px] leading-none`}
+              className={`${headingFont} mb-5 break-words text-[22px] leading-none sm:text-[25px]`}
             >
               Recommended Art
             </h2>
@@ -517,10 +517,10 @@ const ArtDetail = () => {
                     </button>
                   </div>
 
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <h3
-                        className={`${headingFont} text-[20px] leading-none`}
+                        className={`${headingFont} break-words text-[18px] leading-none sm:text-[20px]`}
                       >
                         {art.name}
                       </h3>
@@ -534,7 +534,7 @@ const ArtDetail = () => {
                     </div>
 
                     <p
-                      className={`${bodyFont} text-[13px] font-semibold`}
+                      className={`${bodyFont} shrink-0 text-[13px] font-semibold`}
                     >
                       ${Number(art.price).toLocaleString()}
                     </p>

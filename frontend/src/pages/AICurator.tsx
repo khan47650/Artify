@@ -1,6 +1,6 @@
 import { KeyboardEvent, useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Send, Sparkles, Plus, Trash2 } from "lucide-react";
+import { Send, Sparkles, Plus, Trash2, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import ReactMarkdown from "react-markdown";
@@ -57,6 +57,7 @@ const AICurator = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [mobileHistoryOpen, setMobileHistoryOpen] = useState(false);
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -169,6 +170,7 @@ const AICurator = () => {
     setActiveChatId(chatId);
     setInput("");
     setIsLoading(false);
+    setMobileHistoryOpen(false);
   };
 
   const handleDeleteChat = async (chatId: string) => {
@@ -373,6 +375,7 @@ const AICurator = () => {
 
       <div className="mx-auto flex h-screen w-full max-w-[1700px] overflow-hidden pt-[78px]">
         <aside className="hidden h-full w-[280px] flex-col overflow-hidden border-r border-zinc-200 bg-zinc-100/80 p-3 md:flex">
+
           <Button
             onClick={handleNewChat}
             className="mb-3 h-11 justify-start gap-2 rounded-xl bg-zinc-900 px-4 text-sm text-white hover:bg-zinc-800"
@@ -429,6 +432,87 @@ const AICurator = () => {
             </div>
           </div>
         </aside>
+        {mobileHistoryOpen && (
+          <div className="fixed inset-0 z-[9998] md:hidden">
+            <button
+              type="button"
+              className="absolute inset-0 bg-black/40"
+              onClick={() => setMobileHistoryOpen(false)}
+              aria-label="Close recent chats"
+            />
+
+            <aside className="absolute left-0 top-0 flex h-full w-[82vw] max-w-[320px] flex-col overflow-hidden bg-zinc-100 p-3 shadow-2xl">
+              <div className="mb-3 flex items-center justify-between">
+                <p className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+                  Recent Chats
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => setMobileHistoryOpen(false)}
+                  className="rounded-lg p-2 text-zinc-600 hover:bg-zinc-200"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <Button
+                onClick={() => {
+                  handleNewChat();
+                  setMobileHistoryOpen(false);
+                }}
+                className="mb-3 h-11 justify-start gap-2 rounded-xl bg-zinc-900 px-4 text-sm text-white hover:bg-zinc-800"
+              >
+                <Plus className="h-4 w-4" />
+                New chat
+              </Button>
+
+              <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+                <div className="space-y-1.5">
+                  {historyLoading ? (
+                    [1, 2, 3].map((item) => (
+                      <div
+                        key={item}
+                        className="h-[58px] animate-pulse rounded-xl bg-zinc-200"
+                      />
+                    ))
+                  ) : (
+                    chatHistory.map((chat) => (
+                      <div
+                        key={chat.id}
+                        className={`group flex items-center gap-1 rounded-xl px-2 py-1.5 ${chat.id === activeConversation?.id
+                          ? "bg-zinc-200 text-zinc-950"
+                          : "text-zinc-700 hover:bg-zinc-200/70"
+                          }`}
+                      >
+                        <button
+                          onClick={() => handleSelectChat(chat.id)}
+                          className="min-w-0 flex-1 rounded-lg px-2 py-1 text-left"
+                        >
+                          <p className="line-clamp-1 text-sm font-medium">
+                            {chat.title}
+                          </p>
+
+                          <p className="mt-0.5 text-xs text-zinc-500">
+                            {chat.messages.length} msg
+                          </p>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteChat(chat.id)}
+                          className="rounded-lg p-2 text-zinc-500 hover:bg-zinc-300/60 hover:text-zinc-800"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </aside>
+          </div>
+        )}
 
         <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
           <header className="sticky top-0 z-10 border-b border-zinc-200 bg-[#f7f7f8]/95 px-4 py-3 backdrop-blur md:px-8">
@@ -441,14 +525,25 @@ const AICurator = () => {
                 <p className="text-xs text-zinc-500">Artify assistant</p>
               </div>
 
-              <Button
-                onClick={handleNewChat}
-                variant="ghost"
-                className="h-9 rounded-lg px-3 text-zinc-700 hover:bg-zinc-200 md:hidden"
-              >
-                <Plus className="mr-1.5 h-4 w-4" />
-                New
-              </Button>
+              <div className="flex items-center gap-2 md:hidden">
+                <Button
+                  onClick={() => setMobileHistoryOpen(true)}
+                  variant="ghost"
+                  className="h-9 rounded-lg px-3 text-zinc-700 hover:bg-zinc-200"
+                >
+                  <Menu className="mr-1.5 h-4 w-4" />
+                  Recent
+                </Button>
+
+                <Button
+                  onClick={handleNewChat}
+                  variant="ghost"
+                  className="h-9 rounded-lg px-3 text-zinc-700 hover:bg-zinc-200"
+                >
+                  <Plus className="mr-1.5 h-4 w-4" />
+                  New
+                </Button>
+              </div>
             </div>
           </header>
 

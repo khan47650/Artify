@@ -44,10 +44,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="mt-24 border-t border-white/10 bg-black text-white">
+    <footer className="mt-20 w-full overflow-x-hidden border-t border-white/10 bg-black text-white md:mt-24">
       <div className="border-b border-white/20">
-        <div className="mx-auto w-full max-w-[1400px] px-4 py-8 md:px-8 md:py-10">
-          <h2 className="text-center font-geller text-[120px] md:text-[170px] lg:text-[210px] font-semibold leading-[0.8]">
+        <div className="mx-auto grid w-full max-w-[1400px] overflow-hidden border-white/20 px-4 md:grid-cols-[1.15fr_0.85fr] md:px-8">
+          <h2 className="mt-4 break-words text-center font-geller text-[62px] font-semibold leading-[0.85] sm:mt-6 sm:text-[90px] md:mt-4 md:text-[170px] lg:text-[210px]">
             ARTIFY
           </h2>
         </div>
@@ -55,13 +55,13 @@ const Footer = () => {
 
       <div className="border-b border-white/20">
         <div className="mx-auto grid w-full max-w-[1400px] border-white/20 px-4 md:grid-cols-[1.15fr_0.85fr] md:px-8">
-          <section className="border-b border-white/20 py-8 md:border-b-0 md:border-r md:py-10 md:pr-10">
+          <section className="min-w-0 border-b border-white/20 py-8 md:border-b-0 md:border-r md:py-10 md:pr-10">
             <div className="max-w-[560px]">
               <p className="font-encode text-[11px] uppercase tracking-[0.28em] text-white/45">
                 About Artify
               </p>
 
-              <h3 className="font-ivy mt-4 text-[34px] font-normal leading-[1.02] text-white md:text-[42px]">
+              <h3 className="font-ivy mt-4 break-words text-[28px] font-normal leading-[1.05] text-white sm:text-[34px] md:text-[42px]">
                 A Curated Space
                 <br />
                 for Original Art
@@ -73,7 +73,7 @@ const Footer = () => {
                 and meaningful creative expression.
               </p>
 
-              <div className="mt-7 flex flex-wrap gap-3">
+              <div className="mt-7 flex flex-wrap gap-2 sm:gap-3">
                 <div className="rounded-full border border-white/15 bg-white/5 px-4 py-2">
                   <p className="font-encode text-[10px] uppercase tracking-[0.18em] text-white/70">
                     Original Artworks
@@ -94,7 +94,7 @@ const Footer = () => {
               </div>
             </div>
 
-            <div className="mt-7 flex items-center gap-4">
+            <div className="mt-7 flex flex-wrap items-center gap-5">
               <a href="#" className="transition-opacity hover:opacity-75">
                 <img src={facebookIcon} alt="Facebook" className="h-4 w-4" />
               </a>
@@ -110,8 +110,8 @@ const Footer = () => {
             </div>
           </section>
 
-          <section className="py-8 md:py-10 md:pl-10">
-            <div className="grid grid-cols-2 gap-8 text-sm">
+          <section className="min-w-0 py-8 md:py-10 md:pl-10">
+            <div className="grid grid-cols-1 gap-8 text-sm sm:grid-cols-2">
               <div>
                 <h3 className="font-serif text-2xl">Explore</h3>
                 <ul className="font-encode mt-4 space-y-3 text-[12px] text-white/70">
@@ -122,7 +122,7 @@ const Footer = () => {
                 </ul>
               </div>
 
-              <div className="pt-12 md:pt-[3.1rem]">
+              <div className="pt-0 sm:pt-12 md:pt-[3.1rem]">
                 <ul className="space-y-3 text-white/70">
                   <li><Link to="/ai-curator" className="transition-colors hover:text-white">AI Curator</Link></li>
                   <li><Link to="/art-quiz" className="transition-colors hover:text-white">Quiz</Link></li>
@@ -135,8 +135,8 @@ const Footer = () => {
       </div>
 
       <div className="bg-white font-encode text-[11px] text-black/85">
-        <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:justify-between md:px-8">
-          <div className="flex flex-wrap items-center gap-4 md:gap-6">
+        <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-4 overflow-hidden px-4 py-4 md:flex-row md:items-center md:justify-between md:px-8">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 md:gap-6">
             <Link to="/returns" className="transition-colors hover:text-black">Refund Policy</Link>
             <span className="hidden h-3.5 w-px bg-black/25 md:block" />
             <Link to="/privacy" className="transition-colors hover:text-black">Privacy Policy</Link>
@@ -145,7 +145,7 @@ const Footer = () => {
             <span className="hidden h-3.5 w-px bg-black/25 md:block" />
             <Link to="/delivery-terms" className="transition-colors hover:text-black">Delivery Terms</Link>
           </div>
-          <p>2026 © ARTIFY</p>
+          <p className="text-center sm:text-left">2026 © ARTIFY</p>
         </div>
       </div>
     </footer>
