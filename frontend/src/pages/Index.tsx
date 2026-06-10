@@ -34,7 +34,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-background">
       <Navbar />
 
       <HeroSection />
@@ -50,7 +50,7 @@ const Index = () => {
 
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-6 right-6 z-[999] flex h-12 w-12 items-center justify-center rounded-full bg-black text-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-1 hover:bg-black/85 ${showScrollTop
+        className={`fixed bottom-5 right-4 z-[999] flex h-11 w-11 items-center justify-center rounded-full bg-black text-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-1 hover:bg-black/85 sm:bottom-6 sm:right-6 sm:h-12 sm:w-12 ${showScrollTop
             ? "pointer-events-auto translate-y-0 opacity-100"
             : "pointer-events-none translate-y-5 opacity-0"
           }`}

@@ -6,10 +6,10 @@ const SplashScreen = () => {
       <img
         src={splashGif}
         alt=""
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-contain md:object-cover"
       />
 
-      <h1 className="relative z-10 font-geller text-[48px] font-semibold tracking-[-0.04em] text-white sm:text-[70px] md:text-[90px]">
+      <h1 className="relative z-10 font-geller text-[32px] font-semibold tracking-[-0.04em] text-white sm:text-[50px] md:text-[70px] lg:text-[90px]">
         ARTIFY
       </h1>
     </div>
