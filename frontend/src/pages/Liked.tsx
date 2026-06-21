@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Heart, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -16,12 +16,17 @@ const bodyFont = "font-['Encode_Sans_Condensed']";
 const Liked = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const [likedItems, setLikedItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchLiked = async () => {
-    if (!user?.id) return;
+    // ✅ FIX: Jab user logged in nahi, loading ko false kar do
+    if (!user?.id) {
+      setLoading(false);
+      return;
+    }
 
     try {
       setLoading(true);
@@ -45,6 +50,53 @@ const Liked = () => {
   useEffect(() => {
     fetchLiked();
   }, [user]);
+
+  // ✅ LOGIN NAHI KIYA - NICE MESSAGE DIKHAO
+  if (!user?.id && !loading) {
+    return (
+      <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-white text-[#1d1d1d]">
+        <Navbar />
+
+        <main className="w-full max-w-[100vw] overflow-x-hidden bg-white pt-24 pb-12">
+          <div className="mx-auto w-full max-w-[1120px] overflow-hidden px-4 md:px-6">
+            <div className="overflow-hidden rounded-[28px] border border-[#e6dfd4] bg-white p-6 text-center shadow-[0_10px_30px_-20px_rgba(0,0,0,0.12)] sm:p-10">
+              <Heart className="mx-auto h-11 w-11 text-[#777]" />
+
+              <h2
+                className={`${headingFont} mt-5 break-words text-[28px] leading-none text-[#111] sm:text-[34px]`}
+              >
+                Sign in to save artworks
+              </h2>
+
+              <p
+                className={`${bodyFont} mx-auto mt-3 max-w-md text-[14px] leading-6 text-[#6f6a63]`}
+              >
+                Create an account or log in to save your favorite artworks and access them later.
+              </p>
+
+              <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+                <button
+                  onClick={() => navigate("/login")}
+                  className={`${bodyFont} rounded-full bg-black px-7 py-2.5 text-[13px] text-white hover:bg-black/90`}
+                >
+                  Sign in
+                </button>
+
+                <Link
+                  to="/"
+                  className={`${bodyFont} rounded-full border border-[#d8d2c8] bg-white px-7 py-2.5 text-[13px] text-[#111] hover:bg-[#f7f4ee]`}
+                >
+                  Continue browsing
+                </Link>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    );
+  }
 
   const removeLike = async (id: string) => {
     try {
