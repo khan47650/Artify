@@ -1,4 +1,4 @@
-import artRose from "@/assets/new_arrivals.jpg";
+import artNew from "@/assets/ai_curator_new.png";
 import galleryInterior from "@/assets/gallery-interior.jpg";
 import artMixedMedia from "@/assets/potraits.jpg";
 import heroArt from "@/assets/stillness.jpg";
@@ -8,7 +8,7 @@ import leftOrangeLines from "@/assets/left_orange_lines.png";
 const pickedArtworks = [
   {
     id: "1",
-    image: artRose,
+    image: artNew,
     title: "New Arrivals",
     description: "Fresh artworks and recently added creative pieces.",
   },

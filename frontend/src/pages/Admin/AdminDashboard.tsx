@@ -68,7 +68,7 @@ const AdminDashboard = () => {
               </h2>
 
               <p className={`${bodyFont} mt-1 hidden text-[11px] text-[#777] sm:block lg:text-[12px]`}>
-                Manage your Artify dashboard
+                Manage your Mowa Gallery dashboard
               </p>
             </div>
           </div>

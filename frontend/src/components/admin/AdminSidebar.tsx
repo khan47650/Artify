@@ -37,8 +37,8 @@ const AdminSidebar = ({
     <>
       <div className="flex items-start justify-between px-7 py-8">
         <div>
-          <h1 className={`${headingFont} text-[42px] leading-none text-white`}>
-            Artify
+          <h1 className={`${headingFont} text-[26px] leading-none text-white`}>
+            Mowa Gallery
           </h1>
 
           <p

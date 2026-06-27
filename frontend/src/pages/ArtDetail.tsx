@@ -321,15 +321,46 @@ const ArtDetail = () => {
                 ${Number(artwork.price).toLocaleString()}
               </p>
 
-              <div
-                className={`${bodyFont} mt-5 grid grid-cols-1 border border-[#111] text-center text-[13px] text-[#111] sm:grid-cols-2`}
-              >
-                <div className="border-b border-[#111] py-3 sm:border-b-0 sm:border-r">
-                  {artwork.category}
+              <div className={`${bodyFont} mt-5 border border-[#111] text-[13px] text-[#111]`}>
+                <div className="grid grid-cols-2">
+                  <div className="border-b border-r border-[#111] px-3 py-2.5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#888]">Category</p>
+                    <p className="mt-0.5 font-semibold">{artwork.category || "—"}</p>
+                  </div>
+                  <div className="border-b border-[#111] px-3 py-2.5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#888]">Medium</p>
+                    <p className="mt-0.5 font-semibold">{artwork.medium || "—"}</p>
+                  </div>
                 </div>
-
-                <div className="py-3">
-                  {artwork.dimensions || "Artwork"}
+                <div className="grid grid-cols-2">
+                  <div className="border-b border-r border-[#111] px-3 py-2.5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#888]">Subject</p>
+                    <p className="mt-0.5 font-semibold">{artwork.subject || "—"}</p>
+                  </div>
+                  <div className="border-b border-[#111] px-3 py-2.5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#888]">Style</p>
+                    <p className="mt-0.5 font-semibold">{artwork.style || "—"}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2">
+                  <div className="border-b border-r border-[#111] px-3 py-2.5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#888]">Size</p>
+                    <p className="mt-0.5 font-semibold">{artwork.size || "—"}</p>
+                  </div>
+                  <div className="border-b border-[#111] px-3 py-2.5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#888]">Orientation</p>
+                    <p className="mt-0.5 font-semibold">{artwork.orientation || "—"}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2">
+                  <div className="border-r border-[#111] px-3 py-2.5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#888]">Availability</p>
+                    <p className="mt-0.5 font-semibold">{artwork.availability || "—"}</p>
+                  </div>
+                  <div className="px-3 py-2.5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#888]">Color</p>
+                    <p className="mt-0.5 font-semibold">{artwork.color || "—"}</p>
+                  </div>
                 </div>
               </div>
 
@@ -427,7 +458,7 @@ const ArtDetail = () => {
                 <p
                   className={`${bodyFont} mt-3 text-[13px] leading-6 text-[#6f6a63]`}
                 >
-                  Every artwork listed on Artify is reviewed before appearing in the
+                  Every artwork listed on Mowa Gallery is reviewed before appearing in the marketplace.
                   marketplace. Your purchase is handled through a trusted process
                   designed for collectors and artists.
                 </p>
@@ -443,7 +474,7 @@ const ArtDetail = () => {
                     <p
                       className={`${bodyFont} mt-2 text-[12px] leading-5 text-[#7b756d]`}
                     >
-                      Approved artwork from Artify.
+                      Approved artwork from Mowa Gallery.
                     </p>
                   </div>
 
@@ -466,7 +497,7 @@ const ArtDetail = () => {
                   <p
                     className={`${bodyFont} text-[11px] uppercase tracking-[0.22em] text-white/60`}
                   >
-                    Artify Protection
+                    Mowa Gallery Protection
                   </p>
 
                   <h4
@@ -488,61 +519,61 @@ const ArtDetail = () => {
 
           {/* RECOMMENDED */}
 
-          <section className="mt-12">
-            <h2
-              className={`${headingFont} mb-5 break-words text-[22px] leading-none sm:text-[25px]`}
-            >
-              Recommended Art
-            </h2>
+          {recommended.length > 0 && (
+            <section className="mt-12">
+              <h2 className={`${headingFont} mb-5 break-words text-[22px] leading-none sm:text-[25px]`}>
+                Recommended Art
+              </h2>
 
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-              {recommended.map((art: any) => (
-                <Link
-                  key={art._id}
-                  to={`/art/${art._id}`}
-                  className="group"
-                >
-                  <div className="relative mb-3 aspect-[1.05] overflow-hidden rounded-[18px] bg-[#ede8df]">
-                    <img
-                      src={art.image}
-                      alt={art.name}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                {recommended.map((art: any) => (
+                  <Link
+                    key={art._id}
+                    to={`/art/${art._id}`}
+                    className="group"
+                  >
+                    <div className="relative mb-3 aspect-[1.05] overflow-hidden rounded-[18px] bg-[#ede8df]">
+                      <img
+                        src={art.image}
+                        alt={art.name}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
 
-                    <button
-                      type="button"
-                      className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-white/85 shadow-sm"
-                    >
-                      <Heart className="h-3.5 w-3.5 text-[#1d1d1d]" />
-                    </button>
-                  </div>
-
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
-                      <h3
-                        className={`${headingFont} break-words text-[18px] leading-none sm:text-[20px]`}
+                      <button
+                        type="button"
+                        className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-white/85 shadow-sm"
                       >
-                        {art.name}
-                      </h3>
-
-                      <p
-                        className={`${bodyFont} mt-1 text-[12px] text-[#7b756d]`}
-                      >
-                        {art.userId?.firstName}{" "}
-                        {art.userId?.lastName}
-                      </p>
+                        <Heart className="h-3.5 w-3.5 text-[#1d1d1d]" />
+                      </button>
                     </div>
 
-                    <p
-                      className={`${bodyFont} shrink-0 text-[13px] font-semibold`}
-                    >
-                      ${Number(art.price).toLocaleString()}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <h3
+                          className={`${headingFont} break-words text-[18px] leading-none sm:text-[20px]`}
+                        >
+                          {art.name}
+                        </h3>
+
+                        <p
+                          className={`${bodyFont} mt-1 text-[12px] text-[#7b756d]`}
+                        >
+                          {art.userId?.firstName}{" "}
+                          {art.userId?.lastName}
+                        </p>
+                      </div>
+
+                      <p
+                        className={`${bodyFont} shrink-0 text-[13px] font-semibold`}
+                      >
+                        ${Number(art.price).toLocaleString()}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </main>
 

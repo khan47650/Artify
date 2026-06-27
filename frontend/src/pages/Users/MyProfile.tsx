@@ -277,20 +277,25 @@ const MyProfile = () => {
               onChange={(value) => handleFieldChange("phoneNumber", value)}
             />
 
-            <EditableInfoCard icon={<FaMapMarkerAlt />} label="Country" value={formData.country} disabled={!isEditing} onChange={(value) => handleFieldChange("country", value)} />
-            <EditableInfoCard icon={<FaMapMarkerAlt />} label="City" value={formData.city} disabled={!isEditing} onChange={(value) => handleFieldChange("city", value)} />
-            <EditableInfoCard icon={<FaMapMarkerAlt />} label="State" value={formData.state} disabled={!isEditing} onChange={(value) => handleFieldChange("state", value)} />
-            <EditableInfoCard icon={<FaMapMarkerAlt />} label="Postal Code" value={formData.postalCode} disabled={!isEditing} onChange={(value) => handleFieldChange("postalCode", value)} />
-            <EditableInfoCard icon={<FaMapMarkerAlt />} label="Address Line 1" value={formData.addressLine1} disabled={!isEditing} onChange={(value) => handleFieldChange("addressLine1", value)} />
-            <EditableInfoCard icon={<FaMapMarkerAlt />} label="Address Line 2" value={formData.addressLine2} disabled={!isEditing} onChange={(value) => handleFieldChange("addressLine2", value)} />
+            {/* Seller only fields */}
             {user?.role === "seller" && (
-              <EditableTextareaCard
-                icon={<FaUserEdit />}
-                label="Artist Introduction"
-                value={formData.introduction}
-                disabled={!isEditing}
-                onChange={(value) => handleFieldChange("introduction", value)}
-              />
+              <>
+                <EditableInfoCard
+                  icon={<FaMapMarkerAlt />}
+                  label="Country"
+                  value={formData.country}
+                  disabled={!isEditing}
+                  onChange={(value) => handleFieldChange("country", value)}
+                />
+
+                <EditableTextareaCard
+                  icon={<FaUserEdit />}
+                  label="Artist Introduction"
+                  value={formData.introduction}
+                  disabled={!isEditing}
+                  onChange={(value) => handleFieldChange("introduction", value)}
+                />
+              </>
             )}
           </div>
 
@@ -455,8 +460,8 @@ const EditableTextareaCard = ({
             placeholder="Not Provided"
             rows={5}
             className={`${bodyFont} mt-2 w-full resize-none rounded-[22px] border px-4 py-3 text-[15px] font-semibold leading-7 text-[#111] outline-none ${disabled
-                ? "border-transparent bg-transparent px-0"
-                : "border-black/15 bg-[#f7f4ee]"
+              ? "border-transparent bg-transparent px-0"
+              : "border-black/15 bg-[#f7f4ee]"
               }`}
           />
         </div>

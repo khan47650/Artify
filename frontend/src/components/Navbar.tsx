@@ -1,7 +1,7 @@
 import { Search, Heart, ShoppingCart, User, Menu, X, LogOut, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import artifyLogo from "@/assets/artify_logo.png";
+import artifyLogo from "/new_logo.png";
 import { useCart } from "@/contexts/CartContext";
 import { useLikedArtworks } from "@/contexts/LikedContext";
 import {
@@ -56,7 +56,7 @@ const Navbar = () => {
         >
           <div className="flex items-center justify-between py-2.5 px-5 md:px-6 lg:px-7">
             <Link to="/" className="inline-flex items-center" aria-label="Artify Home">
-              <img src={artifyLogo} alt="Artify" className="h-8 w-auto md:h-9" />
+              <img src={artifyLogo} alt="Mowa Gallery" className="h-10 w-auto md:h-12 transition-all duration-300 hover:scale-105 hover:opacity-90" />
             </Link>
 
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-background/70">
@@ -102,8 +102,8 @@ const Navbar = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className={`hidden md:flex items-center gap-2 rounded-full px-2 py-1 transition-colors duration-200 ${user?.role === "admin"
-                        ? "bg-background text-foreground px-4 py-1.5 text-sm font-medium hover:bg-background/90"
-                        : "bg-transparent"
+                      ? "bg-background text-foreground px-4 py-1.5 text-sm font-medium hover:bg-background/90"
+                      : "bg-transparent"
                       }`}>
                       {user.role === "admin" ? (
                         <>

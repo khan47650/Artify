@@ -32,10 +32,7 @@ const FeaturesSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden bg-[#F5F5F5] py-[105px]"
-    >
+    <section ref={ref} className="relative overflow-hidden bg-[#F7F5F2] py-[50px]">
       <img
         src={topDots}
         alt=""
@@ -54,7 +51,7 @@ const FeaturesSection = () => {
             className={`font-encode text-[11px] uppercase tracking-[0.32em] text-black/45 transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
               }`}
           >
-            Why Artify
+            Why Mowa Gallery
           </p>
 
           <h2
@@ -70,8 +67,8 @@ const FeaturesSection = () => {
             className={`font-encode mx-auto mt-5 max-w-[560px] text-[13px] leading-6 text-black/60 transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
               }`}
           >
-            Artify connects collectors and artists through a calm, curated, and
-            story-driven marketplace designed for original digital art.
+            Mowa Gallery connects collectors and artists through a calm,
+            curated, and story-driven marketplace designed for original digital art.
           </p>
         </div>
 

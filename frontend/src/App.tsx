@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { LikedProvider } from "@/contexts/LikedContext";
@@ -28,7 +28,6 @@ import DeliveryTerms from "./pages/DeliveryTerms";
 import Liked from "./pages/Liked";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
-import SplashScreen from "@/components/SplashScreen";
 import { CartDrawerProvider } from "@/contexts/CartDrawerContext";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import UserDashboard from "./pages/Users/UserDashboard";
@@ -43,7 +42,6 @@ const ScrollToTop = () => {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
-    // Defer to after paint so newly-mounted route content doesn't override
     requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       document.documentElement.scrollTop = 0;
@@ -82,9 +80,7 @@ const AnimatedRoutes = () => {
         <Route path="/service/:id" element={<ServiceDetail />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/user/dashboard" element={<UserDashboard />} />
-        <Route path="admin/artist-collections/:id" element={<ArtistCollections/>}/>
-
-
+        <Route path="admin/artist-collections/:id" element={<ArtistCollections />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
@@ -92,41 +88,25 @@ const AnimatedRoutes = () => {
 };
 
 const App = () => {
-
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 4500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <>
-
-      {showSplash && <SplashScreen />}
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <InventoryProvider>
-            <CartProvider>
-              <LikedProvider>
-                <Toaster />
-                <Sonner />
-
-                <BrowserRouter>
-                  <CartDrawerProvider>
-                    <ScrollToTop />
-                    <AnimatedRoutes />
-                  </CartDrawerProvider>
-                </BrowserRouter>
-              </LikedProvider>
-            </CartProvider>
-          </InventoryProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <InventoryProvider>
+          <CartProvider>
+            <LikedProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <CartDrawerProvider>
+                  <ScrollToTop />
+                  <AnimatedRoutes />
+                </CartDrawerProvider>
+              </BrowserRouter>
+            </LikedProvider>
+          </CartProvider>
+        </InventoryProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 };
 

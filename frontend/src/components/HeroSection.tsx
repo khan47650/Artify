@@ -3,7 +3,7 @@ import topDots from "/top_dots.png";
 import { useState } from "react";
 
 const HeroSection = () => {
-  const heroImages = ["/art_1.jpg", "/art_2.png", "/art_3.jpg"];
+  const heroImages = ["/hero_new_image.png", "/art_3.jpg","/art_2.png"];
 
   const [activeImage, setActiveImage] = useState(heroImages[0]);
 

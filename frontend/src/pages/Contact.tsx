@@ -61,131 +61,90 @@ const Contact = () => {
     <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-[#fbfaf7] text-[#1d1d1d]">
       <Navbar />
 
-      <main className="w-full max-w-[100vw] overflow-x-hidden pt-24 pb-14 md:pt-28 md:pb-20">
-        <div className="mx-auto w-full max-w-[1280px] overflow-hidden px-4 md:px-6">
-          <section className="grid min-w-0 gap-6 xl:gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch">
-            <div className="relative min-w-0 overflow-hidden rounded-[28px] bg-gradient-to-br from-black via-[#0f0f0f] to-[#1c1c1c] p-4 text-white shadow-[0_35px_90px_-30px_rgba(0,0,0,0.65)] ring-1 ring-white/10 sm:p-5 md:rounded-[38px] md:p-6">
-              <div className="absolute -right-20 -top-20 h-[220px] w-[220px] rounded-full bg-white/10 blur-2xl" />
-              <div className="absolute -bottom-24 -left-20 h-[260px] w-[260px] rounded-full bg-white/10 blur-3xl" />
+      <main className="w-full max-w-[100vw] overflow-x-hidden pt-20 pb-10 md:pt-24 md:pb-14">
+        <div className="mx-auto w-full max-w-[900px] px-4 md:px-6">
+          <form
+            onSubmit={handleSubmit}
+            className="min-w-0 rounded-[28px] md:rounded-[38px] overflow-hidden relative p-6 sm:p-8 md:p-10"
+            style={{
+              backgroundImage: "url('/contact_bg.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="absolute inset-0 bg-black/65" />
 
-              <div className="relative">
-                <p className={`${bodyFont} text-[11px] uppercase tracking-[0.3em] text-white/55`}>
-                  Artify Support
-                </p>
-
-                <h1 className={`${headingFont} mt-5 break-words text-[42px] leading-[0.95] tracking-[-0.03em] sm:text-[52px] md:text-[72px]`}>
-                  Contact Us
-                </h1>
-
-                <p className={`${bodyFont} mt-4 max-w-[430px] text-[15px] leading-7 text-white/65`}>
-                  Need help with an artwork, artist account, collection, or order?
-                  Send us a message and our team will reply soon.
-                </p>
-
-                <div className="mt-7 space-y-3">
-                  <InfoItem
-                    icon={<FaEnvelope />}
-                    title="Email"
-                    value="artifyofficial1122@gmail.com"
-                  />
-                  <InfoItem
-                    icon={<FaPhoneAlt />}
-                    title="Support"
-                    value="Available for marketplace queries"
-                  />
-                  <InfoItem
-                    icon={<FaMapMarkerAlt />}
-                    title="Marketplace"
-                    value="Digital art, collectors and artists"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <form
-              onSubmit={handleSubmit}
-              className="min-w-0 rounded-[28px] border border-[#ece5db] bg-white/90 p-4 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:p-5 md:rounded-[38px] md:p-6"
-            >
-              <div className="mb-5">
-                <p className={`${bodyFont} text-[11px] uppercase tracking-[0.28em] text-[#8a847c]`}>
+            <div className="relative z-10">
+              <div className="mb-4">
+                <p className={`${bodyFont} text-[11px] uppercase tracking-[0.28em] text-white/60`}>
                   Send Message
                 </p>
-
-                <h2 className={`${headingFont} mt-2 break-words text-[32px] leading-none text-[#111] sm:text-[38px]`}>
-                  Let’s Talk
+                <h2 className={`${headingFont} mt-1 break-words text-[30px] leading-none text-white sm:text-[36px]`}>
+                  Let's Talk!
                 </h2>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <Field label="Name">
+              <div className="grid gap-3 md:grid-cols-2">
+                <Field label="Name" dark>
                   <Input
                     value={formData.name}
-                    onChange={(e) =>
-                      setFormData((p) => ({ ...p, name: e.target.value }))
-                    }
-                    placeholder="Your full name"
+                    onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
+                    placeholder="Your Name"
                     required
-                    className={`${bodyFont} h-12 rounded-full border-[#d8d2c8] bg-[#f6f3ed] px-5 transition-all duration-300 focus:border-black focus:bg-white focus:ring-2 focus:ring-black/5`}
+                    className={`${bodyFont} h-11 rounded-full border-white/15 bg-white/10 px-5 text-white placeholder:text-white/40 transition-all duration-300 focus:border-white/30 focus:bg-white/15 focus:ring-0`}
                   />
                 </Field>
 
-                <Field label="Email">
+                <Field label="E-mail" dark>
                   <Input
                     type="email"
                     value={formData.email}
-                    onChange={(e) =>
-                      setFormData((p) => ({ ...p, email: e.target.value }))
-                    }
+                    onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
                     placeholder="you@example.com"
                     required
-                    className={`${bodyFont} h-12 rounded-full border-[#d8d2c8] bg-[#f6f3ed] px-5 transition-all duration-300 focus:border-black focus:bg-white focus:ring-2 focus:ring-black/5`}
+                    className={`${bodyFont} h-11 rounded-full border-white/15 bg-white/10 px-5 text-white placeholder:text-white/40 transition-all duration-300 focus:border-white/30 focus:bg-white/15 focus:ring-0`}
                   />
                 </Field>
 
                 <div className="md:col-span-2">
-                  <Field label="Subject">
+                  <Field label="Subject" dark>
                     <Input
                       value={formData.subject}
-                      onChange={(e) =>
-                        setFormData((p) => ({ ...p, subject: e.target.value }))
-                      }
-                      placeholder="How can we help?"
+                      onChange={(e) => setFormData((p) => ({ ...p, subject: e.target.value }))}
+                      placeholder="How can we help you?"
                       required
-                      className={`${bodyFont} h-12 rounded-full border-[#d8d2c8] bg-[#f6f3ed] px-5 transition-all duration-300 focus:border-black focus:bg-white focus:ring-2 focus:ring-black/5`}
+                      className={`${bodyFont} h-11 rounded-full border-white/15 bg-white/10 px-5 text-white placeholder:text-white/40 transition-all duration-300 focus:border-white/30 focus:bg-white/15 focus:ring-0`}
                     />
                   </Field>
                 </div>
 
                 <div className="md:col-span-2">
-                  <Field label="Message">
+                  <Field label="Message" dark>
                     <Textarea
                       value={formData.message}
-                      onChange={(e) =>
-                        setFormData((p) => ({ ...p, message: e.target.value }))
-                      }
-                      placeholder="Write your message here..."
+                      onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
+                      placeholder="Write your message here......"
                       required
-                      className={`${bodyFont} min-h-[120px] resize-none rounded-[28px] border-[#d8d2c8] bg-[#f6f3ed] px-5 py-4 transition-all duration-300 focus:border-black focus:bg-white focus:ring-2 focus:ring-black/5`}
+                      className={`${bodyFont} min-h-[90px] resize-none rounded-[20px] border-white/15 bg-white/10 px-5 py-3 text-white placeholder:text-white/40 transition-all duration-300 focus:border-white/30 focus:bg-white/15 focus:ring-0`}
                     />
                   </Field>
                 </div>
               </div>
 
-              <div className="mt-5">
+              <div className="mt-4 flex justify-center">
                 <Button
                   disabled={loading}
                   type="submit"
-                  className={`${bodyFont} h-12 w-full rounded-full bg-black px-10 text-[13px] uppercase tracking-[0.2em] text-white shadow-[0_18px_40px_-18px_rgba(0,0,0,0.6)] transition-all duration-300 hover:-translate-y-[2px] hover:bg-black/90 hover:shadow-[0_25px_55px_-20px_rgba(0,0,0,0.7)] disabled:opacity-60 md:w-auto`}
+                  className={`${bodyFont} h-11 rounded-full bg-black/50 border border-white/20 backdrop-blur-sm px-10 text-[13px] uppercase tracking-[0.2em] text-white transition-all duration-300 hover:-translate-y-[2px] hover:bg-black/70 disabled:opacity-60`}
                 >
                   <FaPaperPlane className="mr-2" />
                   {loading ? "Sending..." : "Send Message"}
                 </Button>
               </div>
-            </form>
-          </section>
+            </div>
+          </form>
         </div>
       </main>
-
       <Footer />
     </div>
   );
@@ -194,12 +153,14 @@ const Contact = () => {
 const Field = ({
   label,
   children,
+  dark = false,
 }: {
   label: string;
   children: React.ReactNode;
+  dark?: boolean;
 }) => (
   <div className="space-y-2">
-    <label className={`${bodyFont} text-[11px] uppercase tracking-[0.22em] text-[#777]`}>
+    <label className={`${bodyFont} text-[11px] uppercase tracking-[0.22em] ${dark ? "text-white/55" : "text-[#777]"}`}>
       {label}
     </label>
     {children}

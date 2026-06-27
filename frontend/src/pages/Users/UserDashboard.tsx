@@ -79,7 +79,7 @@ const UserDashboard = () => {
                             <p
                                 className={`${bodyFont} mt-1 hidden text-[11px] text-[#777] sm:block lg:text-[12px]`}
                             >
-                                Manage your Artify account
+                                Manage your Mowa Gallery account
                             </p>
                         </div>
                     </div>

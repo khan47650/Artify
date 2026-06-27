@@ -53,8 +53,10 @@ const ExploreArt = () => {
       setArtworks(items);
       setTotalPages(data.totalPages || 1);
 
+      const approvedItems = items.filter((item: any) => item.approvedStatus === "approved");
+
       const uniqueCategories = [
-        ...new Set(items.map((item: any) => item.category).filter(Boolean)),
+        ...new Set(approvedItems.map((item: any) => item.category).filter(Boolean)),
       ];
 
       setCategories(uniqueCategories as string[]);

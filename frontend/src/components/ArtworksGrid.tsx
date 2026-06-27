@@ -81,10 +81,7 @@ const ArtworksGrid = () => {
           {loading ? (
             <div className="flex gap-5 overflow-hidden pb-4">
               {[1, 2].map((item) => (
-                <div
-                  key={item}
-                  className="min-w-[420px] animate-pulse rounded-[14px] bg-[#f5f5f5] p-3"
-                >
+                <div key={item} className="min-w-[420px] animate-pulse rounded-[14px] bg-[#F7F5F2] p-3">
                   <div className="flex gap-4">
                     <div className="h-[135px] w-[150px] rounded-[14px] bg-[#e5e5e5]" />
 
@@ -100,7 +97,7 @@ const ArtworksGrid = () => {
             </div>
           ) : artworks.length === 0 ? (
             <div
-              className={`rounded-[20px] border border-black/10 bg-[#f5f5f5] p-8 text-center transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+              className={`rounded-[20px] border border-black/10 bg-[#F7F5F2] p-8 text-center transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
                 }`}
             >
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-black text-white">
@@ -127,9 +124,9 @@ const ArtworksGrid = () => {
                   <Link
                     to={`/art/${art._id}`}
                     key={art._id}
-                    className={`min-w-[420px] rounded-[14px] bg-[#f5f5f5] p-3 transition-all duration-700 hover:-translate-y-1 hover:shadow-[0_18px_40px_-28px_rgba(0,0,0,0.35)] ${isVisible
-                        ? "translate-y-0 opacity-100"
-                        : "translate-y-8 opacity-0"
+                    className={`min-w-[420px] rounded-[14px] bg-[#F7F5F2] p-3 transition-all duration-700 hover:-translate-y-1 hover:shadow-[0_18px_40px_-28px_rgba(0,0,0,0.35)] ${isVisible
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
                       }`}
                     style={{
                       transitionDelay: isVisible

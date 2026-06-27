@@ -6,7 +6,6 @@ import { useToast } from "@/hooks/use-toast";
 import facebookIcon from "@/assets/facebook.png";
 import linkedinIcon from "@/assets/linkedin.png";
 import instagramIcon from "@/assets/instagram.png";
-import tiktokIcon from "@/assets/tiktok.png";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -45,20 +44,33 @@ const Footer = () => {
 
   return (
     <footer className="mt-20 w-full overflow-x-hidden border-t border-white/10 bg-black text-white md:mt-24">
+
+      {/* ── Hero brand block ── */}
       <div className="border-b border-white/20">
-        <div className="mx-auto grid w-full max-w-[1400px] overflow-hidden border-white/20 px-4 md:grid-cols-[1.15fr_0.85fr] md:px-8">
-          <h2 className="mt-4 break-words text-center font-geller text-[62px] font-semibold leading-[0.85] sm:mt-6 sm:text-[90px] md:mt-4 md:text-[170px] lg:text-[210px]">
-            ARTIFY
+        <div className="mx-auto flex w-full max-w-[1400px] flex-col items-center justify-center px-4 py-12 md:py-16 md:px-8">
+          {/* Thin decorative rule */}
+          <div className="mb-6 h-px w-16 bg-white/30" />
+
+          <h2 className="font-geller text-center text-[48px] font-semibold leading-none tracking-tight sm:text-[64px] md:text-[80px] lg:text-[96px]">
+            mowa gallery
           </h2>
+
+          {/* Subtle tagline under the name */}
+          <p className="font-encode mt-6 text-center text-[11px] uppercase tracking-[0.35em] text-white/40">
+            Original Art · Independent Artists
+          </p>
+
+          <div className="mt-6 h-px w-16 bg-white/30" />
         </div>
       </div>
 
+      {/* ── About + Links ── */}
       <div className="border-b border-white/20">
         <div className="mx-auto grid w-full max-w-[1400px] border-white/20 px-4 md:grid-cols-[1.15fr_0.85fr] md:px-8">
           <section className="min-w-0 border-b border-white/20 py-8 md:border-b-0 md:border-r md:py-10 md:pr-10">
             <div className="max-w-[560px]">
               <p className="font-encode text-[11px] uppercase tracking-[0.28em] text-white/45">
-                About Artify
+                About Mowa Gallery
               </p>
 
               <h3 className="font-ivy mt-4 break-words text-[28px] font-normal leading-[1.05] text-white sm:text-[34px] md:text-[42px]">
@@ -68,7 +80,7 @@ const Footer = () => {
               </h3>
 
               <p className="font-encode mt-5 max-w-[520px] text-[13px] leading-6 text-white/60">
-                Artify connects independent artists with collectors through a calm,
+                Mowa Gallery connects independent artists with collectors through a calm,
                 story-driven marketplace focused on originality, thoughtful presentation,
                 and meaningful creative expression.
               </p>
@@ -79,13 +91,11 @@ const Footer = () => {
                     Original Artworks
                   </p>
                 </div>
-
                 <div className="rounded-full border border-white/15 bg-white/5 px-4 py-2">
                   <p className="font-encode text-[10px] uppercase tracking-[0.18em] text-white/70">
                     Independent Artists
                   </p>
                 </div>
-
                 <div className="rounded-full border border-white/15 bg-white/5 px-4 py-2">
                   <p className="font-encode text-[10px] uppercase tracking-[0.18em] text-white/70">
                     Curated Experience
@@ -97,9 +107,6 @@ const Footer = () => {
             <div className="mt-7 flex flex-wrap items-center gap-5">
               <a href="#" className="transition-opacity hover:opacity-75">
                 <img src={facebookIcon} alt="Facebook" className="h-4 w-4" />
-              </a>
-              <a href="#" className="transition-opacity hover:opacity-75">
-                <img src={tiktokIcon} alt="TikTok" className="h-4 w-4" />
               </a>
               <a href="#" className="transition-opacity hover:opacity-75">
                 <img src={linkedinIcon} alt="LinkedIn" className="h-4 w-4" />
@@ -134,6 +141,7 @@ const Footer = () => {
         </div>
       </div>
 
+      {/* ── Bottom bar ── */}
       <div className="bg-white font-encode text-[11px] text-black/85">
         <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-4 overflow-hidden px-4 py-4 md:flex-row md:items-center md:justify-between md:px-8">
           <div className="flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 md:gap-6">
@@ -145,7 +153,7 @@ const Footer = () => {
             <span className="hidden h-3.5 w-px bg-black/25 md:block" />
             <Link to="/delivery-terms" className="transition-colors hover:text-black">Delivery Terms</Link>
           </div>
-          <p className="text-center sm:text-left">2026 © ARTIFY</p>
+          <p className="text-center sm:text-left">2026 © Mowa Gallery</p>
         </div>
       </div>
     </footer>

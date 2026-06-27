@@ -2,9 +2,9 @@ import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { Link } from "react-router-dom";
 
 const artworks = [
-  { fileName: "WhatsApp Image 2026-04-12 at 12.55.17 AM0.jpeg", className: "left-[6%] top-[27%] h-[54px] w-[54px]" },
+  { fileName: "start_1.png", className: "left-[6%] top-[27%] h-[54px] w-[54px]" },
   { fileName: "WhatsApp Image 2026-04-12 at 12.55.17 AM4.jpeg", className: "left-[20%] top-[12%] h-[56px] w-[56px]" },
-  { fileName: "WhatsApp Image 2026-04-12 at 12.55.17 AM3.jpeg", className: "left-[10%] top-[50%] h-[58px] w-[58px]" },
+  { fileName: "start_2.png", className: "left-[10%] top-[50%] h-[58px] w-[58px]" },
   { fileName: "WhatsApp Image 2026-04-12 at 12.55.17 AM1.jpeg", className: "right-[23%] top-[12%] h-[56px] w-[56px]" },
   { fileName: "6.jpeg", className: "right-[15%] top-[50%] h-[58px] w-[58px]" },
   { fileName: "WhatsApp Image 2026-04-12 at 12.55.17 AM2.jpeg", className: "left-[24%] top-[74%] h-[48px] w-[48px]" },
@@ -21,8 +21,8 @@ const StartGuide = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#ececec] py-[90px]" ref={ref}>
-      <div className="mx-auto w-full max-w-[1040px] px-6 relative z-10 min-h-[420px]">
+    <section className="relative overflow-hidden bg-[#F7F5F2] py-[50px]" ref={ref}>
+      <div className="mx-auto w-full max-w-[1040px] px-6 relative z-10 min-h-[320px]">
         <div className="pointer-events-none absolute right-0 top-[12%] hidden md:grid grid-cols-8 gap-3 opacity-45">
           {Array.from({ length: 32 }).map((_, idx) => (
             <span key={`rt-${idx}`} className="h-1.5 w-1.5 rounded-full bg-[#c6c6c6]" />
@@ -57,7 +57,7 @@ const StartGuide = () => {
         ))}
 
         {/* Center Content */}
-        <div className="relative z-20 mx-auto flex min-h-[420px] max-w-[520px] flex-col items-center justify-center text-center">
+        <div className="relative z-20 mx-auto flex min-h-[320px] max-w-[520px] flex-col items-center justify-center text-center">
           <div className="mb-3 grid w-full grid-cols-3 gap-2 md:hidden">
             {artworks.slice(0, 3).map((art, i) => (
               <div
